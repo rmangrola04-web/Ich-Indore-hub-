@@ -110,7 +110,7 @@
         <h1 class="text-2xl font-black text-slate-100 tracking-tight">Integrated Central Hub Indore</h1>
         <div class="flex items-center justify-center gap-2">
           <button type="button" onclick="toggleVersionModal(true)" class="text-[10px] bg-sky-500/15 text-sky-300 font-bold px-2.5 py-0.5 rounded-full border border-sky-400/25 hover:bg-sky-500/25 transition flex items-center gap-1">
-            <i data-lucide="history" class="w-3 h-3"></i> v4.9.0-OPS
+            <i data-lucide="history" class="w-3 h-3"></i> v5.1.0-ENGLISH
           </button>
           <span class="text-xs text-slate-400 font-semibold">Warehouse Management System</span>
         </div>
@@ -167,13 +167,13 @@
       <div class="space-y-3.5 text-xs text-slate-300">
         <div class="p-3.5 rounded-2xl card-surface border border-sky-500/30 space-y-1">
           <div class="flex justify-between items-center font-bold">
-            <span class="text-sky-400">v4.9.0 (Latest Release)</span>
+            <span class="text-sky-400">v5.1.0 (Latest Release)</span>
             <span class="text-[10px] text-slate-400">Today</span>
           </div>
           <ul class="list-disc list-inside text-slate-300 space-y-0.5 text-[11px]">
-            <li><b>3-Phase Supervisor Operation:</b> Start ➔ In-Progress ➔ Exit (Mark as LOADED / UNLOADED).</li>
-            <li><b>Dynamic POD Inspection for Unloading:</b> POD Clean vs POD Hold (Damage/Leakage).</li>
-            <li>Real-time Live Operation Tracking directly linked to Google Sheet.</li>
+            <li>100% Pure Professional English UI (all Hindi labels & placeholders removed).</li>
+            <li>Clean and streamlined Loading/Unloading & Security Gate Routing Handshake.</li>
+            <li>Soft Eye-Care Color Theme with Light/Dark Mode Toggle.</li>
           </ul>
         </div>
       </div>
@@ -275,7 +275,7 @@
 
       <div class="space-y-2 pt-4 border-t border-white/10">
         <button onclick="toggleVersionModal(true)" class="w-full px-3 py-1.5 card-surface hover:border-sky-500/40 rounded-xl text-[10px] text-sky-400 font-mono text-center font-bold flex items-center justify-center gap-1.5 transition">
-          <i data-lucide="history" class="w-3 h-3"></i> VERSION HISTORY (v4.9)
+          <i data-lucide="history" class="w-3 h-3"></i> VERSION HISTORY (v5.1)
         </button>
         <button onclick="logout()" class="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-2xl text-xs font-bold text-rose-400 hover:bg-rose-950/30 transition">
           <i data-lucide="log-out" class="w-4 h-4"></i>
@@ -293,10 +293,10 @@
           <div class="flex items-center gap-2">
             <h1 class="text-sm font-black text-slate-100 tracking-tight">Integrated Central Hub Indore</h1>
             <button onclick="toggleVersionModal(true)" class="bg-sky-500/15 text-sky-300 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-sky-400/30 hover:bg-sky-500/25 transition">
-              v4.9.0-OPS
+              v5.1.0-PRO
             </button>
           </div>
-          <p class="text-[11px] text-slate-400 font-medium">Warehouse Management System • Active Operation Tracking</p>
+          <p class="text-[11px] text-slate-400 font-medium">Warehouse Management System • Operations & Logistics Portal</p>
         </div>
 
         <div class="flex items-center gap-3">
@@ -324,7 +324,7 @@
                 <h2 class="text-sm font-extrabold text-slate-100 flex items-center gap-2">
                   <i data-lucide="clipboard-list" class="w-4 h-4 text-sky-400"></i> Plan Received & Single Vehicle Summary
                 </h2>
-                <p class="text-xs text-slate-400 mt-0.5">जहाँ बोल्ड में TOTAL व स्पेस आता है, वहाँ 1 अलग गाड़ी कैप्चर होगी</p>
+                <p class="text-xs text-slate-400 mt-0.5">Automated Multi-Block Parser: Segregates items by bold TOTAL and Wt/CFT spacing</p>
               </div>
 
               <div class="flex items-center gap-2">
@@ -360,7 +360,7 @@
                     </tr>
                   </thead>
                   <tbody id="summaryTableBody" class="divide-y divide-white/5 font-medium text-slate-200">
-                    <tr><td colspan="7" class="text-center py-8 text-slate-400 font-medium">No vehicle summary. Scan plan photo above.</td></tr>
+                    <tr><td colspan="7" class="text-center py-8 text-slate-400 font-medium">No vehicle summary available. Scan plan photo above.</td></tr>
                   </tbody>
                 </table>
               </div>
@@ -385,8 +385,8 @@
                       <th class="py-3 px-3.5 text-right">Weight (Kg)</th>
                       <th class="py-3 px-3.5 text-right">CFT</th>
                       <th class="py-3 px-3.5">Vehicle Type</th>
-                      <th class="py-3.5 px-3.5">Transporter</th>
-                      <th class="py-3.5 px-3.5 text-center">Action</th>
+                      <th class="py-3 px-3.5">Transporter</th>
+                      <th class="py-3 px-3.5 text-center">Action</th>
                     </tr>
                   </thead>
                   <tbody id="planTableBody" class="divide-y divide-white/5 text-slate-300">
@@ -399,7 +399,7 @@
           </div>
         </section>
 
-        <!-- MODULE 2: LOADING / UNLOADING OPERATIONS (3-PHASE SUPERVISOR LOGIC & UNLOADING POD INSPECTION) -->
+        <!-- MODULE 2: LOADING / UNLOADING OPERATIONS -->
         <section id="loadUnloadView" class="view-panel hidden space-y-6">
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             
@@ -421,7 +421,7 @@
                   <select id="linkedGateSelect" onchange="autoFillFromGateLog(this.value)" class="w-full app-input rounded-xl p-2 text-xs font-bold text-sky-300 border-sky-500/30">
                     <option value="">-- Choose Arrived Vehicle (Auto-Fill) --</option>
                   </select>
-                  <p class="text-[10px] text-slate-400 italic">Select करते ही Vehicle No, Route, Transporter और Docks auto-load हो जाएँगे।</p>
+                  <p class="text-[10px] text-slate-400 italic">Selecting auto-fills Vehicle No, Route, Transporter, and Dock.</p>
                 </div>
 
                 <div>
@@ -432,14 +432,15 @@
                   </select>
                 </div>
 
-                <!-- POD INSPECTION (ONLY SHOWN FOR UNLOADING) -->
+                <!-- POD INSPECTION (SHOWN FOR UNLOADING ONLY) -->
                 <div id="unloadingInspectionField" class="hidden bg-emerald-950/30 p-3 rounded-2xl border border-emerald-500/30 space-y-1">
                   <label class="block text-[11px] font-bold text-emerald-400 mb-1 ml-1">
                     Unloading POD / Inspection Status *
                   </label>
                   <select id="unloadingPodStatus" class="w-full app-input rounded-xl p-2 text-xs font-bold text-emerald-300">
-                    <option value="POD Clean">✔ POD Clean (No Damage / Complete Goods Received)</option>
-                    <option value="POD Hold - Damage / Leakage">⚠ POD Hold - Damage / Leakage Detected</option>
+                    <option value="POD Clean">✔ POD Clean</option>
+                    <option value="POD Hold Due to Damage / Leakage">⚠ POD Hold Due to Damage / Leakage</option>
+                    <option value="OK - No Issue">✔ OK - No Issue</option>
                   </select>
                 </div>
 
@@ -505,7 +506,6 @@
                   <input type="time" id="loadStartTime" required class="w-full app-input rounded-2xl p-2.5 text-xs">
                 </div>
 
-                <!-- SUBMIT START OPERATION BUTTON -->
                 <button type="submit" class="w-full bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white font-bold py-3.5 rounded-2xl text-xs transition shadow-md mt-2 flex items-center justify-center gap-2">
                   <i data-lucide="play" class="w-4 h-4"></i> Start Operation (Submit to Dock)
                 </button>
@@ -515,13 +515,12 @@
             <!-- LIVE LOADING/UNLOADING DASHBOARD & EXIT / COMPLETION TABLE -->
             <div class="glass-panel p-6 rounded-[2rem] border border-white/10 shadow-xl lg:col-span-2 space-y-4">
               
-              <!-- Active Operations KPI Header -->
               <div class="flex flex-wrap justify-between items-center gap-3">
                 <div>
                   <h3 class="text-sm font-black text-slate-100 flex items-center gap-2">
                     <i data-lucide="activity" class="w-4 h-4 text-emerald-400"></i> Active Dock Operations & Exit Management
                   </h3>
-                  <p class="text-xs text-slate-400">गाड़ी पूरी लोड/अनलोड होने के बाद <b>Mark Completed</b> बटन दबाएँ</p>
+                  <p class="text-xs text-slate-400">Click <b>Mark Completed</b> once operation is completed to release the dock</p>
                 </div>
 
                 <div class="flex items-center gap-2">
@@ -530,7 +529,6 @@
                 </div>
               </div>
 
-              <!-- Live Operations Table with 3-Phase Status and Finish Action -->
               <div class="overflow-x-auto rounded-3xl card-surface border border-white/10">
                 <table class="w-full text-left text-xs whitespace-nowrap">
                   <thead class="bg-slate-800/80 text-slate-400 uppercase font-bold border-b border-white/10">
@@ -539,15 +537,16 @@
                       <th class="py-3 px-3">Vehicle No</th>
                       <th class="py-3 px-3">Dock</th>
                       <th class="py-3 px-3">Unit</th>
+                      <th class="py-3 px-3">Inspection</th>
                       <th class="py-3 px-3">Supervisor</th>
                       <th class="py-3 px-3">Start Time</th>
-                      <th class="py-3 px-3">End / Exit Time</th>
-                      <th class="py-3 px-3">TAT Duration</th>
+                      <th class="py-3 px-3">End / Exit</th>
+                      <th class="py-3 px-3">TAT</th>
                       <th class="py-3 px-3 text-center">Complete / Action</th>
                     </tr>
                   </thead>
                   <tbody id="loadUnloadTableBody" class="divide-y divide-white/5 text-slate-300">
-                    <tr><td colspan="9" class="text-center py-10 text-slate-400 font-medium">No operations recorded yet.</td></tr>
+                    <tr><td colspan="10" class="text-center py-10 text-slate-400 font-medium">No operations recorded yet.</td></tr>
                   </tbody>
                 </table>
               </div>
@@ -589,11 +588,11 @@
                 <!-- 1. TOP FIELD: PURPOSE -->
                 <div>
                   <label class="block text-[11px] font-extrabold text-sky-300 uppercase tracking-wider mb-1 ml-1">
-                    Purpose (गाड़ी किसके लिए है?) *
+                    Purpose *
                   </label>
                   <select id="secPurpose" onchange="handleSecurityRouteChange()" class="w-full app-input rounded-2xl p-2.5 text-xs font-bold text-sky-300 border-sky-500/30">
-                    <option value="Loading">📦 Loading (लोकेशन लोड होकर जाएगी - From: INDORE HUB)</option>
-                    <option value="Unloading">📥 Unloading (अनलोडिंग के लिए आई है - To: INDORE HUB)</option>
+                    <option value="Loading">📦 Loading (From: INDORE HUB)</option>
+                    <option value="Unloading">📥 Unloading (To: INDORE HUB)</option>
                     <option value="Parking / Transit">🅿 Parking / Transit</option>
                   </select>
                 </div>
@@ -644,11 +643,11 @@
                 <!-- 4. From Location & To Location -->
                 <div class="grid grid-cols-2 gap-2.5">
                   <div>
-                    <label class="block text-[11px] font-bold text-slate-400 mb-1 ml-1">From Location (कहाँ से) *</label>
+                    <label class="block text-[11px] font-bold text-slate-400 mb-1 ml-1">From Location *</label>
                     <select id="secFromLocation" class="w-full app-input rounded-2xl p-2.5 text-xs uppercase font-semibold text-sky-300"></select>
                   </div>
                   <div>
-                    <label class="block text-[11px] font-bold text-slate-400 mb-1 ml-1">To Location (कहाँ जाएगी) *</label>
+                    <label class="block text-[11px] font-bold text-slate-400 mb-1 ml-1">To Location *</label>
                     <select id="secToLocation" class="w-full app-input rounded-2xl p-2.5 text-xs uppercase font-semibold"></select>
                   </div>
                 </div>
@@ -661,7 +660,7 @@
                       ⚡ Auto Pick Current Time
                     </button>
                   </div>
-                  <input type="text" id="secDateTime" placeholder="27/08/2026, 10:30:00 PM" required class="w-full app-input rounded-2xl p-2.5 text-xs font-mono">
+                  <input type="text" id="secDateTime" placeholder="28/08/2026, 12:30:00 AM" required class="w-full app-input rounded-2xl p-2.5 text-xs font-mono">
                 </div>
 
                 <!-- 6. Remarks -->
@@ -718,7 +717,7 @@
                 <h2 class="text-sm font-extrabold text-slate-100 flex items-center gap-2">
                   <i data-lucide="navigation" class="w-4 h-4 text-rose-400"></i> Vehicle Tracking & Transit SLA Hub
                 </h2>
-                <p class="text-xs text-slate-400 mt-0.5">मास्टर एक्सेल/CSV फ़ाइल अपलोड करें - On-Time, Delayed व इन-ट्रांजिट गाड़ियों की ऑटो ट्रैकिंग</p>
+                <p class="text-xs text-slate-400 mt-0.5">Upload master sheet (CSV / Excel) to automatically track On-Time, Delayed, and In-Transit fleets</p>
               </div>
 
               <div class="flex flex-wrap items-center gap-2">
@@ -836,7 +835,7 @@
             </div>
           </div>
 
-          <!-- GRAPHIC ANALYSIS (INCLUDING VEHICLE TRANSIT TRENDLINE) -->
+          <!-- GRAPHIC ANALYSIS -->
           <div class="glass-panel p-5 md:p-7 rounded-[2rem] space-y-6 border border-white/10 shadow-xl">
             <div class="flex flex-wrap justify-between items-center gap-4 pb-4 border-b border-white/10">
               <div>
@@ -944,7 +943,7 @@
     </button>
   </div>
 
-  <!-- JAVASCRIPT LOGIC & 3-PHASE SUPERVISOR ENGINE -->
+  <!-- JAVASCRIPT LOGIC -->
   <script>
     lucide.createIcons();
 
@@ -1001,10 +1000,10 @@
     ];
     let masterLocations = JSON.parse(localStorage.getItem("ich_master_locations")) || defaultLocations;
 
-    let planEntries = JSON.parse(localStorage.getItem("ich_plan_v49")) || [];
-    let loadEntries = JSON.parse(localStorage.getItem("ich_load_v49")) || [];
-    let securityLogs = JSON.parse(localStorage.getItem("ich_sec_v49")) || [];
-    let trackingRecords = JSON.parse(localStorage.getItem("ich_tracking_v49")) || [];
+    let planEntries = JSON.parse(localStorage.getItem("ich_plan_v51")) || [];
+    let loadEntries = JSON.parse(localStorage.getItem("ich_load_v51")) || [];
+    let securityLogs = JSON.parse(localStorage.getItem("ich_sec_v51")) || [];
+    let trackingRecords = JSON.parse(localStorage.getItem("ich_tracking_v51")) || [];
 
     let currentPeriod = 'daily';
     let chartTrend = null, chartFleet = null, chartTransporter = null, chartTransitTrend = null;
@@ -1038,7 +1037,7 @@
           const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
           const rows = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
 
-          if (rows.length === 0) return alert("अपलोड की गई फ़ाइल खाली है।");
+          if (rows.length === 0) return alert("Uploaded file is empty.");
 
           let newLocs = ["INDORE HUB"];
           rows.forEach((row) => {
@@ -1053,15 +1052,15 @@
           });
 
           if (newLocs.length <= 1) {
-            return alert("फ़ाइल से कोई स्थान नहीं मिल सके।");
+            return alert("No valid locations found in file.");
           }
 
           masterLocations = newLocs;
           localStorage.setItem("ich_master_locations", JSON.stringify(masterLocations));
           populateAllLocationDropdowns();
-          alert(`✅ सफलता! कुल ${masterLocations.length} स्थान लोड हो गए!`);
+          alert(`Success! Loaded ${masterLocations.length} locations into master.`);
         } catch (err) {
-          alert("स्थान फ़ाइल पढ़ने में समस्या आई।");
+          alert("Error parsing location file.");
         }
       };
       reader.readAsArrayBuffer(file);
@@ -1120,7 +1119,6 @@
       }
     }
 
-    // TOGGLE POD INSPECTION FOR UNLOADING VS LOADING
     function handleSupervisorOpChange() {
       const op = document.getElementById('opType').value;
       const fromSelect = document.getElementById('loadFromLoc');
@@ -1180,7 +1178,7 @@
 
     function autoPickCurrentDateTime() {
       const now = new Date();
-      document.getElementById('secDateTime').value = now.toLocaleDateString('en-IN') + ', ' + now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      document.getElementById('secDateTime').value = now.toLocaleDateString('en-GB') + ', ' + now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
     }
 
     // FORM HANDLER: SUPERVISOR STARTS OPERATION (PHASE 1)
@@ -1193,7 +1191,7 @@
 
       const newOp = {
         id: "OP-" + Date.now(),
-        opType: op, // 'LOADING' or 'UNLOADING'
+        opType: op,
         unit: document.getElementById('loadUnit').value,
         bayNo: document.getElementById('loadBayNo').value,
         vehicleNo: document.getElementById('loadVehicleNo').value.toUpperCase(),
@@ -1209,7 +1207,7 @@
       };
 
       loadEntries.unshift(newOp);
-      localStorage.setItem("ich_load_v49", JSON.stringify(loadEntries));
+      localStorage.setItem("ich_load_v51", JSON.stringify(loadEntries));
       renderLoadUnloadTable();
       renderLiveDockCards();
       pushLoadUnloadToCloud(newOp);
@@ -1218,7 +1216,7 @@
       updateDockOptions();
       handleSupervisorOpChange();
       updateLinkedGateVehicleDropdown();
-      alert(`✅ ${op} ऑपरेशन डॉक पर सफलतापूर्वक चालू हो गया! स्टेटस: ${newOp.status}`);
+      alert(`Success! ${op} operation started on dock. Status: ${newOp.status}`);
     });
 
     // SUPERVISOR COMPLETES OPERATION & EXITS (PHASE 3)
@@ -1229,7 +1227,7 @@
       const now = new Date();
       const currentEndTime = now.toTimeString().substring(0, 5);
 
-      let endTime = prompt(`ऑपरेशन कम्प्लीशन/एग्जिट टाइम दर्ज करें:`, currentEndTime);
+      let endTime = prompt(`Enter completion/exit time:`, currentEndTime);
       if (!endTime) return;
 
       let durText = "1h 10m";
@@ -1245,12 +1243,12 @@
       item.duration = durText;
       item.status = item.opType === 'LOADING' ? 'LOADED' : 'UNLOADED';
 
-      localStorage.setItem("ich_load_v49", JSON.stringify(loadEntries));
+      localStorage.setItem("ich_load_v51", JSON.stringify(loadEntries));
       renderLoadUnloadTable();
       renderLiveDockCards();
       pushLoadUnloadToCloud(item);
 
-      alert(`✅ गाड़ी ${item.vehicleNo} सफलतापूर्वक पूरी हो गई! नया स्टेटस: ${item.status} (TAT: ${durText})`);
+      alert(`Success! Vehicle ${item.vehicleNo} marked as ${item.status} (TAT: ${durText})`);
     }
 
     // FORM HANDLER: SECURITY GATE MOVEMENT
@@ -1264,22 +1262,22 @@
         transporter: document.getElementById('secTransporter').value,
         fromLoc: document.getElementById('secFromLocation').value.toUpperCase().trim(),
         toLoc: document.getElementById('secToLocation').value.toUpperCase().trim(),
-        dateTime: document.getElementById('secDateTime').value.trim() || new Date().toLocaleString('en-IN'),
+        dateTime: document.getElementById('secDateTime').value.trim() || new Date().toLocaleString('en-US'),
         remarks: document.getElementById('secRemarks').value.trim() || '-'
       };
 
       securityLogs.unshift(newSec);
-      localStorage.setItem("ich_sec_v49", JSON.stringify(securityLogs));
+      localStorage.setItem("ich_sec_v51", JSON.stringify(securityLogs));
       renderSecurityTable();
       updateLinkedGateVehicleDropdown();
       pushGateEntryToCloud(newSec);
       this.reset();
       handleSecurityRouteChange();
       autoPickCurrentDateTime();
-      alert("Security Gate Entry Saved & Linked to Loading/Unloading Form!");
+      alert("Security Gate Entry Saved and Linked Successfully!");
     });
 
-    // RENDER SUPERVISOR OPERATIONS TABLE WITH IN-PROGRESS VS LOADED/UNLOADED
+    // RENDER SUPERVISOR OPERATIONS TABLE
     function renderLoadUnloadTable() {
       const tbody = document.getElementById('loadUnloadTableBody');
       if (!tbody) return;
@@ -1294,7 +1292,7 @@
       if (document.getElementById('kpiActiveUnloading')) document.getElementById('kpiActiveUnloading').innerText = `${activeUnload} Unloading In-Progress`;
 
       if (loadEntries.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="9" class="text-center py-10 text-slate-400 font-medium">No operations recorded yet.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="10" class="text-center py-10 text-slate-400 font-medium">No operations recorded yet.</td></tr>`;
         return;
       }
 
@@ -1313,6 +1311,17 @@
           statusBadge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-sky-500/20 text-sky-300 border border-sky-500/30 animate-pulse">⏳ UNLOADING...</span>`;
         }
 
+        let inspBadge = '<span class="text-slate-500">-</span>';
+        if (item.podStatus) {
+          if (item.podStatus === 'POD Clean') {
+            inspBadge = `<span class="text-emerald-400 font-bold text-[10px]">✔ POD Clean</span>`;
+          } else if (item.podStatus.includes('Damage') || item.podStatus.includes('Leakage')) {
+            inspBadge = `<span class="text-rose-400 font-bold text-[10px]">⚠ POD Hold (Damage/Leakage)</span>`;
+          } else if (item.podStatus === 'OK - No Issue') {
+            inspBadge = `<span class="text-sky-400 font-bold text-[10px]">✔ OK - No Issue</span>`;
+          }
+        }
+
         const tr = document.createElement('tr');
         tr.className = 'hover:bg-white/5 transition';
         tr.innerHTML = `
@@ -1320,6 +1329,7 @@
           <td class="py-3 px-3 font-bold text-white font-mono">${item.vehicleNo}</td>
           <td class="py-3 px-3 font-bold text-sky-300">${item.bayNo}</td>
           <td class="py-3 px-3 text-slate-300">${item.unit}</td>
+          <td class="py-3 px-3">${inspBadge}</td>
           <td class="py-3 px-3 font-semibold text-slate-300">${item.operator}</td>
           <td class="py-3 px-3 font-mono text-slate-300">${item.startTime || '-'}</td>
           <td class="py-3 px-3 font-mono ${isProgress ? 'text-amber-400 italic' : 'text-slate-300'}">${item.endTime || '-- In Progress --'}</td>
@@ -1340,7 +1350,6 @@
       lucide.createIcons();
     }
 
-    // LIVE DOCKS CARDS RENDER (IN-PROGRESS HIGHLIGHTED)
     function renderLiveDockCards() {
       const ahplGrid = document.getElementById('ahplDockGrid');
       const ailGrid = document.getElementById('ailDockGrid');
@@ -1409,7 +1418,7 @@
       if (!summaryTbody || !planTbody) return;
 
       if (planEntries.length === 0) {
-        summaryTbody.innerHTML = `<tr><td colspan="7" class="text-center py-8 text-slate-400 font-medium">No vehicle summary. Scan plan photo above.</td></tr>`;
+        summaryTbody.innerHTML = `<tr><td colspan="7" class="text-center py-8 text-slate-400 font-medium">No vehicle summary available. Scan plan photo above.</td></tr>`;
         planTbody.innerHTML = `<tr><td colspan="9" class="text-center py-8 text-slate-400 font-medium">No detailed plan data loaded.</td></tr>`;
         repTbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-slate-400 font-medium">No report records available.</td></tr>`;
         if (groupCount) groupCount.innerText = "0 Vehicles";
@@ -1511,10 +1520,60 @@
       });
     }
 
+    function renderTrackingTable() {
+      const tbody = document.getElementById('trackingTableBody');
+      if (!tbody) return;
+
+      let inTransit = 0, onTime = 0, delayed = 0;
+      trackingRecords.forEach(t => {
+        if (t.status.includes("In-Transit")) inTransit++;
+        else if (t.status.includes("On-Time") || t.status.includes("Delivered")) onTime++;
+        else if (t.status.includes("Delay")) delayed++;
+      });
+
+      if (document.getElementById('kpiTrackTotal')) document.getElementById('kpiTrackTotal').innerText = trackingRecords.length;
+      if (document.getElementById('kpiTrackInTransit')) document.getElementById('kpiTrackInTransit').innerText = inTransit;
+      if (document.getElementById('kpiTrackOnTime')) document.getElementById('kpiTrackOnTime').innerText = onTime;
+      if (document.getElementById('kpiTrackDelayed')) document.getElementById('kpiTrackDelayed').innerText = delayed;
+
+      if (trackingRecords.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center py-10 text-slate-400">No vehicle tracking data loaded. Upload CSV/Excel master sheet above.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = '';
+      trackingRecords.forEach((item, idx) => {
+        let badgeClass = "bg-sky-500/15 text-sky-400 border-sky-500/25";
+        if (item.status.includes("On-Time")) badgeClass = "bg-emerald-500/15 text-emerald-400 border-emerald-500/25";
+        if (item.status.includes("Delay")) badgeClass = "bg-rose-500/15 text-rose-400 border-rose-500/25";
+
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-white/5 transition';
+        tr.innerHTML = `
+          <td class="py-3 px-4 font-mono font-bold text-slate-100">${item.vehicleNo}</td>
+          <td class="py-3 px-4 font-semibold text-slate-300">${item.transporter}</td>
+          <td class="py-3 px-4 font-bold text-sky-400">${item.origin} ➔ ${item.destination}</td>
+          <td class="py-3 px-4 font-mono text-slate-400">${item.dispatchDate}</td>
+          <td class="py-3 px-4 font-mono text-slate-300">${item.expectedDate}</td>
+          <td class="py-3 px-4 font-mono text-slate-300">${item.actualDelivery}</td>
+          <td class="py-3 px-4 text-center">
+            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${badgeClass}">
+              ${item.status}
+            </span>
+          </td>
+          <td class="py-3 px-4 text-center">
+            <button onclick="deleteTrackingEntry(${idx})" class="text-rose-400 hover:text-rose-300 p-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+      lucide.createIcons();
+    }
+
     function deletePlanEntry(delNo, idx) {
-      if (confirm("डिलीट करना चाहते हैं?")) {
+      if (confirm("Are you sure you want to delete this record?")) {
         planEntries.splice(idx, 1);
-        localStorage.setItem("ich_plan_v49", JSON.stringify(planEntries));
+        localStorage.setItem("ich_plan_v51", JSON.stringify(planEntries));
         renderAllTables();
         renderLiveDockCards();
         deleteRowFromCloud("Plan_Received", delNo);
@@ -1522,9 +1581,9 @@
     }
 
     function deleteLoadEntry(vehNo, idx) {
-      if (confirm("ऑपरेशन रिकॉर्ड डिलीट करें?")) {
+      if (confirm("Are you sure you want to delete this operation record?")) {
         loadEntries.splice(idx, 1);
-        localStorage.setItem("ich_load_v49", JSON.stringify(loadEntries));
+        localStorage.setItem("ich_load_v51", JSON.stringify(loadEntries));
         renderLoadUnloadTable();
         renderLiveDockCards();
         deleteRowFromCloud("Loading_Unloading_Log", vehNo);
@@ -1532,12 +1591,21 @@
     }
 
     function deleteGateEntry(vehNo, idx) {
-      if (confirm("गेट एंट्री डिलीट करें?")) {
+      if (confirm("Are you sure you want to delete this gate record?")) {
         securityLogs.splice(idx, 1);
-        localStorage.setItem("ich_sec_v49", JSON.stringify(securityLogs));
+        localStorage.setItem("ich_sec_v51", JSON.stringify(securityLogs));
         renderSecurityTable();
         updateLinkedGateVehicleDropdown();
         deleteRowFromCloud("Gate_Security_Log", vehNo);
+      }
+    }
+
+    function deleteTrackingEntry(idx) {
+      if (confirm("Are you sure you want to delete this tracking record?")) {
+        trackingRecords.splice(idx, 1);
+        localStorage.setItem("ich_tracking_v51", JSON.stringify(trackingRecords));
+        renderTrackingTable();
+        renderGraphicAnalytics();
       }
     }
 
@@ -1654,6 +1722,83 @@
       }
     }
 
+    function downloadTrackingSampleCSV() {
+      const sampleRows = [
+        ["Vehicle No", "Transporter", "Origin", "Destination", "Dispatch Date", "Expected Date", "Actual Delivery Date", "Status"],
+        ["MP-09-AB-1234", "DHTC", "INDORE HUB", "BANGALORE", "2026-08-25", "2026-08-28", "", "In-Transit"],
+        ["MH-04-XY-9876", "OPM", "INDORE HUB", "MUMBAI", "2026-08-24", "2026-08-26", "2026-08-26", "Delivered On-Time"],
+        ["DL-01-PQ-5544", "VARUNA", "DELHI", "INDORE HUB", "2026-08-20", "2026-08-23", "2026-08-25", "Delayed"]
+      ];
+
+      let csvContent = "data:text/csv;charset=utf-8," + sampleRows.map(e => e.join(",")).join("\n");
+      let encodedUri = encodeURI(csvContent);
+      let link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", `Vehicle_Tracking_Master_Sample.csv`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    }
+
+    function handleTrackingFileImport(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const data = new Uint8Array(e.target.result);
+          const workbook = XLSX.read(data, { type: 'array' });
+          const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+          const rows = XLSX.utils.sheet_to_json(firstSheet, { defval: "" });
+
+          if (rows.length === 0) return alert("Uploaded file is empty.");
+
+          let parsedList = [];
+          rows.forEach((r, idx) => {
+            let veh = r["Vehicle No"] || r["VehicleNo"] || r["Vehicle Number"] || r["Vehicle"] || r["Veh No"] || `TRK-${1000 + idx}`;
+            let transp = r["Transporter"] || r["Transporter Name"] || r["Vendor"] || "DHTC";
+            let org = r["Origin"] || r["From"] || r["From Location"] || "INDORE HUB";
+            let dest = r["Destination"] || r["To"] || r["To Location"] || "BANGALORE";
+            let dDate = r["Dispatch Date"] || r["DispatchDate"] || r["Out Date"] || "2026-08-25";
+            let expDate = r["Expected Date"] || r["ExpectedDate"] || r["ETA"] || "2026-08-28";
+            let actDate = r["Actual Delivery Date"] || r["Delivery Date"] || r["Actual Date"] || "";
+            
+            let status = r["Status"] || r["Transit Status"] || "";
+            if (!status) {
+              if (!actDate) {
+                status = "In-Transit";
+              } else if (new Date(actDate) <= new Date(expDate)) {
+                status = "Delivered On-Time";
+              } else {
+                status = "Delayed";
+              }
+            }
+
+            parsedList.push({
+              vehicleNo: String(veh).toUpperCase().trim(),
+              transporter: String(transp).trim(),
+              origin: String(org).toUpperCase().trim(),
+              destination: String(dest).toUpperCase().trim(),
+              dispatchDate: String(dDate).trim(),
+              expectedDate: String(expDate).trim(),
+              actualDelivery: String(actDate).trim() || "-",
+              status: status
+            });
+          });
+
+          trackingRecords = parsedList;
+          localStorage.setItem("ich_tracking_v51", JSON.stringify(trackingRecords));
+          renderTrackingTable();
+          renderGraphicAnalytics();
+          alert(`Success! Loaded ${trackingRecords.length} tracking records.`);
+        } catch (err) {
+          alert("Error importing tracking sheet.");
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
     function handleCSVImport(event) {
       const file = event.target.files[0];
       if (!file) return;
@@ -1678,9 +1823,9 @@
           planEntries.unshift(newRec);
           pushBatchToCloud([newRec]);
         });
-        localStorage.setItem("ich_plan_v49", JSON.stringify(planEntries));
+        localStorage.setItem("ich_plan_v51", JSON.stringify(planEntries));
         renderAllTables();
-        alert(`${rows.length} रिकॉर्ड्स लोड हुए!`);
+        alert(`Success! Loaded ${rows.length} plan records.`);
       };
       reader.readAsArrayBuffer(file);
     }
@@ -1701,128 +1846,195 @@
       doc.save(`ICH_Indore_Report_${new Date().toISOString().split('T')[0]}.pdf`);
     }
 
-    // AUTH & PERMISSIONS
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const inputUser = document.getElementById('loginUser').value.trim().toLowerCase();
-      const inputPass = document.getElementById('loginPass').value.trim();
-      const inputRole = document.getElementById('loginRole').value;
-      const err = document.getElementById('loginError');
-
-      let matched = builtInUsers.find(u => u.user.toLowerCase() === inputUser && u.pass === inputPass);
-      if (!matched) matched = registeredUsers.find(u => u.user.toLowerCase() === inputUser && u.pass === inputPass);
-
-      if (matched) {
-        err.classList.add('hidden');
-        const roleToAssign = inputUser === 'admin' ? 'ADMIN' : (matched.role || inputRole);
-        const nameToAssign = matched.name || inputUser;
-
-        currentLoggedInRole = roleToAssign;
-        currentLoggedInUser = nameToAssign;
-        localStorage.setItem("ich_active_role", roleToAssign);
-        localStorage.setItem("ich_active_user", nameToAssign);
-        applyRolePermissions(roleToAssign, nameToAssign);
-      } else {
-        err.classList.remove('hidden');
-      }
-    });
-
-    function toggleRegisterModal(show) {
-      const modal = document.getElementById('registerModal');
-      if (show) modal.classList.remove('hidden');
-      else modal.classList.add('hidden');
+    // 2-WAY REALTIME SYNC ENGINE
+    function pushBatchToCloud(records) {
+      if (!googleWebhookUrl) return;
+      fetch(googleWebhookUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({ action: "SYNC_BATCH_PLAN", records: records })
+      }).then(() => setTimeout(fetchCloudUpdates, 500));
     }
 
-    document.getElementById('registerForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const name = document.getElementById('regFullName').value.trim();
-      const role = document.getElementById('regRole').value;
-      const user = document.getElementById('regUser').value.trim().toLowerCase();
-      const pass = document.getElementById('regPass').value.trim();
-
-      registeredUsers.push({ user: user, pass: pass, role: role, name: name });
-      localStorage.setItem("ich_registered_users", JSON.stringify(registeredUsers));
-
-      alert(`✅ अकाउंट रजिस्टर हो गया!\nयूजर: ${user}\nरोल: ${role}`);
-      toggleRegisterModal(false);
-      this.reset();
-    });
-
-    function applyRolePermissions(role, name) {
-      document.getElementById('loginScreen').classList.add('hidden');
-      document.getElementById('mainApp').classList.remove('hidden');
-
-      document.getElementById('userBadgeName').innerText = name || role;
-      document.getElementById('userBadgeRole').innerText = role;
-      
-      const initials = role ? role.substring(0,3).toUpperCase() : "ICH";
-      document.getElementById('userAvatar').innerText = initials;
-
-      const navSecBtn = document.getElementById('navSecBtn');
-      if (role === 'SECURITY') {
-        switchView('gateSecView', navSecBtn);
-      } else {
-        switchView('planView', document.querySelectorAll('.sidebar-item')[0]);
-      }
-
-      populateAllLocationDropdowns();
-      updateDockOptions();
-      handleSecurityRouteChange();
-      handleSupervisorOpChange();
-      updateLinkedGateVehicleDropdown();
-      autoPickCurrentDateTime();
-      renderAllTables();
-      renderLoadUnloadTable();
-      renderSecurityTable();
-      renderTrackingTable();
-      renderLiveDockCards();
-      renderGraphicAnalytics();
-      fetchCloudUpdates();
-      lucide.createIcons();
+    function pushLoadUnloadToCloud(record) {
+      if (!googleWebhookUrl) return;
+      fetch(googleWebhookUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({ action: "SYNC_LOAD_UNLOAD", record: record })
+      }).then(() => setTimeout(fetchCloudUpdates, 500));
     }
 
-    function logout() {
-      localStorage.removeItem("ich_active_role");
-      localStorage.removeItem("ich_active_user");
-      currentLoggedInRole = null;
-      document.getElementById('loginPass').value = '';
-      document.getElementById('mainApp').classList.add('hidden');
-      document.getElementById('loginScreen').classList.remove('hidden');
-    }
-
-    if (currentLoggedInRole) {
-      applyRolePermissions(currentLoggedInRole, currentLoggedInUser);
-    }
-
-    function updateClock() {
-      const now = new Date();
-      document.getElementById('liveClock').innerText = now.toLocaleTimeString('en-IN', { 
-        hour: '2-digit', minute: '2-digit', second: '2-digit' 
+    function pushGateEntryToCloud(gateRecord) {
+      if (!googleWebhookUrl) return;
+      fetch(googleWebhookUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({ action: "SYNC_GATE_ENTRY", record: gateRecord })
       });
     }
-    setInterval(updateClock, 1000);
-    updateClock();
 
-    function switchView(viewId, btn) {
-      document.querySelectorAll('.view-panel').forEach(el => el.classList.add('hidden'));
-      document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active-nav-btn'));
-
-      const targetView = document.getElementById(viewId);
-      if (targetView) targetView.classList.remove('hidden');
-      if (btn && btn.classList.contains('sidebar-item')) btn.classList.add('active-nav-btn');
-
-      if (viewId === 'gateSecView') autoPickCurrentDateTime();
-      if (viewId === 'loadUnloadView') {
-        updateDockOptions();
-        handleSupervisorOpChange();
-        updateLinkedGateVehicleDropdown();
-      }
-      if (viewId === 'trackingView') renderTrackingTable();
-      if (viewId === 'reportsView') setTimeout(renderGraphicAnalytics, 100);
-      lucide.createIcons();
+    function deleteRowFromCloud(sheetName, identifier) {
+      if (!googleWebhookUrl) return;
+      fetch(googleWebhookUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({ action: "DELETE_ROW", sheetName: sheetName, identifier: identifier })
+      }).then(() => setTimeout(fetchCloudUpdates, 500));
     }
 
-    // INITIAL RENDER
+    window.handleCloudSyncResponse = function(data) {
+      if (data && typeof data === 'object') {
+        if (Array.isArray(data.planEntries)) {
+          planEntries = data.planEntries;
+          localStorage.setItem("ich_plan_v51", JSON.stringify(planEntries));
+        }
+        if (Array.isArray(data.loadEntries)) {
+          loadEntries = data.loadEntries;
+          localStorage.setItem("ich_load_v51", JSON.stringify(loadEntries));
+        }
+        if (Array.isArray(data.gateEntries)) {
+          securityLogs = data.gateEntries;
+          localStorage.setItem("ich_sec_v51", JSON.stringify(securityLogs));
+        }
+        renderAllTables();
+        renderLoadUnloadTable();
+        renderSecurityTable();
+        renderLiveDockCards();
+        renderGraphicAnalytics();
+        updateLinkedGateVehicleDropdown();
+      }
+    };
+
+    function fetchCloudUpdates() {
+      if (!googleWebhookUrl) return;
+      const scriptId = 'jsonp_sync_script';
+      const existingScript = document.getElementById(scriptId);
+      if (existingScript) existingScript.remove();
+
+      const script = document.createElement('script');
+      script.id = scriptId;
+      script.src = googleWebhookUrl + (googleWebhookUrl.includes('?') ? '&' : '?') + 'callback=handleCloudSyncResponse&nocache=' + new Date().getTime();
+      document.body.appendChild(script);
+    }
+    setInterval(fetchCloudUpdates, 3500);
+
+    // OCR PARSING
+    async function scanPlanImage(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const spinner = document.getElementById('ocrSpinner');
+      if (spinner) spinner.classList.remove('hidden');
+
+      try {
+        const reader = new FileReader();
+        reader.onload = async function(e) {
+          const img = new Image();
+          img.onload = async function() {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0);
+
+            const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const d = imgData.data;
+            for (let i = 0; i < d.length; i += 4) {
+              const avg = (d[i] * 0.299 + d[i + 1] * 0.587 + d[i + 2] * 0.114);
+              d[i] = avg > 140 ? 255 : 0;
+              d[i + 1] = avg > 140 ? 255 : 0;
+              d[i + 2] = avg > 140 ? 255 : 0;
+            }
+            ctx.putImageData(imgData, 0, 0);
+
+            let result = await Tesseract.recognize(canvas, 'eng');
+            let text = result.data.text;
+
+            if (spinner) spinner.classList.add('hidden');
+            parseDistinctBlocksFromOCR(text);
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      } catch (err) {
+        if (spinner) spinner.classList.add('hidden');
+        alert("Error scanning plan image.");
+      }
+    }
+
+    function parseDistinctBlocksFromOCR(fullText) {
+      let cleanText = fullText.toUpperCase().replace(/[|—_\[\]{}]/g, ' ').replace(/(\d)O/g, '$10').replace(/O(\d)/g, '0$1');
+      const transporters = ["DHTC", "OPM", "ICRL", "MATA", "MCM", "FLY GREEN", "VARUNA", "JEET"];
+
+      let rawBlocks = cleanText.split(/TOTAL|WT & CFT|WT&CFT|\n\s*\n/);
+      let extractedRows = [];
+
+      rawBlocks.forEach((block, blockIdx) => {
+        let blockTrimmed = block.trim();
+        if (blockTrimmed.length < 10) return;
+
+        let blockDest = null;
+        for (let d of masterLocations) {
+          if (blockTrimmed.includes(d)) { blockDest = d; break; }
+        }
+        if (!blockDest) blockDest = masterLocations[blockIdx % masterLocations.length];
+
+        let blockTransp = "DHTC";
+        for (let t of transporters) {
+          if (blockTrimmed.includes(t)) { blockTransp = t; break; }
+        }
+
+        const delMatches = blockTrimmed.match(/\b23\d{8}\b/g) || blockTrimmed.match(/2302\d{6}/g) || [];
+        const codeMatches = blockTrimmed.match(/\b(1407|7422|1411|7419|1412|7420|1408|7421|\d{4})\b/g) || [];
+        const decimals = blockTrimmed.match(/(\d{2,4}\.\d{2})/g) || [];
+
+        if (delMatches.length > 0) {
+          delMatches.forEach((delNo, idx) => {
+            let codeNo = codeMatches[idx] || (idx % 2 === 0 ? "1407" : "7422");
+            let lineUnit = String(codeNo).startsWith("7") ? "AIL" : "AHPL";
+
+            let wt = 343.71, cft = 28.76;
+            if (decimals.length >= (idx * 2) + 2) {
+              wt = parseFloat(decimals[idx * 2]) || 343.71;
+              cft = parseFloat(decimals[(idx * 2) + 1]) || 28.76;
+            } else if (decimals[idx]) {
+              wt = parseFloat(decimals[idx]) || 343.71;
+              cft = parseFloat((wt * 0.08).toFixed(2));
+            }
+
+            extractedRows.push({
+              deliveryNo: delNo,
+              code: codeNo,
+              destination: blockDest,
+              unit: lineUnit,
+              weight: wt,
+              cft: cft,
+              vType: "32SXL",
+              transporter: blockTransp,
+              vehicleNo: "MP-09-PLAN",
+              supervisor: currentLoggedInUser || "Duty Supervisor"
+            });
+          });
+        }
+      });
+
+      if (extractedRows.length === 0) return alert("No valid rows recognized from image.");
+
+      extractedRows.forEach(r => planEntries.unshift(r));
+      localStorage.setItem("ich_plan_v51", JSON.stringify(planEntries));
+      renderAllTables();
+      renderLiveDockCards();
+      pushBatchToCloud(extractedRows);
+      alert(`Success! Loaded ${extractedRows.length} scanned delivery rows.`);
+    }
+
+    // INITIAL LOAD
+    populateAllLocationDropdowns();
     renderAllTables();
     renderLoadUnloadTable();
     renderSecurityTable();
