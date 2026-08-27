@@ -26,6 +26,15 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
     
+    :root {
+      --warm-cream-bg: #FAF7F2;
+      --warm-cream-surface: #F3EDE2;
+      --warm-card: #FFFDF9;
+      --warm-border: #E5DCCF;
+      --warm-text-main: #1C1917;
+      --warm-text-muted: #57534E;
+    }
+    
     body {
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Plus Jakarta Sans", sans-serif;
       -webkit-tap-highlight-color: transparent;
@@ -45,9 +54,9 @@
     }
 
     .light .glass-panel {
-      background: rgba(255, 255, 255, 0.85);
-      border: 1px solid rgba(226, 232, 240, 0.9);
-      box-shadow: 0 4px 20px -2px rgba(100, 116, 139, 0.08);
+      background: rgba(243, 237, 226, 0.92);
+      border: 1px solid var(--warm-border);
+      box-shadow: 0 4px 20px -2px rgba(120, 113, 108, 0.08);
     }
 
     .card-surface {
@@ -58,8 +67,9 @@
       border: 1px solid rgba(255, 255, 255, 0.06);
     }
     .light .card-surface {
-      background: #FFFFFF;
-      border: 1px solid #E2E8F0;
+      background: var(--warm-card);
+      border: 1px solid var(--warm-border);
+      color: var(--warm-text-main);
     }
 
     .app-input {
@@ -80,13 +90,17 @@
     }
 
     .light .app-input {
-      background: #FFFFFF;
-      border: 1px solid #CBD5E1;
-      color: #0F172A;
+      background: #FFFDF9;
+      border: 1px solid #D6CEBE;
+      color: #1C1917;
     }
     .light .app-input:focus {
       border-color: #0284C7;
-      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.18);
+    }
+    .light .app-input option {
+      background-color: #FAF7F2;
+      color: #1C1917;
     }
 
     .active-nav-btn {
@@ -95,6 +109,10 @@
       font-weight: 700 !important;
       box-shadow: 0 4px 12px rgba(2, 132, 199, 0.35) !important;
     }
+
+    .light .text-slate-100, .light .text-white { color: #1C1917 !important; }
+    .light .text-slate-300, .light .text-slate-200 { color: #292524 !important; }
+    .light .text-slate-400 { color: #57534E !important; }
   </style>
 </head>
 <body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col selection:bg-sky-500 selection:text-white pb-20 md:pb-0">
@@ -107,16 +125,18 @@
         <div class="inline-flex p-3.5 bg-gradient-to-tr from-sky-500 to-blue-600 rounded-2xl text-white shadow-md shadow-sky-500/20">
           <i data-lucide="warehouse" class="w-8 h-8 stroke-[2.2]"></i>
         </div>
-        <h1 class="text-2xl font-black text-slate-100 tracking-tight">Integrated Central Hub Indore</h1>
+        <h1 class="text-2xl font-black tracking-tight">Integrated Central Hub Indore</h1>
         <div class="flex items-center justify-center gap-2">
-          <span class="text-[10px] bg-sky-500/15 text-sky-300 font-bold px-2.5 py-0.5 rounded-full border border-sky-400/25">v5.2.0-LIVE</span>
-          <span class="text-xs text-slate-400 font-semibold">Warehouse Management System</span>
+          <button type="button" onclick="toggleVersionModal(true)" class="text-[10px] bg-sky-500/15 text-sky-400 font-bold px-2.5 py-0.5 rounded-full border border-sky-400/25 hover:bg-sky-500/25 transition flex items-center gap-1">
+            <i data-lucide="history" class="w-3 h-3"></i> v6.2.0-PURE-ENG
+          </button>
+          <span class="text-xs font-semibold">Warehouse Management System</span>
         </div>
       </div>
 
       <form id="loginForm" class="space-y-3.5 pt-1">
         <div>
-          <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5 ml-1">Select Role</label>
+          <label class="block text-[11px] font-bold uppercase tracking-wider mb-1.5 ml-1">Select Role</label>
           <select id="loginRole" class="w-full app-input rounded-2xl p-3 text-xs font-semibold outline-none">
             <option value="ADMIN">Admin (Full Control)</option>
             <option value="SUPERVISOR">Supervisor (Plan & Loading Ops)</option>
@@ -126,16 +146,16 @@
         </div>
 
         <div>
-          <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5 ml-1">Username</label>
+          <label class="block text-[11px] font-bold uppercase tracking-wider mb-1.5 ml-1">Username</label>
           <input type="text" id="loginUser" placeholder="e.g. admin or supervisor" required class="w-full app-input rounded-2xl p-3 text-xs font-semibold focus:outline-none">
         </div>
 
         <div>
-          <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5 ml-1">Password</label>
+          <label class="block text-[11px] font-bold uppercase tracking-wider mb-1.5 ml-1">Password</label>
           <input type="password" id="loginPass" placeholder="••••••••" required class="w-full app-input rounded-2xl p-3 text-xs focus:outline-none">
         </div>
 
-        <div id="loginError" class="text-xs text-rose-400 font-semibold hidden bg-rose-950/40 p-3 rounded-2xl border border-rose-500/30">
+        <div id="loginError" class="text-xs text-rose-500 font-semibold hidden bg-rose-950/40 p-3 rounded-2xl border border-rose-500/30">
           Invalid username or password. Default: admin / admin123
         </div>
 
@@ -144,50 +164,10 @@
         </button>
 
         <div class="text-center pt-1">
-          <button type="button" onclick="toggleRegisterModal(true)" class="text-xs text-sky-400 hover:text-sky-300 font-semibold">
+          <button type="button" onclick="toggleRegisterModal(true)" class="text-xs text-sky-500 hover:text-sky-600 font-semibold">
             + Create New User Account
           </button>
         </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- REGISTRATION MODAL -->
-  <div id="registerModal" class="fixed inset-0 bg-slate-950/75 backdrop-blur-xl z-50 hidden flex items-center justify-center p-4">
-    <div class="glass-panel rounded-[2.5rem] max-w-md w-full p-6 shadow-2xl space-y-4 border border-white/10">
-      <div class="flex justify-between items-center pb-2 border-b border-white/10">
-        <h3 class="font-bold text-slate-100 text-sm flex items-center gap-2">
-          <i data-lucide="user-plus" class="w-4 h-4 text-sky-400"></i> Register New User Account
-        </h3>
-        <button onclick="toggleRegisterModal(false)" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
-      </div>
-
-      <form id="registerForm" class="space-y-3 text-xs">
-        <div>
-          <label class="block font-semibold text-slate-400 mb-1 ml-1">Display Name</label>
-          <input type="text" id="regFullName" placeholder="e.g. Duty Officer" required class="w-full app-input rounded-2xl p-2.5">
-        </div>
-        <div>
-          <label class="block font-semibold text-slate-400 mb-1 ml-1">Select Role</label>
-          <select id="regRole" class="w-full app-input rounded-2xl p-2.5 font-medium">
-            <option value="SUPERVISOR">Supervisor</option>
-            <option value="SECURITY">Security Guard</option>
-            <option value="OPERATOR">Operator</option>
-            <option value="ADMIN">Admin</option>
-          </select>
-        </div>
-        <div>
-          <label class="block font-semibold text-slate-400 mb-1 ml-1">Username</label>
-          <input type="text" id="regUser" placeholder="Choose username" required class="w-full app-input rounded-2xl p-2.5">
-        </div>
-        <div>
-          <label class="block font-semibold text-slate-400 mb-1 ml-1">Password</label>
-          <input type="password" id="regPass" placeholder="Set password" required class="w-full app-input rounded-2xl p-2.5">
-        </div>
-
-        <button type="submit" class="w-full bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white font-bold py-3 rounded-2xl text-xs transition mt-2">
-          Save & Register User
-        </button>
       </form>
     </div>
   </div>
@@ -196,25 +176,64 @@
   <div id="versionModal" class="fixed inset-0 bg-slate-950/75 backdrop-blur-xl z-50 hidden flex items-center justify-center p-4">
     <div class="glass-panel rounded-[2.5rem] max-w-lg w-full p-6 shadow-2xl space-y-4 border border-white/10 max-h-[85vh] overflow-y-auto">
       <div class="flex justify-between items-center pb-3 border-b border-white/10">
-        <h3 class="font-bold text-slate-100 text-sm flex items-center gap-2">
+        <h3 class="font-bold text-sm flex items-center gap-2">
           <i data-lucide="git-commit" class="w-4 h-4 text-sky-400"></i> WMS Version History & Changelog
         </h3>
-        <button onclick="toggleVersionModal(false)" class="text-slate-400 hover:text-white p-1"><i data-lucide="x" class="w-4 h-4"></i></button>
+        <button onclick="toggleVersionModal(false)" class="p-1 hover:opacity-80"><i data-lucide="x" class="w-4 h-4"></i></button>
       </div>
 
-      <div class="space-y-3.5 text-xs text-slate-300">
+      <div class="space-y-3.5 text-xs">
         <div class="p-3.5 rounded-2xl card-surface border border-sky-500/30 space-y-1">
           <div class="flex justify-between items-center font-bold">
-            <span class="text-sky-400">v5.2.0 (Latest Release)</span>
-            <span class="text-[10px] text-slate-400">Today</span>
+            <span class="text-sky-500">v6.2.0 (Pure Corporate English Update)</span>
+            <span class="text-[10px]">Today</span>
           </div>
-          <ul class="list-disc list-inside text-slate-300 space-y-0.5 text-[11px]">
-            <li>Universal Cross-Device Authentication Engine (Instant Mobile + PC Login).</li>
-            <li>Real-time Cloud User Sync directly linked to Google Sheet Webhook.</li>
-            <li>All modules streamlined: 3-Phase Loading/Unloading, Gate Routing, Tracking SLA & Live Docks.</li>
+          <ul class="list-disc list-inside space-y-0.5 text-[11px]">
+            <li>100% English UI: Removed all Hindi text remnants from placeholders, alerts, and tables.</li>
+            <li>Clean Executive Dashboard & Master Location Synchronizer.</li>
           </ul>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- REGISTRATION MODAL -->
+  <div id="registerModal" class="fixed inset-0 bg-slate-950/75 backdrop-blur-xl z-50 hidden flex items-center justify-center p-4">
+    <div class="glass-panel rounded-[2.5rem] max-w-md w-full p-6 shadow-2xl space-y-4 border border-white/10">
+      <div class="flex justify-between items-center pb-2 border-b border-white/10">
+        <h3 class="font-bold text-sm flex items-center gap-2">
+          <i data-lucide="user-plus" class="w-4 h-4 text-sky-400"></i> Register New User Account
+        </h3>
+        <button onclick="toggleRegisterModal(false)" class="hover:opacity-80"><i data-lucide="x" class="w-4 h-4"></i></button>
+      </div>
+
+      <form id="registerForm" class="space-y-3 text-xs">
+        <div>
+          <label class="block font-semibold mb-1 ml-1">Display Name</label>
+          <input type="text" id="regFullName" placeholder="e.g. Duty Officer" required class="w-full app-input rounded-2xl p-2.5">
+        </div>
+        <div>
+          <label class="block font-semibold mb-1 ml-1">Select Role</label>
+          <select id="regRole" class="w-full app-input rounded-2xl p-2.5 font-medium">
+            <option value="SUPERVISOR">Supervisor</option>
+            <option value="SECURITY">Security Guard</option>
+            <option value="OPERATOR">Operator</option>
+            <option value="ADMIN">Admin</option>
+          </select>
+        </div>
+        <div>
+          <label class="block font-semibold mb-1 ml-1">Username</label>
+          <input type="text" id="regUser" placeholder="Choose username" required class="w-full app-input rounded-2xl p-2.5">
+        </div>
+        <div>
+          <label class="block font-semibold mb-1 ml-1">Password</label>
+          <input type="password" id="regPass" placeholder="Set password" required class="w-full app-input rounded-2xl p-2.5">
+        </div>
+
+        <button type="submit" class="w-full bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white font-bold py-3 rounded-2xl text-xs transition mt-2">
+          Save & Register User
+        </button>
+      </form>
     </div>
   </div>
 
@@ -230,52 +249,62 @@
             ICH
           </div>
           <div class="overflow-hidden">
-            <h2 class="text-xs font-bold text-slate-100 truncate" id="userBadgeName">Active Session</h2>
-            <p class="text-[10px] text-sky-400 font-bold uppercase tracking-wider" id="userBadgeRole">SUPERVISOR</p>
+            <h2 class="text-xs font-bold truncate" id="userBadgeName">Active Session</h2>
+            <p class="text-[10px] text-sky-500 font-bold uppercase tracking-wider" id="userBadgeRole">SUPERVISOR</p>
           </div>
         </div>
 
         <div class="space-y-1">
-          <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 mb-2">Modules</p>
+          <p class="text-[10px] font-bold uppercase tracking-widest px-3 mb-2 opacity-60">Modules</p>
           
-          <button onclick="switchView('planView', this)" class="sidebar-item active-nav-btn w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs font-semibold text-slate-300 hover:bg-white/5 transition">
+          <button onclick="switchView('dashboardView', this)" class="sidebar-item active-nav-btn w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs font-semibold hover:bg-black/5 transition">
+            <i data-lucide="layout-dashboard" class="w-4 h-4 text-sky-500"></i>
+            <span>Executive Dashboard</span>
+          </button>
+
+          <button onclick="switchView('planView', this)" class="sidebar-item w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs font-semibold hover:bg-black/5 transition">
             <i data-lucide="clipboard-list" class="w-4 h-4 text-sky-400"></i>
             <span>Plan (Vehicle Summary)</span>
           </button>
 
-          <button onclick="switchView('loadUnloadView', this)" class="sidebar-item w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs font-semibold text-slate-300 hover:bg-white/5 transition">
-            <i data-lucide="arrow-left-right" class="w-4 h-4 text-emerald-400"></i>
+          <button onclick="switchView('loadUnloadView', this)" class="sidebar-item w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs font-semibold hover:bg-black/5 transition">
+            <i data-lucide="arrow-left-right" class="w-4 h-4 text-emerald-500"></i>
             <span>Loading / Unloading Ops</span>
           </button>
 
-          <button onclick="switchView('liveDocksView', this)" class="sidebar-item w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs font-semibold text-slate-300 hover:bg-white/5 transition">
-            <i data-lucide="layers" class="w-4 h-4 text-indigo-400"></i>
+          <button onclick="switchView('liveDocksView', this)" class="sidebar-item w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs font-semibold hover:bg-black/5 transition">
+            <i data-lucide="layers" class="w-4 h-4 text-indigo-500"></i>
             <span>Live Docks (1–9)</span>
           </button>
 
-          <button id="navSecBtn" onclick="switchView('gateSecView', this)" class="sidebar-item w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs font-semibold text-slate-300 hover:bg-white/5 transition">
-            <i data-lucide="shield-check" class="w-4 h-4 text-amber-400"></i>
+          <button id="navSecBtn" onclick="switchView('gateSecView', this)" class="sidebar-item w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs font-semibold hover:bg-black/5 transition">
+            <i data-lucide="shield-check" class="w-4 h-4 text-amber-500"></i>
             <span>Security Gate Movement</span>
           </button>
 
-          <button onclick="switchView('trackingView', this)" class="sidebar-item w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs font-semibold text-slate-300 hover:bg-white/5 transition">
-            <i data-lucide="navigation" class="w-4 h-4 text-rose-400"></i>
+          <button onclick="switchView('trackingView', this)" class="sidebar-item w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs font-semibold hover:bg-black/5 transition">
+            <i data-lucide="navigation" class="w-4 h-4 text-rose-500"></i>
             <span>Vehicle Tracking Record</span>
           </button>
 
-          <button onclick="switchView('reportsView', this)" class="sidebar-item w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs font-semibold text-slate-300 hover:bg-white/5 transition">
-            <i data-lucide="bar-chart-3" class="w-4 h-4 text-purple-400"></i>
-            <span>Reports & Graphic Hub</span>
+          <button onclick="switchView('reportsView', this)" class="sidebar-item w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs font-semibold hover:bg-black/5 transition">
+            <i data-lucide="file-spreadsheet" class="w-4 h-4 text-purple-500"></i>
+            <span>Reports Hub</span>
+          </button>
+
+          <button onclick="switchView('analyticsView', this)" class="sidebar-item w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs font-semibold hover:bg-black/5 transition">
+            <i data-lucide="bar-chart-3" class="w-4 h-4 text-blue-500"></i>
+            <span>Graphic Analysis</span>
           </button>
         </div>
 
       </div>
 
-      <div class="space-y-2 pt-4 border-t border-white/10">
-        <button onclick="toggleVersionModal(true)" class="w-full px-3 py-1.5 card-surface hover:border-sky-500/40 rounded-xl text-[10px] text-sky-400 font-mono text-center font-bold flex items-center justify-center gap-1.5 transition">
-          <i data-lucide="history" class="w-3 h-3"></i> VERSION HISTORY (v5.2)
+      <div class="space-y-2 pt-4 border-t border-black/10 dark:border-white/10">
+        <button onclick="toggleVersionModal(true)" class="w-full px-3 py-1.5 card-surface hover:border-sky-500/40 rounded-xl text-[10px] text-sky-500 font-mono text-center font-bold flex items-center justify-center gap-1.5 transition">
+          <i data-lucide="history" class="w-3 h-3"></i> VERSION HISTORY (v6.2)
         </button>
-        <button onclick="logout()" class="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-2xl text-xs font-bold text-rose-400 hover:bg-rose-950/30 transition">
+        <button onclick="logout()" class="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-2xl text-xs font-bold text-rose-500 hover:bg-rose-500/10 transition">
           <i data-lucide="log-out" class="w-4 h-4"></i>
           <span>Logout</span>
         </button>
@@ -286,43 +315,127 @@
     <div class="flex-1 flex flex-col min-w-0">
 
       <!-- Top Header -->
-      <header class="glass-panel border-b border-white/10 px-4 md:px-8 py-3.5 flex justify-between items-center sticky top-0 z-30">
+      <header class="glass-panel border-b border-black/10 dark:border-white/10 px-4 md:px-8 py-3.5 flex justify-between items-center sticky top-0 z-30">
         <div>
           <div class="flex items-center gap-2">
-            <h1 class="text-sm font-black text-slate-100 tracking-tight">Integrated Central Hub Indore</h1>
-            <button onclick="toggleVersionModal(true)" class="bg-sky-500/15 text-sky-300 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-sky-400/30 hover:bg-sky-500/25 transition">
-              v5.2.0-PRO
+            <h1 class="text-sm font-black tracking-tight">Integrated Central Hub Indore</h1>
+            <button onclick="toggleVersionModal(true)" class="bg-sky-500/15 text-sky-500 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-sky-400/30 hover:bg-sky-500/25 transition">
+              v6.2.0-PURE
             </button>
           </div>
-          <p class="text-[11px] text-slate-400 font-medium">Warehouse Management System • Real-Time Cloud Sync Engine</p>
+          <p class="text-[11px] opacity-70 font-medium">Warehouse Management System • English Corporate Edition</p>
         </div>
 
         <div class="flex items-center gap-3">
-          <button onclick="toggleThemeMode()" id="themeToggleBtn" class="card-surface px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1.5 text-slate-300 hover:text-white transition shadow-sm">
-            <i data-lucide="sun" class="w-3.5 h-3.5 text-amber-400"></i>
-            <span class="text-[11px]" id="themeModeText">Light Mode</span>
+          <button onclick="toggleThemeMode()" id="themeToggleBtn" class="card-surface px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 hover:opacity-90 transition shadow-sm">
+            <i data-lucide="sun" class="w-3.5 h-3.5 text-amber-500"></i>
+            <span class="text-[11px]" id="themeModeText">Warm Light Mode</span>
           </button>
 
-          <div class="bg-slate-800/90 text-sky-400 border border-sky-500/20 px-3 py-1 rounded-full text-[11px] font-bold flex items-center gap-1.5 shadow-sm">
-            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Sheet Live
+          <div class="bg-slate-800/90 dark:bg-slate-800/90 bg-emerald-50 text-emerald-700 dark:text-sky-400 border border-emerald-500/20 px-3 py-1 rounded-full text-[11px] font-bold flex items-center gap-1.5 shadow-sm">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Sheet Live
           </div>
-          <span id="liveClock" class="font-mono text-xs text-slate-400 font-bold hidden sm:inline-block"></span>
+          <span id="liveClock" class="font-mono text-xs opacity-70 font-bold hidden sm:inline-block"></span>
         </div>
       </header>
 
       <!-- Dynamic Views -->
       <main class="p-4 md:p-8 space-y-6 flex-1">
 
-        <!-- MODULE 1: PLAN RECEIVED & CONSOLIDATED SUMMARY -->
-        <section id="planView" class="view-panel space-y-6">
-          <div class="glass-panel p-5 md:p-7 rounded-[2rem] space-y-6 border border-white/10 shadow-xl">
-            
-            <div class="flex flex-wrap justify-between items-center gap-4 pb-4 border-b border-white/10">
+        <!-- MODULE 0: EXECUTIVE DASHBOARD -->
+        <section id="dashboardView" class="view-panel space-y-6">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="glass-panel p-5 rounded-3xl space-y-2 border border-sky-500/30 shadow-md">
+              <div class="flex justify-between items-center text-sky-500">
+                <span class="text-xs font-bold uppercase tracking-wider">Active Loading</span>
+                <i data-lucide="upload-cloud" class="w-5 h-5"></i>
+              </div>
+              <p class="text-3xl font-black font-mono" id="dashActiveLoading">0</p>
+              <p class="text-[11px] opacity-70">Vehicles currently loading on docks</p>
+            </div>
+
+            <div class="glass-panel p-5 rounded-3xl space-y-2 border border-indigo-500/30 shadow-md">
+              <div class="flex justify-between items-center text-indigo-500">
+                <span class="text-xs font-bold uppercase tracking-wider">Active Unloading</span>
+                <i data-lucide="download-cloud" class="w-5 h-5"></i>
+              </div>
+              <p class="text-3xl font-black font-mono" id="dashActiveUnloading">0</p>
+              <p class="text-[11px] opacity-70">Vehicles currently unloading</p>
+            </div>
+
+            <div class="glass-panel p-5 rounded-3xl space-y-2 border border-emerald-500/30 shadow-md">
+              <div class="flex justify-between items-center text-emerald-500">
+                <span class="text-xs font-bold uppercase tracking-wider">Completed Today</span>
+                <i data-lucide="check-circle-2" class="w-5 h-5"></i>
+              </div>
+              <p class="text-3xl font-black font-mono" id="dashCompletedToday">0</p>
+              <p class="text-[11px] opacity-70">Loaded / Unloaded & Exited</p>
+            </div>
+
+            <div class="glass-panel p-5 rounded-3xl space-y-2 border border-amber-500/30 shadow-md">
+              <div class="flex justify-between items-center text-amber-500">
+                <span class="text-xs font-bold uppercase tracking-wider">Gate Entries</span>
+                <i data-lucide="shield" class="w-5 h-5"></i>
+              </div>
+              <p class="text-3xl font-black font-mono" id="dashGateCount">0</p>
+              <p class="text-[11px] opacity-70">Total security gate arrivals</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="glass-panel p-6 rounded-[2rem] space-y-4">
+              <h3 class="text-sm font-black flex items-center gap-2">
+                <i data-lucide="activity" class="w-4 h-4 text-sky-500"></i> Real-Time Operations Stream
+              </h3>
+              <div class="overflow-x-auto rounded-2xl card-surface">
+                <table class="w-full text-left text-xs whitespace-nowrap">
+                  <thead class="bg-black/5 dark:bg-slate-800/80 uppercase font-bold border-b border-black/10 dark:border-white/10">
+                    <tr>
+                      <th class="py-2.5 px-3">Vehicle</th>
+                      <th class="py-2.5 px-3">Type</th>
+                      <th class="py-2.5 px-3">Dock</th>
+                      <th class="py-2.5 px-3">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="dashActivityStream" class="divide-y divide-black/5 dark:divide-white/5">
+                    <tr><td colspan="4" class="text-center py-6 opacity-60">No active operations.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="glass-panel p-6 rounded-[2rem] space-y-4">
+              <h3 class="text-sm font-black flex items-center gap-2">
+                <i data-lucide="truck" class="w-4 h-4 text-amber-500"></i> Recent Gate Arrivals
+              </h3>
+              <div class="overflow-x-auto rounded-2xl card-surface">
+                <table class="w-full text-left text-xs whitespace-nowrap">
+                  <thead class="bg-black/5 dark:bg-slate-800/80 uppercase font-bold border-b border-black/10 dark:border-white/10">
+                    <tr>
+                      <th class="py-2.5 px-3">Purpose</th>
+                      <th class="py-2.5 px-3">Vehicle</th>
+                      <th class="py-2.5 px-3">Route</th>
+                      <th class="py-2.5 px-3">Time</th>
+                    </tr>
+                  </thead>
+                  <tbody id="dashGateStream" class="divide-y divide-black/5 dark:divide-white/5">
+                    <tr><td colspan="4" class="text-center py-6 opacity-60">No gate arrivals recorded.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- MODULE 1: PLAN RECEIVED -->
+        <section id="planView" class="view-panel hidden space-y-6">
+          <div class="glass-panel p-5 md:p-7 rounded-[2rem] space-y-6 shadow-xl">
+            <div class="flex flex-wrap justify-between items-center gap-4 pb-4 border-b border-black/10 dark:border-white/10">
               <div>
-                <h2 class="text-sm font-extrabold text-slate-100 flex items-center gap-2">
-                  <i data-lucide="clipboard-list" class="w-4 h-4 text-sky-400"></i> Plan Received & Single Vehicle Summary
+                <h2 class="text-sm font-extrabold flex items-center gap-2">
+                  <i data-lucide="clipboard-list" class="w-4 h-4 text-sky-500"></i> Plan Received & Single Vehicle Summary
                 </h2>
-                <p class="text-xs text-slate-400 mt-0.5">Automated Multi-Block Parser: Segregates items by bold TOTAL and Wt/CFT spacing</p>
+                <p class="text-xs opacity-70 mt-0.5">Automated Multi-Block Parser</p>
               </div>
 
               <div class="flex items-center gap-2">
@@ -330,51 +443,49 @@
                   <i data-lucide="camera" class="w-4 h-4 text-white"></i> Scan Plan Photo
                   <input type="file" id="planCameraInput" accept="image/*" capture="environment" onchange="scanPlanImage(event)" class="hidden">
                 </label>
-                <div id="ocrSpinner" class="hidden text-xs text-sky-300 font-bold flex items-center gap-1.5 animate-pulse card-surface px-4 py-2.5 rounded-2xl border border-sky-400/40">
-                  <i data-lucide="loader-2" class="w-4 h-4 animate-spin text-sky-400"></i> Scanning Plan Rows...
+                <div id="ocrSpinner" class="hidden text-xs text-sky-500 font-bold flex items-center gap-1.5 animate-pulse card-surface px-4 py-2.5 rounded-2xl border border-sky-400/40">
+                  <i data-lucide="loader-2" class="w-4 h-4 animate-spin text-sky-500"></i> Scanning Plan Rows...
                 </div>
               </div>
             </div>
 
-            <!-- 1. TOP SINGLE VEHICLE COMBINED SUMMARY -->
             <div class="space-y-2.5">
               <div class="flex justify-between items-center px-1">
-                <h3 class="text-xs font-extrabold text-sky-400 uppercase tracking-wider flex items-center gap-1.5">
+                <h3 class="text-xs font-extrabold text-sky-500 uppercase tracking-wider flex items-center gap-1.5">
                   <i data-lucide="layers" class="w-3.5 h-3.5"></i> Consolidated Vehicle Load Summary
                 </h3>
-                <span class="text-[11px] text-sky-300 bg-sky-500/15 font-bold px-2.5 py-0.5 rounded-full border border-sky-500/25" id="summaryGroupCount">0 Vehicles</span>
+                <span class="text-[11px] text-sky-600 bg-sky-500/15 font-bold px-2.5 py-0.5 rounded-full border border-sky-500/25" id="summaryGroupCount">0 Vehicles</span>
               </div>
-              <div class="overflow-x-auto rounded-3xl card-surface border border-white/10">
+              <div class="overflow-x-auto rounded-3xl card-surface">
                 <table class="w-full text-left text-xs whitespace-nowrap">
-                  <thead class="bg-slate-800/80 text-slate-300 uppercase font-bold border-b border-white/10">
+                  <thead class="bg-black/5 dark:bg-slate-800/80 uppercase font-bold border-b border-black/10 dark:border-white/10">
                     <tr>
-                      <th class="py-3.5 px-4">Destination / Station</th>
+                      <th class="py-3.5 px-4">Destination</th>
                       <th class="py-3.5 px-4">Transporter</th>
                       <th class="py-3.5 px-4">Vehicle Type</th>
-                      <th class="py-3.5 px-4 text-center">Combined Deliveries</th>
-                      <th class="py-3.5 px-4 text-right">Total Vehicle Wt (Kg)</th>
-                      <th class="py-3.5 px-4 text-right">Total Vehicle CFT</th>
+                      <th class="py-3.5 px-4 text-center">Deliveries</th>
+                      <th class="py-3.5 px-4 text-right">Total Wt (Kg)</th>
+                      <th class="py-3.5 px-4 text-right">Total CFT</th>
                       <th class="py-3.5 px-4 text-center">Status</th>
                     </tr>
                   </thead>
-                  <tbody id="summaryTableBody" class="divide-y divide-white/5 font-medium text-slate-200">
-                    <tr><td colspan="7" class="text-center py-8 text-slate-400 font-medium">No vehicle summary available. Scan plan photo above.</td></tr>
+                  <tbody id="summaryTableBody" class="divide-y divide-black/5 dark:divide-white/5 font-medium">
+                    <tr><td colspan="7" class="text-center py-8 opacity-60 font-medium">No vehicle summary available. Scan plan photo above.</td></tr>
                   </tbody>
                 </table>
               </div>
             </div>
 
-            <!-- 2. DETAILED BREAKUP TABLE -->
             <div class="space-y-2.5 pt-2">
               <div class="flex justify-between items-center px-1">
-                <h3 class="text-xs font-extrabold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-                  <i data-lucide="list" class="w-3.5 h-3.5 text-slate-400"></i> Detailed Scanned Breakup (Itemized)
+                <h3 class="text-xs font-extrabold uppercase tracking-wider flex items-center gap-1.5 opacity-80">
+                  <i data-lucide="list" class="w-3.5 h-3.5"></i> Detailed Scanned Breakup
                 </h3>
-                <span class="text-[11px] text-slate-400 font-bold" id="detailedRowCount">0 Items</span>
+                <span class="text-[11px] font-bold opacity-70" id="detailedRowCount">0 Items</span>
               </div>
-              <div class="overflow-x-auto rounded-3xl card-surface border border-white/10">
+              <div class="overflow-x-auto rounded-3xl card-surface">
                 <table class="w-full text-left text-xs whitespace-nowrap">
-                  <thead class="bg-slate-800/70 text-slate-400 uppercase font-bold border-b border-white/10">
+                  <thead class="bg-black/5 dark:bg-slate-800/70 uppercase font-bold border-b border-black/10 dark:border-white/10">
                     <tr>
                       <th class="py-3 px-3.5">Delivery No.</th>
                       <th class="py-3 px-3.5">Code</th>
@@ -387,8 +498,8 @@
                       <th class="py-3 px-3.5 text-center">Action</th>
                     </tr>
                   </thead>
-                  <tbody id="planTableBody" class="divide-y divide-white/5 text-slate-300">
-                    <tr><td colspan="9" class="text-center py-8 text-slate-400 font-medium">No detailed plan data loaded.</td></tr>
+                  <tbody id="planTableBody" class="divide-y divide-black/5 dark:divide-white/5">
+                    <tr><td colspan="9" class="text-center py-8 opacity-60 font-medium">No detailed plan data loaded.</td></tr>
                   </tbody>
                 </table>
               </div>
@@ -397,86 +508,88 @@
           </div>
         </section>
 
-        <!-- MODULE 2: LOADING / UNLOADING OPERATIONS -->
+        <!-- MODULE 2: LOADING / UNLOADING OPS -->
         <section id="loadUnloadView" class="view-panel hidden space-y-6">
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             
-            <div class="glass-panel p-6 rounded-[2rem] border border-white/10 shadow-xl lg:col-span-1 space-y-4">
-              <div class="flex items-center justify-between pb-2 border-b border-white/10">
-                <h2 class="text-sm font-black text-slate-100 flex items-center gap-2">
-                  <i data-lucide="arrow-left-right" class="w-4 h-4 text-sky-400"></i> Operation Entry & Handover
+            <div class="glass-panel p-6 rounded-[2rem] shadow-xl lg:col-span-1 space-y-4">
+              <div class="flex items-center justify-between pb-2 border-b border-black/10 dark:border-white/10">
+                <h2 class="text-sm font-black flex items-center gap-2">
+                  <i data-lucide="arrow-left-right" class="w-4 h-4 text-sky-500"></i> Operation Entry & Handover
                 </h2>
-                <span class="text-[10px] bg-sky-500/15 text-sky-300 font-bold px-2 py-0.5 rounded-full border border-sky-500/25">Step 1: Start</span>
+                <span class="text-[10px] bg-sky-500/15 text-sky-500 font-bold px-2 py-0.5 rounded-full border border-sky-500/25">Step 1: Start</span>
               </div>
               
               <form id="loadUnloadForm" class="space-y-3">
                 
-                <!-- AUTO-LINKED GATE LOG SELECTOR DROPDOWN -->
-                <div class="bg-sky-950/30 p-3 rounded-2xl border border-sky-500/20 space-y-1">
-                  <label class="block text-[11px] font-extrabold text-sky-300 uppercase tracking-wider flex items-center gap-1.5">
-                    <i data-lucide="link" class="w-3.5 h-3.5 text-sky-400"></i> Select Vehicle from Security Gate Log
+                <div class="bg-sky-500/10 p-3 rounded-2xl border border-sky-500/20 space-y-1">
+                  <label class="block text-[11px] font-extrabold text-sky-600 dark:text-sky-300 uppercase tracking-wider flex items-center gap-1.5">
+                    <i data-lucide="link" class="w-3.5 h-3.5"></i> Select Vehicle from Security Gate Log
                   </label>
-                  <select id="linkedGateSelect" onchange="autoFillFromGateLog(this.value)" class="w-full app-input rounded-xl p-2 text-xs font-bold text-sky-300 border-sky-500/30">
+                  <select id="linkedGateSelect" onchange="autoFillFromGateLog(this.value)" class="w-full app-input rounded-xl p-2 text-xs font-bold border-sky-500/30">
                     <option value="">-- Choose Arrived Vehicle (Auto-Fill) --</option>
                   </select>
-                  <p class="text-[10px] text-slate-400 italic">Selecting auto-fills Vehicle No, Route, Transporter, and Dock.</p>
+                  <p class="text-[10px] opacity-70 italic">Selecting auto-fills Vehicle No, Route, Transporter, and Dock.</p>
                 </div>
 
                 <div>
-                  <label class="block text-[11px] font-bold text-slate-400 mb-1 ml-1">Operation Activity *</label>
-                  <select id="opType" onchange="handleSupervisorOpChange()" class="w-full app-input rounded-2xl p-2.5 text-xs font-bold text-sky-400">
+                  <label class="block text-[11px] font-bold opacity-70 mb-1 ml-1">Operation Activity *</label>
+                  <select id="opType" onchange="handleSupervisorOpChange()" class="w-full app-input rounded-2xl p-2.5 text-xs font-bold text-sky-500">
                     <option value="LOADING">⬆ START LOADING (Status: LOADING IN-PROGRESS)</option>
                     <option value="UNLOADING">⬇ START UNLOADING (Status: UNLOADING IN-PROGRESS)</option>
                   </select>
                 </div>
 
                 <!-- POD INSPECTION -->
-                <div id="unloadingInspectionField" class="hidden bg-emerald-950/30 p-3 rounded-2xl border border-emerald-500/30 space-y-1">
-                  <label class="block text-[11px] font-bold text-emerald-400 mb-1 ml-1">
+                <div id="unloadingInspectionField" class="hidden bg-emerald-500/10 p-3 rounded-2xl border border-emerald-500/30 space-y-1">
+                  <label class="block text-[11px] font-bold text-emerald-600 dark:text-emerald-400 mb-1 ml-1">
                     Unloading POD / Inspection Status *
                   </label>
-                  <select id="unloadingPodStatus" class="w-full app-input rounded-xl p-2 text-xs font-bold text-emerald-300">
+                  <select id="unloadingPodStatus" class="w-full app-input rounded-xl p-2 text-xs font-bold text-emerald-600 dark:text-emerald-300">
                     <option value="POD Clean">✔ POD Clean</option>
                     <option value="POD Hold Due to Damage / Leakage">⚠ POD Hold Due to Damage / Leakage</option>
                     <option value="OK - No Issue">✔ OK - No Issue</option>
                   </select>
                 </div>
 
-                <!-- ROUTE -->
+                <!-- ROUTE: BLANK SELECTOR UNTIL MASTER IMPORTED -->
                 <div class="grid grid-cols-2 gap-2.5">
                   <div>
-                    <label class="block text-[11px] font-bold text-slate-400 mb-1 ml-1">From (Origin)</label>
-                    <select id="loadFromLoc" class="w-full app-input rounded-2xl p-2.5 text-xs uppercase font-semibold text-sky-300"></select>
+                    <label class="block text-[11px] font-bold opacity-70 mb-1 ml-1">From (Origin)</label>
+                    <select id="loadFromLoc" class="w-full app-input rounded-2xl p-2.5 text-xs uppercase font-semibold text-sky-500">
+                      <option value="">-- Select Origin --</option>
+                    </select>
                   </div>
                   <div>
-                    <label class="block text-[11px] font-bold text-slate-400 mb-1 ml-1">To (Destination)</label>
-                    <select id="loadToLoc" class="w-full app-input rounded-2xl p-2.5 text-xs uppercase font-semibold"></select>
+                    <label class="block text-[11px] font-bold opacity-70 mb-1 ml-1">To (Destination)</label>
+                    <select id="loadToLoc" class="w-full app-input rounded-2xl p-2.5 text-xs uppercase font-semibold">
+                      <option value="">-- Select Destination --</option>
+                    </select>
                   </div>
                 </div>
 
-                <!-- DOCKS -->
                 <div class="grid grid-cols-2 gap-2.5">
                   <div>
-                    <label class="block text-[11px] font-bold text-slate-400 mb-1 ml-1">Company / Unit</label>
-                    <select id="loadUnit" onchange="updateDockOptions()" class="w-full app-input rounded-2xl p-2.5 text-xs font-bold text-sky-400">
+                    <label class="block text-[11px] font-bold opacity-70 mb-1 ml-1">Company / Unit</label>
+                    <select id="loadUnit" onchange="updateDockOptions()" class="w-full app-input rounded-2xl p-2.5 text-xs font-bold text-sky-500">
                       <option value="AHPL">AHPL (Dock 1 to 4)</option>
                       <option value="AIL">AIL (Dock 5 to 9)</option>
                       <option value="THERMOCOL">THERMOCOL (All Docks)</option>
                     </select>
                   </div>
                   <div>
-                    <label class="block text-[11px] font-bold text-slate-400 mb-1 ml-1">Assigned Dock No.</label>
-                    <select id="loadBayNo" class="w-full app-input rounded-2xl p-2.5 text-xs font-bold text-emerald-400"></select>
+                    <label class="block text-[11px] font-bold opacity-70 mb-1 ml-1">Assigned Dock No.</label>
+                    <select id="loadBayNo" class="w-full app-input rounded-2xl p-2.5 text-xs font-bold text-emerald-500"></select>
                   </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-2.5">
                   <div>
-                    <label class="block text-[11px] font-bold text-slate-400 mb-1 ml-1">Vehicle Number *</label>
-                    <input type="text" id="loadVehicleNo" placeholder="MP-09-AB-1234" required class="w-full app-input rounded-2xl p-2.5 text-xs uppercase font-bold text-sky-300">
+                    <label class="block text-[11px] font-bold opacity-70 mb-1 ml-1">Vehicle Number *</label>
+                    <input type="text" id="loadVehicleNo" placeholder="MP-09-AB-1234" required class="w-full app-input rounded-2xl p-2.5 text-xs uppercase font-bold text-sky-500">
                   </div>
                   <div>
-                    <label class="block text-[11px] font-bold text-slate-400 mb-1 ml-1">Transporter</label>
+                    <label class="block text-[11px] font-bold opacity-70 mb-1 ml-1">Transporter</label>
                     <select id="loadTransporter" class="w-full app-input rounded-2xl p-2.5 text-xs font-semibold">
                       <option value="DHTC">DHTC</option>
                       <option value="OPM">OPM</option>
@@ -490,14 +603,14 @@
                 </div>
 
                 <div>
-                  <label class="block text-[11px] font-bold text-slate-400 mb-1 ml-1">Supervisor Incharge *</label>
+                  <label class="block text-[11px] font-bold opacity-70 mb-1 ml-1">Supervisor Incharge *</label>
                   <input type="text" id="loadOperator" placeholder="Supervisor Name" required class="w-full app-input rounded-2xl p-2.5 text-xs font-medium">
                 </div>
 
                 <div>
                   <div class="flex justify-between items-center mb-1">
-                    <label class="block text-[11px] font-bold text-slate-400 ml-1">Operation Start Time *</label>
-                    <button type="button" onclick="autoPickStartTime()" class="text-[10px] text-sky-400 hover:text-sky-300 font-bold underline">
+                    <label class="block text-[11px] font-bold opacity-70 ml-1">Operation Start Time *</label>
+                    <button type="button" onclick="autoPickStartTime()" class="text-[10px] text-sky-500 hover:underline font-bold">
                       ⚡ Pick Current Time
                     </button>
                   </div>
@@ -511,25 +624,24 @@
             </div>
 
             <!-- LIVE DOCK OPERATIONS TABLE -->
-            <div class="glass-panel p-6 rounded-[2rem] border border-white/10 shadow-xl lg:col-span-2 space-y-4">
-              
+            <div class="glass-panel p-6 rounded-[2rem] shadow-xl lg:col-span-2 space-y-4">
               <div class="flex flex-wrap justify-between items-center gap-3">
                 <div>
-                  <h3 class="text-sm font-black text-slate-100 flex items-center gap-2">
-                    <i data-lucide="activity" class="w-4 h-4 text-emerald-400"></i> Active Dock Operations & Exit Management
+                  <h3 class="text-sm font-black flex items-center gap-2">
+                    <i data-lucide="activity" class="w-4 h-4 text-emerald-500"></i> Active Dock Operations & Exit Management
                   </h3>
-                  <p class="text-xs text-slate-400">Click <b>Mark Completed</b> once operation is completed to release the dock</p>
+                  <p class="text-xs opacity-70">Click <b>Mark Completed</b> once operation is completed to release the dock</p>
                 </div>
 
                 <div class="flex items-center gap-2">
-                  <span class="px-2.5 py-1 rounded-xl text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30" id="kpiActiveLoading">0 Loading</span>
-                  <span class="px-2.5 py-1 rounded-xl text-[10px] font-bold bg-sky-500/20 text-sky-300 border border-sky-500/30" id="kpiActiveUnloading">0 Unloading</span>
+                  <span class="px-2.5 py-1 rounded-xl text-[10px] font-bold bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-500/30" id="kpiActiveLoading">0 Loading</span>
+                  <span class="px-2.5 py-1 rounded-xl text-[10px] font-bold bg-sky-500/20 text-sky-700 dark:text-sky-300 border border-sky-500/30" id="kpiActiveUnloading">0 Unloading</span>
                 </div>
               </div>
 
-              <div class="overflow-x-auto rounded-3xl card-surface border border-white/10">
+              <div class="overflow-x-auto rounded-3xl card-surface">
                 <table class="w-full text-left text-xs whitespace-nowrap">
-                  <thead class="bg-slate-800/80 text-slate-400 uppercase font-bold border-b border-white/10">
+                  <thead class="bg-black/5 dark:bg-slate-800/80 uppercase font-bold border-b border-black/10 dark:border-white/10">
                     <tr>
                       <th class="py-3 px-3">Status</th>
                       <th class="py-3 px-3">Vehicle No</th>
@@ -543,8 +655,8 @@
                       <th class="py-3 px-3 text-center">Complete / Action</th>
                     </tr>
                   </thead>
-                  <tbody id="loadUnloadTableBody" class="divide-y divide-white/5 text-slate-300">
-                    <tr><td colspan="10" class="text-center py-10 text-slate-400 font-medium">No operations recorded yet.</td></tr>
+                  <tbody id="loadUnloadTableBody" class="divide-y divide-black/5 dark:divide-white/5">
+                    <tr><td colspan="10" class="text-center py-10 opacity-60 font-medium">No operations recorded yet.</td></tr>
                   </tbody>
                 </table>
               </div>
@@ -554,52 +666,52 @@
 
         <!-- MODULE 3: LIVE DOCKS (1 TO 9) -->
         <section id="liveDocksView" class="view-panel hidden space-y-6">
-          <div class="glass-panel p-6 rounded-[2rem] border border-white/10 shadow-xl">
-            <h2 class="text-sm font-black text-slate-100 mb-4 flex items-center gap-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-sky-400"></span> AHPL Dedicated Docks (Dock 1 to 4)
+          <div class="glass-panel p-6 rounded-[2rem] shadow-xl">
+            <h2 class="text-sm font-black mb-4 flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-sky-500"></span> AHPL Dedicated Docks (Dock 1 to 4)
             </h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4" id="ahplDockGrid"></div>
           </div>
 
-          <div class="glass-panel p-6 rounded-[2rem] border border-white/10 shadow-xl">
-            <h2 class="text-sm font-black text-slate-100 mb-4 flex items-center gap-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-indigo-400"></span> AIL Dedicated Docks (Dock 5 to 9)
+          <div class="glass-panel p-6 rounded-[2rem] shadow-xl">
+            <h2 class="text-sm font-black mb-4 flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span> AIL Dedicated Docks (Dock 5 to 9)
             </h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4" id="ailDockGrid"></div>
           </div>
         </section>
 
-        <!-- MODULE 4: SECURITY GATE – VEHICLE MOVEMENT FORM -->
+        <!-- MODULE 4: SECURITY GATE – VEHICLE MOVEMENT FORM (CLEAN BLANK DROPDOWNS) -->
         <section id="gateSecView" class="view-panel hidden space-y-6">
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             
-            <div class="glass-panel p-6 rounded-[2rem] border border-white/10 shadow-xl lg:col-span-1 space-y-4">
-              <div class="flex items-center justify-between pb-2 border-b border-white/10">
-                <h3 class="text-sm font-black text-slate-100 flex items-center gap-2">
-                  <i data-lucide="truck" class="w-4 h-4 text-sky-400"></i> Security Gate Movement
+            <div class="glass-panel p-6 rounded-[2rem] shadow-xl lg:col-span-1 space-y-4">
+              <div class="flex items-center justify-between pb-2 border-b border-black/10 dark:border-white/10">
+                <h3 class="text-sm font-black flex items-center gap-2">
+                  <i data-lucide="truck" class="w-4 h-4 text-sky-500"></i> Security Gate Movement
                 </h3>
-                <span class="text-[10px] bg-sky-500/15 text-sky-300 font-bold px-2.5 py-0.5 rounded-full border border-sky-500/25">Gate Entry</span>
+                <span class="text-[10px] bg-sky-500/15 text-sky-500 font-bold px-2.5 py-0.5 rounded-full border border-sky-500/25">Gate Entry</span>
               </div>
 
               <form id="securityGateForm" class="space-y-3">
                 <div>
-                  <label class="block text-[11px] font-extrabold text-sky-300 uppercase tracking-wider mb-1 ml-1">
+                  <label class="block text-[11px] font-extrabold text-sky-600 dark:text-sky-300 uppercase tracking-wider mb-1 ml-1">
                     Purpose *
                   </label>
-                  <select id="secPurpose" onchange="handleSecurityRouteChange()" class="w-full app-input rounded-2xl p-2.5 text-xs font-bold text-sky-300 border-sky-500/30">
-                    <option value="Loading">📦 Loading (From: INDORE HUB)</option>
-                    <option value="Unloading">📥 Unloading (To: INDORE HUB)</option>
+                  <select id="secPurpose" onchange="handleSecurityRouteChange()" class="w-full app-input rounded-2xl p-2.5 text-xs font-bold text-sky-600 dark:text-sky-300 border-sky-500/30">
+                    <option value="Loading">📦 Loading</option>
+                    <option value="Unloading">📥 Unloading</option>
                     <option value="Parking / Transit">🅿 Parking / Transit</option>
                   </select>
                 </div>
 
                 <div class="grid grid-cols-2 gap-2.5">
                   <div>
-                    <label class="block text-[11px] font-bold text-slate-400 mb-1 ml-1">Vehicle No. *</label>
-                    <input type="text" id="secVehicleNo" placeholder="MP-09-AB-1234" required class="w-full app-input rounded-2xl p-2.5 text-xs uppercase font-bold text-sky-300">
+                    <label class="block text-[11px] font-bold opacity-70 mb-1 ml-1">Vehicle No. *</label>
+                    <input type="text" id="secVehicleNo" placeholder="MP-09-AB-1234" required class="w-full app-input rounded-2xl p-2.5 text-xs uppercase font-bold text-sky-500">
                   </div>
                   <div>
-                    <label class="block text-[11px] font-bold text-slate-400 mb-1 ml-1">Vehicle Type (Short)</label>
+                    <label class="block text-[11px] font-bold opacity-70 mb-1 ml-1">Vehicle Type (Short)</label>
                     <select id="secVehicleType" class="w-full app-input rounded-2xl p-2.5 text-xs font-semibold">
                       <option value="32SXL">32SXL</option>
                       <option value="32MXL">32MXL</option>
@@ -615,11 +727,11 @@
 
                 <div class="grid grid-cols-2 gap-2.5">
                   <div>
-                    <label class="block text-[11px] font-bold text-slate-400 mb-1 ml-1">Driver Mobile *</label>
+                    <label class="block text-[11px] font-bold opacity-70 mb-1 ml-1">Driver Mobile *</label>
                     <input type="tel" id="secDriverMobile" placeholder="9876543210" required class="w-full app-input rounded-2xl p-2.5 text-xs font-mono">
                   </div>
                   <div>
-                    <label class="block text-[11px] font-bold text-slate-400 mb-1 ml-1">Transporter</label>
+                    <label class="block text-[11px] font-bold opacity-70 mb-1 ml-1">Transporter</label>
                     <select id="secTransporter" class="w-full app-input rounded-2xl p-2.5 text-xs font-semibold">
                       <option value="DHTC">DHTC</option>
                       <option value="OPM">OPM</option>
@@ -632,21 +744,19 @@
                   </div>
                 </div>
 
-                <div class="grid grid-cols-2 gap-2.5">
-                  <div>
-                    <label class="block text-[11px] font-bold text-slate-400 mb-1 ml-1">From Location *</label>
-                    <select id="secFromLocation" class="w-full app-input rounded-2xl p-2.5 text-xs uppercase font-semibold text-sky-300"></select>
-                  </div>
-                  <div>
-                    <label class="block text-[11px] font-bold text-slate-400 mb-1 ml-1">To Location *</label>
-                    <select id="secToLocation" class="w-full app-input rounded-2xl p-2.5 text-xs uppercase font-semibold"></select>
-                  </div>
+                <!-- ONLY DESTINATION SELECTOR (BLANK UNTIL MASTER LOADED) -->
+                <div>
+                  <label class="block text-[11px] font-bold opacity-70 mb-1 ml-1">Location (Destination / Origin) *</label>
+                  <select id="secToLocation" class="w-full app-input rounded-2xl p-2.5 text-xs uppercase font-semibold text-sky-500">
+                    <option value="">-- Select Location --</option>
+                  </select>
+                  <input type="hidden" id="secFromLocation" value="INDORE HUB">
                 </div>
 
                 <div>
                   <div class="flex justify-between items-center mb-1">
-                    <label class="block text-[11px] font-bold text-slate-400 ml-1">Date & Time</label>
-                    <button type="button" onclick="autoPickCurrentDateTime()" class="text-[10px] text-sky-400 hover:text-sky-300 font-bold underline">
+                    <label class="block text-[11px] font-bold opacity-70 ml-1">Date & Time</label>
+                    <button type="button" onclick="autoPickCurrentDateTime()" class="text-[10px] text-sky-500 hover:underline font-bold">
                       ⚡ Auto Pick Current Time
                     </button>
                   </div>
@@ -654,7 +764,7 @@
                 </div>
 
                 <div>
-                  <label class="block text-[11px] font-bold text-slate-400 mb-1 ml-1">Remarks</label>
+                  <label class="block text-[11px] font-bold opacity-70 mb-1 ml-1">Remarks</label>
                   <input type="text" id="secRemarks" placeholder="Gate Remarks" class="w-full app-input rounded-2xl p-2.5 text-xs">
                 </div>
 
@@ -664,30 +774,30 @@
               </form>
             </div>
 
-            <div class="glass-panel p-6 rounded-[2rem] border border-white/10 lg:col-span-2">
+            <div class="glass-panel p-6 rounded-[2rem] lg:col-span-2">
               <div class="flex flex-wrap justify-between items-center mb-4 gap-2">
-                <h3 class="text-sm font-black text-slate-100 flex items-center gap-2">
-                  <i data-lucide="shield-check" class="w-4 h-4 text-sky-400"></i> Security Gate Log
+                <h3 class="text-sm font-black flex items-center gap-2">
+                  <i data-lucide="shield-check" class="w-4 h-4 text-sky-500"></i> Security Gate Log
                 </h3>
-                <span class="text-xs bg-slate-800 text-slate-300 border border-white/10 px-3 py-1 rounded-full font-mono font-bold" id="gateRowCount">0 Records</span>
+                <span class="text-xs card-surface px-3 py-1 rounded-full font-mono font-bold" id="gateRowCount">0 Records</span>
               </div>
 
-              <div class="overflow-x-auto rounded-3xl card-surface border border-white/10">
+              <div class="overflow-x-auto rounded-3xl card-surface">
                 <table class="w-full text-left text-xs whitespace-nowrap">
-                  <thead class="bg-slate-800/80 text-slate-400 uppercase font-bold border-b border-white/10">
+                  <thead class="bg-black/5 dark:bg-slate-800/80 uppercase font-bold border-b border-black/10 dark:border-white/10">
                     <tr>
                       <th class="py-3 px-3">Purpose</th>
                       <th class="py-3 px-3">Vehicle No</th>
                       <th class="py-3 px-3">Transporter</th>
                       <th class="py-3 px-3">Driver Contact</th>
-                      <th class="py-3 px-3">Route (From ➔ To)</th>
+                      <th class="py-3 px-3">Route</th>
                       <th class="py-3 px-3">Date & Time</th>
                       <th class="py-3 px-3">Remarks</th>
                       <th class="py-3 px-3 text-center">Action</th>
                     </tr>
                   </thead>
-                  <tbody id="securityTableBody" class="divide-y divide-white/5 text-slate-300">
-                    <tr><td colspan="8" class="text-center py-8 text-slate-400 font-medium">No vehicle movements logged yet.</td></tr>
+                  <tbody id="securityTableBody" class="divide-y divide-black/5 dark:divide-white/5">
+                    <tr><td colspan="8" class="text-center py-8 opacity-60 font-medium">No vehicle movements logged yet.</td></tr>
                   </tbody>
                 </table>
               </div>
@@ -697,18 +807,17 @@
 
         <!-- MODULE 5: VEHICLE TRACKING RECORD & SLA HUB -->
         <section id="trackingView" class="view-panel hidden space-y-6">
-          <div class="glass-panel p-5 md:p-7 rounded-[2rem] space-y-6 border border-white/10 shadow-xl">
-            
-            <div class="flex flex-wrap justify-between items-center gap-4 pb-4 border-b border-white/10">
+          <div class="glass-panel p-5 md:p-7 rounded-[2rem] space-y-6 shadow-xl">
+            <div class="flex flex-wrap justify-between items-center gap-4 pb-4 border-b border-black/10 dark:border-white/10">
               <div>
-                <h2 class="text-sm font-extrabold text-slate-100 flex items-center gap-2">
-                  <i data-lucide="navigation" class="w-4 h-4 text-rose-400"></i> Vehicle Tracking & Transit SLA Hub
+                <h2 class="text-sm font-extrabold flex items-center gap-2">
+                  <i data-lucide="navigation" class="w-4 h-4 text-rose-500"></i> Vehicle Tracking & Transit SLA Hub
                 </h2>
-                <p class="text-xs text-slate-400 mt-0.5">Upload master sheet (CSV / Excel) to automatically track On-Time, Delayed, and In-Transit fleets</p>
+                <p class="text-xs opacity-70 mt-0.5">Upload master sheet to automatically track fleets</p>
               </div>
 
               <div class="flex flex-wrap items-center gap-2">
-                <button onclick="downloadTrackingSampleCSV()" class="card-surface hover:border-sky-500/40 text-sky-400 text-xs font-bold px-3.5 py-2.5 rounded-2xl flex items-center gap-1.5 shadow-sm transition border border-white/10">
+                <button onclick="downloadTrackingSampleCSV()" class="card-surface hover:border-sky-500/40 text-sky-600 dark:text-sky-400 text-xs font-bold px-3.5 py-2.5 rounded-2xl flex items-center gap-1.5 shadow-sm transition">
                   <i data-lucide="download" class="w-3.5 h-3.5"></i> Download Master Sample CSV
                 </button>
 
@@ -719,36 +828,35 @@
               </div>
             </div>
 
-            <!-- Transit KPI Indicators -->
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
-              <div class="card-surface p-4 rounded-3xl border border-white/10 space-y-1">
-                <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Total Tracked</span>
-                <p class="text-xl font-black text-slate-100 font-mono" id="kpiTrackTotal">0</p>
+              <div class="card-surface p-4 rounded-3xl space-y-1">
+                <span class="text-[10px] opacity-70 font-bold uppercase tracking-wider block">Total Tracked</span>
+                <p class="text-xl font-black font-mono" id="kpiTrackTotal">0</p>
               </div>
 
               <div class="card-surface p-4 rounded-3xl border border-sky-500/20 space-y-1">
-                <span class="text-[10px] text-sky-400 font-bold uppercase tracking-wider block">In-Transit</span>
-                <p class="text-xl font-black text-sky-400 font-mono" id="kpiTrackInTransit">0</p>
+                <span class="text-[10px] text-sky-500 font-bold uppercase tracking-wider block">In-Transit</span>
+                <p class="text-xl font-black text-sky-500 font-mono" id="kpiTrackInTransit">0</p>
               </div>
 
               <div class="card-surface p-4 rounded-3xl border border-emerald-500/20 space-y-1">
-                <span class="text-[10px] text-emerald-400 font-bold uppercase tracking-wider block">Delivered On-Time</span>
-                <p class="text-xl font-black text-emerald-400 font-mono" id="kpiTrackOnTime">0</p>
+                <span class="text-[10px] text-emerald-500 font-bold uppercase tracking-wider block">Delivered On-Time</span>
+                <p class="text-xl font-black text-emerald-500 font-mono" id="kpiTrackOnTime">0</p>
               </div>
 
               <div class="card-surface p-4 rounded-3xl border border-rose-500/20 space-y-1">
-                <span class="text-[10px] text-rose-400 font-bold uppercase tracking-wider block">Delayed / Overdue</span>
-                <p class="text-xl font-black text-rose-400 font-mono" id="kpiTrackDelayed">0</p>
+                <span class="text-[10px] text-rose-500 font-bold uppercase tracking-wider block">Delayed / Overdue</span>
+                <p class="text-xl font-black text-rose-500 font-mono" id="kpiTrackDelayed">0</p>
               </div>
             </div>
 
-            <div class="overflow-x-auto rounded-3xl card-surface border border-white/10">
+            <div class="overflow-x-auto rounded-3xl card-surface">
               <table class="w-full text-left text-xs whitespace-nowrap">
-                <thead class="bg-slate-800/80 text-slate-300 uppercase font-bold border-b border-white/10">
+                <thead class="bg-black/5 dark:bg-slate-800/80 uppercase font-bold border-b border-black/10 dark:border-white/10">
                   <tr>
                     <th class="py-3.5 px-4">Vehicle No</th>
                     <th class="py-3.5 px-4">Transporter</th>
-                    <th class="py-3.5 px-4">Route (Origin ➔ Dest)</th>
+                    <th class="py-3.5 px-4">Route</th>
                     <th class="py-3.5 px-4">Dispatch Date</th>
                     <th class="py-3.5 px-4">Expected Date</th>
                     <th class="py-3.5 px-4">Actual Delivery</th>
@@ -756,8 +864,8 @@
                     <th class="py-3.5 px-4 text-center">Action</th>
                   </tr>
                 </thead>
-                <tbody id="trackingTableBody" class="divide-y divide-white/5 text-slate-300 font-medium">
-                  <tr><td colspan="8" class="text-center py-10 text-slate-400">No vehicle tracking data loaded. Upload CSV/Excel master sheet above.</td></tr>
+                <tbody id="trackingTableBody" class="divide-y divide-black/5 dark:divide-white/5 font-medium">
+                  <tr><td colspan="8" class="text-center py-10 opacity-60">No vehicle tracking data loaded. Upload CSV/Excel master sheet above.</td></tr>
                 </tbody>
               </table>
             </div>
@@ -765,14 +873,13 @@
           </div>
         </section>
 
-        <!-- MODULE 6: REPORTS & GRAPHIC ANALYSIS HUB -->
+        <!-- MODULE 6: INDEPENDENT REPORTS HUB -->
         <section id="reportsView" class="view-panel hidden space-y-6">
-          
-          <div class="glass-panel p-6 rounded-[2rem] border border-white/10">
-            <div class="flex flex-wrap justify-between items-center gap-3 mb-4 pb-4 border-b border-white/10">
+          <div class="glass-panel p-6 rounded-[2rem]">
+            <div class="flex flex-wrap justify-between items-center gap-3 mb-4 pb-4 border-b border-black/10 dark:border-white/10">
               <div>
-                <h2 class="text-sm font-black text-slate-100">Reports Data Center & Master Manager</h2>
-                <p class="text-[11px] text-slate-400">Master Uploads / Excel / PDF / Email Dispatch</p>
+                <h2 class="text-sm font-black">Reports Hub & Master Manager</h2>
+                <p class="text-[11px] opacity-70">Excel / PDF Export & Master Location Upload</p>
               </div>
               
               <div class="flex flex-wrap items-center gap-2">
@@ -781,16 +888,11 @@
                   <input type="file" id="locationMasterInput" accept=".csv,.xlsx,.xls" onchange="handleLocationMasterImport(event)" class="hidden">
                 </label>
 
-                <label class="bg-slate-800 text-white text-xs font-bold px-3.5 py-2.5 rounded-2xl flex items-center gap-1.5 shadow-sm cursor-pointer hover:bg-slate-700 transition border border-white/10">
-                  <i data-lucide="file-input" class="w-3.5 h-3.5 text-sky-400"></i> Import Plan CSV
-                  <input type="file" id="csvFileInput" accept=".csv,.xlsx" onchange="handleCSVImport(event)" class="hidden">
-                </label>
-
                 <button onclick="exportToExcel()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-3.5 py-2.5 rounded-2xl flex items-center gap-1.5 shadow-sm transition">
                   <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> Export Excel
                 </button>
 
-                <button onclick="exportToPDF()" class="bg-slate-800 hover:bg-slate-700 text-sky-400 text-xs font-bold px-3.5 py-2.5 rounded-2xl flex items-center gap-1.5 shadow-sm transition border border-sky-500/30">
+                <button onclick="exportToPDF()" class="card-surface text-sky-600 dark:text-sky-400 text-xs font-bold px-3.5 py-2.5 rounded-2xl flex items-center gap-1.5 shadow-sm transition">
                   <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Export PDF
                 </button>
 
@@ -800,9 +902,9 @@
               </div>
             </div>
 
-            <div class="overflow-x-auto rounded-3xl card-surface border border-white/10">
+            <div class="overflow-x-auto rounded-3xl card-surface">
               <table class="w-full text-left text-xs whitespace-nowrap">
-                <thead class="bg-slate-800/80 text-slate-400 uppercase font-bold border-b border-white/10">
+                <thead class="bg-black/5 dark:bg-slate-800/80 uppercase font-bold border-b border-black/10 dark:border-white/10">
                   <tr>
                     <th class="py-3 px-3">Delivery No.</th>
                     <th class="py-3 px-3">Code</th>
@@ -814,73 +916,71 @@
                     <th class="py-3 px-3">Transporter</th>
                   </tr>
                 </thead>
-                <tbody id="reportTableBody" class="divide-y divide-white/5 text-slate-300">
-                  <tr><td colspan="8" class="text-center py-8 text-slate-400 font-medium">No report records available.</td></tr>
+                <tbody id="reportTableBody" class="divide-y divide-black/5 dark:divide-white/5">
+                  <tr><td colspan="8" class="text-center py-8 opacity-60 font-medium">No report records available.</td></tr>
                 </tbody>
               </table>
             </div>
           </div>
+        </section>
 
-          <!-- GRAPHIC ANALYSIS -->
-          <div class="glass-panel p-5 md:p-7 rounded-[2rem] space-y-6 border border-white/10 shadow-xl">
-            <div class="flex flex-wrap justify-between items-center gap-4 pb-4 border-b border-white/10">
+        <!-- MODULE 7: GRAPHIC ANALYSIS -->
+        <section id="analyticsView" class="view-panel hidden space-y-6">
+          <div class="glass-panel p-5 md:p-7 rounded-[2rem] space-y-6 shadow-xl">
+            <div class="flex flex-wrap justify-between items-center gap-4 pb-4 border-b border-black/10 dark:border-white/10">
               <div>
-                <h2 class="text-sm font-extrabold text-slate-100 flex items-center gap-2">
-                  <i data-lucide="pie-chart" class="w-4 h-4 text-sky-400"></i> Graphic Analysis Dashboard (KPIs, Transit Trendlines & Fleet)
+                <h2 class="text-sm font-extrabold flex items-center gap-2">
+                  <i data-lucide="pie-chart" class="w-4 h-4 text-sky-500"></i> Graphic Analysis Dashboard
                 </h2>
-                <p class="text-xs text-slate-400 mt-0.5">Real-time Vehicle Transit Trendlines, Weight & Fleet Graphic Performance</p>
+                <p class="text-xs opacity-70 mt-0.5">Real-time Vehicle Transit Trendlines & Fleet Performance</p>
               </div>
 
-              <div class="flex items-center bg-slate-900/90 p-1 rounded-2xl border border-white/10">
+              <div class="flex items-center card-surface p-1 rounded-2xl">
                 <button onclick="setAnalyticsPeriod('daily', this)" class="period-btn active-nav-btn px-3 py-1.5 rounded-xl text-xs font-bold transition">Daily</button>
-                <button onclick="setAnalyticsPeriod('weekly', this)" class="period-btn text-slate-400 px-3 py-1.5 rounded-xl text-xs font-bold transition hover:text-white">Weekly</button>
-                <button onclick="setAnalyticsPeriod('monthly', this)" class="period-btn text-slate-400 px-3 py-1.5 rounded-xl text-xs font-bold transition hover:text-white">Monthly</button>
+                <button onclick="setAnalyticsPeriod('weekly', this)" class="period-btn opacity-70 px-3 py-1.5 rounded-xl text-xs font-bold transition hover:opacity-100">Weekly</button>
+                <button onclick="setAnalyticsPeriod('monthly', this)" class="period-btn opacity-70 px-3 py-1.5 rounded-xl text-xs font-bold transition hover:opacity-100">Monthly</button>
               </div>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div class="card-surface p-5 rounded-3xl border border-white/10 space-y-3 shadow-xs">
+              <div class="card-surface p-5 rounded-3xl space-y-3 shadow-xs">
                 <div class="flex justify-between items-center">
-                  <h3 class="text-xs font-extrabold text-rose-400 uppercase tracking-wider flex items-center gap-2">
+                  <h3 class="text-xs font-extrabold text-rose-500 uppercase tracking-wider flex items-center gap-2">
                     <i data-lucide="activity" class="w-4 h-4"></i> Vehicle Transit & Delay Trendline
                   </h3>
-                  <span class="text-[10px] text-slate-400 font-mono">Tracking Trend</span>
                 </div>
                 <div class="h-64 relative">
                   <canvas id="transitTrendlineChart"></canvas>
                 </div>
               </div>
 
-              <div class="card-surface p-5 rounded-3xl border border-white/10 space-y-3 shadow-xs">
+              <div class="card-surface p-5 rounded-3xl space-y-3 shadow-xs">
                 <div class="flex justify-between items-center">
-                  <h3 class="text-xs font-extrabold text-sky-400 uppercase tracking-wider flex items-center gap-2">
+                  <h3 class="text-xs font-extrabold text-sky-500 uppercase tracking-wider flex items-center gap-2">
                     <i data-lucide="trending-up" class="w-4 h-4"></i> Dispatch Weight & Volume Trend
                   </h3>
-                  <span class="text-[10px] text-slate-400 font-mono" id="chart1Subtitle">Daily Trend</span>
                 </div>
                 <div class="h-64 relative">
                   <canvas id="weightCftTrendChart"></canvas>
                 </div>
               </div>
 
-              <div class="card-surface p-5 rounded-3xl border border-white/10 space-y-3 shadow-xs">
+              <div class="card-surface p-5 rounded-3xl space-y-3 shadow-xs">
                 <div class="flex justify-between items-center">
-                  <h3 class="text-xs font-extrabold text-indigo-400 uppercase tracking-wider flex items-center gap-2">
+                  <h3 class="text-xs font-extrabold text-indigo-500 uppercase tracking-wider flex items-center gap-2">
                     <i data-lucide="truck" class="w-4 h-4"></i> Vehicle Fleet & Type Distribution
                   </h3>
-                  <span class="text-[10px] text-slate-400 font-mono">By Fleet Class</span>
                 </div>
                 <div class="h-64 relative">
                   <canvas id="vehicleTypeChart"></canvas>
                 </div>
               </div>
 
-              <div class="card-surface p-5 rounded-3xl border border-white/10 space-y-3 shadow-xs">
+              <div class="card-surface p-5 rounded-3xl space-y-3 shadow-xs">
                 <div class="flex justify-between items-center">
-                  <h3 class="text-xs font-extrabold text-emerald-400 uppercase tracking-wider flex items-center gap-2">
+                  <h3 class="text-xs font-extrabold text-emerald-500 uppercase tracking-wider flex items-center gap-2">
                     <i data-lucide="pie-chart" class="w-4 h-4"></i> Transporter Share & Trip Allocation
                   </h3>
-                  <span class="text-[10px] text-slate-400 font-mono">Trip Load</span>
                 </div>
                 <div class="h-64 relative flex items-center justify-center">
                   <canvas id="transporterShareChart"></canvas>
@@ -888,7 +988,6 @@
               </div>
             </div>
           </div>
-
         </section>
 
       </main>
@@ -898,41 +997,40 @@
   </div>
 
   <!-- FLOATING IPHONE BOTTOM APP NAVIGATION BAR -->
-  <div class="md:hidden fixed bottom-3 left-4 right-4 glass-panel border border-sky-500/20 rounded-3xl px-2 py-2.5 flex justify-around items-center z-50 shadow-2xl">
-    <button onclick="switchView('planView', this)" class="flex flex-col items-center gap-1 text-sky-400">
-      <i data-lucide="clipboard-list" class="w-5 h-5"></i>
+  <div class="md:hidden fixed bottom-3 left-4 right-4 glass-panel rounded-3xl px-2 py-2.5 flex justify-around items-center z-50 shadow-2xl">
+    <button onclick="switchView('dashboardView', this)" class="flex flex-col items-center gap-1 text-sky-500">
+      <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+      <span class="text-[9px] font-bold">Dash</span>
+    </button>
+    <button onclick="switchView('planView', this)" class="flex flex-col items-center gap-1 opacity-70 hover:opacity-100">
+      <i data-lucide="clipboard-list" class="w-5 h-5 text-sky-400"></i>
       <span class="text-[9px] font-bold">Plan</span>
     </button>
-    <button onclick="switchView('loadUnloadView', this)" class="flex flex-col items-center gap-1 text-slate-400 hover:text-white">
-      <i data-lucide="arrow-left-right" class="w-5 h-5 text-emerald-400"></i>
-      <span class="text-[9px] font-bold">Load/Unload</span>
+    <button onclick="switchView('loadUnloadView', this)" class="flex flex-col items-center gap-1 opacity-70 hover:opacity-100">
+      <i data-lucide="arrow-left-right" class="w-5 h-5 text-emerald-500"></i>
+      <span class="text-[9px] font-bold">Ops</span>
     </button>
-    <button onclick="switchView('liveDocksView', this)" class="flex flex-col items-center gap-1 text-slate-400 hover:text-white">
-      <i data-lucide="layers" class="w-5 h-5 text-indigo-400"></i>
-      <span class="text-[9px] font-bold">Live Docks</span>
+    <button onclick="switchView('liveDocksView', this)" class="flex flex-col items-center gap-1 opacity-70 hover:opacity-100">
+      <i data-lucide="layers" class="w-5 h-5 text-indigo-500"></i>
+      <span class="text-[9px] font-bold">Docks</span>
     </button>
-    <button onclick="switchView('trackingView', this)" class="flex flex-col items-center gap-1 text-slate-400 hover:text-white">
-      <i data-lucide="navigation" class="w-5 h-5 text-rose-400"></i>
-      <span class="text-[9px] font-bold">Tracking</span>
-    </button>
-    <button onclick="switchView('gateSecView', this)" class="flex flex-col items-center gap-1 text-slate-400 hover:text-white">
-      <i data-lucide="shield-check" class="w-5 h-5 text-amber-400"></i>
+    <button onclick="switchView('gateSecView', this)" class="flex flex-col items-center gap-1 opacity-70 hover:opacity-100">
+      <i data-lucide="shield-check" class="w-5 h-5 text-amber-500"></i>
       <span class="text-[9px] font-bold">Gate</span>
     </button>
-    <button onclick="switchView('reportsView', this)" class="flex flex-col items-center gap-1 text-slate-400 hover:text-white">
-      <i data-lucide="bar-chart-3" class="w-5 h-5 text-purple-400"></i>
+    <button onclick="switchView('reportsView', this)" class="flex flex-col items-center gap-1 opacity-70 hover:opacity-100">
+      <i data-lucide="bar-chart-3" class="w-5 h-5 text-purple-500"></i>
       <span class="text-[9px] font-bold">Reports</span>
     </button>
   </div>
 
-  <!-- JAVASCRIPT LOGIC & CROSS-DEVICE AUTH ENGINE -->
+  <!-- JAVASCRIPT LOGIC -->
   <script>
     lucide.createIcons();
 
     const HARDCODED_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbwoq5qyOeJda-fUdnz9JkmRiJrPNU6ogq4A0d9yj_lAZmKG0eY3qyYVIYnj0Xh2Mw2w/exec";
     let googleWebhookUrl = HARDCODED_WEBHOOK_URL;
 
-    // THEME ENGINE
     let currentTheme = localStorage.getItem("ich_theme_mode") || "dark";
     function applyTheme(theme) {
       const htmlEl = document.documentElement;
@@ -944,16 +1042,18 @@
         htmlEl.classList.remove("dark");
         htmlEl.classList.add("light");
         bodyEl.classList.remove("bg-slate-900", "text-slate-100");
-        bodyEl.classList.add("bg-slate-100", "text-slate-900");
+        bodyEl.style.backgroundColor = "var(--warm-cream-bg)";
+        bodyEl.style.color = "var(--warm-text-main)";
         if (themeText) themeText.innerText = "Dark Mode";
         if (themeBtn) themeBtn.innerHTML = '<i data-lucide="moon" class="w-3.5 h-3.5 text-indigo-600"></i> <span class="text-[11px]">Dark Mode</span>';
       } else {
         htmlEl.classList.remove("light");
         htmlEl.classList.add("dark");
-        bodyEl.classList.remove("bg-slate-100", "text-slate-900");
+        bodyEl.style.backgroundColor = "";
+        bodyEl.style.color = "";
         bodyEl.classList.add("bg-slate-900", "text-slate-100");
-        if (themeText) themeText.innerText = "Light Mode";
-        if (themeBtn) themeBtn.innerHTML = '<i data-lucide="sun" class="w-3.5 h-3.5 text-amber-400"></i> <span class="text-[11px]">Light Mode</span>';
+        if (themeText) themeText.innerText = "Warm Light Mode";
+        if (themeBtn) themeBtn.innerHTML = '<i data-lucide="sun" class="w-3.5 h-3.5 text-amber-500"></i> <span class="text-[11px]">Warm Light Mode</span>';
       }
       localStorage.setItem("ich_theme_mode", theme);
       lucide.createIcons();
@@ -966,7 +1066,6 @@
     }
     applyTheme(currentTheme);
 
-    // DEFAULT BUILT-IN CREDENTIALS
     const defaultCredentials = [
       { user: 'admin', pass: 'admin123', role: 'ADMIN', name: 'Admin Officer' },
       { user: 'supervisor', pass: 'super123', role: 'SUPERVISOR', name: 'Duty Supervisor' },
@@ -978,16 +1077,12 @@
     let currentLoggedInRole = localStorage.getItem("ich_active_role") || null;
     let currentLoggedInUser = localStorage.getItem("ich_active_user") || "Duty User";
 
-    const defaultLocations = [
-      "INDORE HUB", "BANGALORE", "COCHIN", "DELHI", "LUCKNOW", "VARANASI", 
-      "BARWALA", "HYDERABAD", "NAGPUR", "JAIPUR", "MUMBAI", "VIJAYAWADA", "PATNA", "KOLKATA", "BHIWANDI", "PUNE", "AHMEDABAD", "GUWAHATI"
-    ];
-    let masterLocations = JSON.parse(localStorage.getItem("ich_master_locations")) || defaultLocations;
+    let masterLocations = JSON.parse(localStorage.getItem("ich_master_locations")) || [];
 
-    let planEntries = JSON.parse(localStorage.getItem("ich_plan_v52")) || [];
-    let loadEntries = JSON.parse(localStorage.getItem("ich_load_v52")) || [];
-    let securityLogs = JSON.parse(localStorage.getItem("ich_sec_v52")) || [];
-    let trackingRecords = JSON.parse(localStorage.getItem("ich_tracking_v52")) || [];
+    let planEntries = JSON.parse(localStorage.getItem("ich_plan_v62")) || [];
+    let loadEntries = JSON.parse(localStorage.getItem("ich_load_v62")) || [];
+    let securityLogs = JSON.parse(localStorage.getItem("ich_sec_v62")) || [];
+    let trackingRecords = JSON.parse(localStorage.getItem("ich_tracking_v62")) || [];
 
     let currentPeriod = 'daily';
     let chartTrend = null, chartFleet = null, chartTransporter = null, chartTransitTrend = null;
@@ -1010,7 +1105,6 @@
       else modal.classList.add('hidden');
     }
 
-    // UNIVERSAL FAIL-SAFE LOGIN LOGIC (Simultaneous Multi-Device Support)
     document.getElementById('loginForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const inputUser = document.getElementById('loginUser').value.trim().toLowerCase();
@@ -1018,17 +1112,8 @@
       const inputRole = document.getElementById('loginRole').value;
       const err = document.getElementById('loginError');
 
-      // Check registered users list (or default)
-      let matched = registeredUsers.find(u => 
-        u.user.toLowerCase() === inputUser && u.pass === inputPass
-      );
-
-      // Fallback check on built-in users
-      if (!matched) {
-        matched = defaultCredentials.find(u => 
-          u.user.toLowerCase() === inputUser && u.pass === inputPass
-        );
-      }
+      let matched = registeredUsers.find(u => u.user.toLowerCase() === inputUser && u.pass === inputPass);
+      if (!matched) matched = defaultCredentials.find(u => u.user.toLowerCase() === inputUser && u.pass === inputPass);
 
       if (matched) {
         err.classList.add('hidden');
@@ -1037,7 +1122,6 @@
 
         currentLoggedInRole = assignedRole;
         currentLoggedInUser = assignedName;
-
         localStorage.setItem("ich_active_role", assignedRole);
         localStorage.setItem("ich_active_user", assignedName);
         applyRolePermissions(assignedRole, assignedName);
@@ -1046,7 +1130,6 @@
       }
     });
 
-    // NEW USER ACCOUNT CREATION WITH CLOUD SYNC
     document.getElementById('registerForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const name = document.getElementById('regFullName').value.trim();
@@ -1055,21 +1138,16 @@
       const pass = document.getElementById('regPass').value.trim();
 
       const newUserObj = { user: user, pass: pass, role: role, name: name };
-      
       registeredUsers.push(newUserObj);
       localStorage.setItem("ich_registered_users_list", JSON.stringify(registeredUsers));
 
-      // Sync Account to Google Sheet Webhook
       if (googleWebhookUrl) {
         fetch(googleWebhookUrl, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'text/plain' },
+          method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' },
           body: JSON.stringify({ action: "SYNC_NEW_USER", userRecord: newUserObj })
         });
       }
-
-      alert(`Account created successfully!\nUsername: ${user}\nRole: ${role}\nYou can now login immediately on mobile or PC.`);
+      alert(`Account created successfully! Username: ${user}`);
       toggleRegisterModal(false);
       this.reset();
     });
@@ -1088,7 +1166,7 @@
       if (role === 'SECURITY') {
         switchView('gateSecView', navSecBtn);
       } else {
-        switchView('planView', document.querySelectorAll('.sidebar-item')[0]);
+        switchView('dashboardView', document.querySelectorAll('.sidebar-item')[0]);
       }
 
       populateAllLocationDropdowns();
@@ -1097,6 +1175,7 @@
       handleSupervisorOpChange();
       updateLinkedGateVehicleDropdown();
       autoPickCurrentDateTime();
+      renderExecutiveDashboard();
       renderAllTables();
       renderLoadUnloadTable();
       renderSecurityTable();
@@ -1137,6 +1216,7 @@
       if (targetView) targetView.classList.remove('hidden');
       if (btn && btn.classList.contains('sidebar-item')) btn.classList.add('active-nav-btn');
 
+      if (viewId === 'dashboardView') renderExecutiveDashboard();
       if (viewId === 'gateSecView') autoPickCurrentDateTime();
       if (viewId === 'loadUnloadView') {
         updateDockOptions();
@@ -1144,7 +1224,8 @@
         updateLinkedGateVehicleDropdown();
       }
       if (viewId === 'trackingView') renderTrackingTable();
-      if (viewId === 'reportsView') setTimeout(renderGraphicAnalytics, 100);
+      if (viewId === 'reportsView') renderAllTables();
+      if (viewId === 'analyticsView') setTimeout(renderGraphicAnalytics, 100);
       lucide.createIcons();
     }
 
@@ -1167,7 +1248,7 @@
 
           if (rows.length === 0) return alert("Uploaded file is empty.");
 
-          let newLocs = ["INDORE HUB"];
+          let newLocs = [];
           rows.forEach((row) => {
             if (Array.isArray(row)) {
               row.forEach(cell => {
@@ -1179,12 +1260,12 @@
             }
           });
 
-          if (newLocs.length <= 1) return alert("No valid locations found in file.");
+          if (newLocs.length === 0) return alert("No valid locations found in file.");
 
           masterLocations = newLocs;
           localStorage.setItem("ich_master_locations", JSON.stringify(masterLocations));
           populateAllLocationDropdowns();
-          alert(`Success! Loaded ${masterLocations.length} locations into master.`);
+          alert(`Success! Master Location sheet imported with ${masterLocations.length} locations.`);
         } catch (err) {
           alert("Error parsing location file.");
         }
@@ -1193,12 +1274,11 @@
     }
 
     function populateAllLocationDropdowns() {
-      const dropdownIds = ['loadFromLoc', 'loadToLoc', 'secFromLocation', 'secToLocation'];
+      const dropdownIds = ['loadFromLoc', 'loadToLoc', 'secToLocation'];
       dropdownIds.forEach(id => {
         const el = document.getElementById(id);
         if (!el) return;
-        const currentVal = el.value || "";
-        el.innerHTML = '';
+        el.innerHTML = '<option value="">-- Select Location --</option>';
 
         masterLocations.forEach(loc => {
           const opt = document.createElement('option');
@@ -1206,14 +1286,6 @@
           opt.textContent = loc;
           el.appendChild(opt);
         });
-
-        if (currentVal && masterLocations.includes(currentVal)) {
-          el.value = currentVal;
-        } else if (id.includes('From') || id.includes('from')) {
-          el.value = "INDORE HUB";
-        } else if (masterLocations.length > 1) {
-          el.value = masterLocations[1];
-        }
       });
     }
 
@@ -1233,15 +1305,10 @@
 
     function handleSecurityRouteChange() {
       const purpose = document.getElementById('secPurpose').value;
-      const fromSelect = document.getElementById('secFromLocation');
       const toSelect = document.getElementById('secToLocation');
-
-      if (purpose === 'Loading') {
-        fromSelect.value = "INDORE HUB";
-        if (toSelect.value === "INDORE HUB" && masterLocations.length > 1) toSelect.value = masterLocations[1];
-      } else if (purpose === 'Unloading') {
-        toSelect.value = "INDORE HUB";
-        if (fromSelect.value === "INDORE HUB" && masterLocations.length > 1) fromSelect.value = masterLocations[1];
+      if (!toSelect) return;
+      if (purpose === 'Loading' && masterLocations.length > 0) {
+        toSelect.value = masterLocations[0];
       }
     }
 
@@ -1253,11 +1320,9 @@
 
       if (op === 'LOADING') {
         fromSelect.value = "INDORE HUB";
-        if (toSelect.value === "INDORE HUB" && masterLocations.length > 1) toSelect.value = masterLocations[1];
         if (podField) podField.classList.add('hidden');
       } else {
         toSelect.value = "INDORE HUB";
-        if (fromSelect.value === "INDORE HUB" && masterLocations.length > 1) fromSelect.value = masterLocations[1];
         if (podField) podField.classList.remove('hidden');
       }
     }
@@ -1270,7 +1335,7 @@
       securityLogs.forEach((veh) => {
         const opt = document.createElement('option');
         opt.value = veh.vehicle;
-        opt.textContent = `🚗 ${veh.vehicle} | ${veh.transporter || 'Transp'} | ${veh.purpose || 'Loading'} (${veh.fromLoc || 'Origin'} ➔ ${veh.toLoc || 'INDORE HUB'})`;
+        opt.textContent = `🚗 ${veh.vehicle} | ${veh.transporter || 'Transp'} | ${veh.purpose || 'Loading'} (To: ${veh.toLoc || 'DEST'})`;
         select.appendChild(opt);
       });
     }
@@ -1283,9 +1348,6 @@
       document.getElementById('loadVehicleNo').value = item.vehicle;
       if (item.transporter) document.getElementById('loadTransporter').value = item.transporter;
       
-      if (item.fromLoc && masterLocations.includes(item.fromLoc)) {
-        document.getElementById('loadFromLoc').value = item.fromLoc;
-      }
       if (item.toLoc && masterLocations.includes(item.toLoc)) {
         document.getElementById('loadToLoc').value = item.toLoc;
       }
@@ -1307,7 +1369,7 @@
       document.getElementById('secDateTime').value = now.toLocaleDateString('en-GB') + ', ' + now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
     }
 
-    // FORM HANDLER: SUPERVISOR STARTS OPERATION (PHASE 1)
+    // FORM HANDLER: SUPERVISOR STARTS OPERATION
     document.getElementById('loadUnloadForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const op = document.getElementById('opType').value;
@@ -1333,19 +1395,19 @@
       };
 
       loadEntries.unshift(newOp);
-      localStorage.setItem("ich_load_v52", JSON.stringify(loadEntries));
+      localStorage.setItem("ich_load_v62", JSON.stringify(loadEntries));
       renderLoadUnloadTable();
       renderLiveDockCards();
+      renderExecutiveDashboard();
       pushLoadUnloadToCloud(newOp);
 
       this.reset();
       updateDockOptions();
       handleSupervisorOpChange();
       updateLinkedGateVehicleDropdown();
-      alert(`Success! ${op} operation started on dock. Status: ${newOp.status}`);
+      alert(`Success! ${op} operation started on dock.`);
     });
 
-    // SUPERVISOR COMPLETES OPERATION & EXITS (PHASE 3)
     function finishOperation(idx) {
       const item = loadEntries[idx];
       if (!item) return;
@@ -1369,41 +1431,57 @@
       item.duration = durText;
       item.status = item.opType === 'LOADING' ? 'LOADED' : 'UNLOADED';
 
-      localStorage.setItem("ich_load_v52", JSON.stringify(loadEntries));
+      localStorage.setItem("ich_load_v62", JSON.stringify(loadEntries));
       renderLoadUnloadTable();
       renderLiveDockCards();
+      renderExecutiveDashboard();
       pushLoadUnloadToCloud(item);
 
-      alert(`Success! Vehicle ${item.vehicleNo} marked as ${item.status} (TAT: ${durText})`);
+      alert(`Success! Vehicle ${item.vehicleNo} marked as ${item.status}`);
     }
 
     // FORM HANDLER: SECURITY GATE MOVEMENT
     document.getElementById('securityGateForm').addEventListener('submit', function(e) {
       e.preventDefault();
+      const purpose = document.getElementById('secPurpose').value;
+      const targetLoc = document.getElementById('secToLocation').value.toUpperCase().trim();
+
+      if (!targetLoc) {
+        return alert("Please select a valid location.");
+      }
+
+      let origin = "INDORE HUB";
+      let dest = targetLoc;
+
+      if (purpose === 'Unloading') {
+        origin = targetLoc;
+        dest = "INDORE HUB";
+      }
+
       const newSec = {
-        purpose: document.getElementById('secPurpose').value,
+        purpose: purpose,
         vehicle: document.getElementById('secVehicleNo').value.toUpperCase().trim(),
         vType: document.getElementById('secVehicleType').value,
         mobile: document.getElementById('secDriverMobile').value.trim() || '-',
         transporter: document.getElementById('secTransporter').value,
-        fromLoc: document.getElementById('secFromLocation').value.toUpperCase().trim(),
-        toLoc: document.getElementById('secToLocation').value.toUpperCase().trim(),
+        fromLoc: origin,
+        toLoc: dest,
         dateTime: document.getElementById('secDateTime').value.trim() || new Date().toLocaleString('en-US'),
         remarks: document.getElementById('secRemarks').value.trim() || '-'
       };
 
       securityLogs.unshift(newSec);
-      localStorage.setItem("ich_sec_v52", JSON.stringify(securityLogs));
+      localStorage.setItem("ich_sec_v62", JSON.stringify(securityLogs));
       renderSecurityTable();
+      renderExecutiveDashboard();
       updateLinkedGateVehicleDropdown();
       pushGateEntryToCloud(newSec);
       this.reset();
       handleSecurityRouteChange();
       autoPickCurrentDateTime();
-      alert("Security Gate Entry Saved and Linked Successfully!");
+      alert("Security Gate Entry Saved Successfully!");
     });
 
-    // RENDER SUPERVISOR OPERATIONS TABLE
     function renderLoadUnloadTable() {
       const tbody = document.getElementById('loadUnloadTableBody');
       if (!tbody) return;
@@ -1418,7 +1496,7 @@
       if (document.getElementById('kpiActiveUnloading')) document.getElementById('kpiActiveUnloading').innerText = `${activeUnload} Unloading In-Progress`;
 
       if (loadEntries.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="10" class="text-center py-10 text-slate-400 font-medium">No operations recorded yet.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="10" class="text-center py-10 opacity-60 font-medium">No operations recorded yet.</td></tr>`;
         return;
       }
 
@@ -1428,47 +1506,47 @@
         let statusBadge = "";
 
         if (item.status === 'LOADED') {
-          statusBadge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">✔ LOADED</span>`;
+          statusBadge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30">✔ LOADED</span>`;
         } else if (item.status === 'UNLOADED') {
-          statusBadge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-500/20 text-blue-300 border border-blue-500/30">✔ UNLOADED</span>`;
+          statusBadge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-500/20 text-blue-700 dark:text-blue-300 border border-blue-500/30">✔ UNLOADED</span>`;
         } else if (item.status === 'LOADING IN-PROGRESS') {
-          statusBadge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 animate-pulse">⏳ LOADING...</span>`;
+          statusBadge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-500/30 animate-pulse">⏳ LOADING...</span>`;
         } else {
-          statusBadge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-sky-500/20 text-sky-300 border border-sky-500/30 animate-pulse">⏳ UNLOADING...</span>`;
+          statusBadge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-sky-500/20 text-sky-700 dark:text-sky-300 border border-sky-500/30 animate-pulse">⏳ UNLOADING...</span>`;
         }
 
-        let inspBadge = '<span class="text-slate-500">-</span>';
+        let inspBadge = '<span class="opacity-50">-</span>';
         if (item.podStatus) {
           if (item.podStatus === 'POD Clean') {
-            inspBadge = `<span class="text-emerald-400 font-bold text-[10px]">✔ POD Clean</span>`;
+            inspBadge = `<span class="text-emerald-600 dark:text-emerald-400 font-bold text-[10px]">✔ POD Clean</span>`;
           } else if (item.podStatus.includes('Damage') || item.podStatus.includes('Leakage')) {
-            inspBadge = `<span class="text-rose-400 font-bold text-[10px]">⚠ POD Hold (Damage/Leakage)</span>`;
+            inspBadge = `<span class="text-rose-600 dark:text-rose-400 font-bold text-[10px]">⚠ POD Hold (Damage/Leakage)</span>`;
           } else if (item.podStatus === 'OK - No Issue') {
-            inspBadge = `<span class="text-sky-400 font-bold text-[10px]">✔ OK - No Issue</span>`;
+            inspBadge = `<span class="text-sky-600 dark:text-sky-400 font-bold text-[10px]">✔ OK - No Issue</span>`;
           }
         }
 
         const tr = document.createElement('tr');
-        tr.className = 'hover:bg-white/5 transition';
+        tr.className = 'hover:bg-black/5 dark:hover:bg-white/5 transition';
         tr.innerHTML = `
           <td class="py-3 px-3">${statusBadge}</td>
-          <td class="py-3 px-3 font-bold text-white font-mono">${item.vehicleNo}</td>
-          <td class="py-3 px-3 font-bold text-sky-300">${item.bayNo}</td>
-          <td class="py-3 px-3 text-slate-300">${item.unit}</td>
+          <td class="py-3 px-3 font-bold font-mono">${item.vehicleNo}</td>
+          <td class="py-3 px-3 font-bold text-sky-600 dark:text-sky-300">${item.bayNo}</td>
+          <td class="py-3 px-3">${item.unit}</td>
           <td class="py-3 px-3">${inspBadge}</td>
-          <td class="py-3 px-3 font-semibold text-slate-300">${item.operator}</td>
-          <td class="py-3 px-3 font-mono text-slate-300">${item.startTime || '-'}</td>
-          <td class="py-3 px-3 font-mono ${isProgress ? 'text-amber-400 italic' : 'text-slate-300'}">${item.endTime || '-- In Progress --'}</td>
-          <td class="py-3 px-3 font-mono font-bold text-emerald-400">${item.duration}</td>
+          <td class="py-3 px-3 font-semibold">${item.operator}</td>
+          <td class="py-3 px-3 font-mono">${item.startTime || '-'}</td>
+          <td class="py-3 px-3 font-mono ${isProgress ? 'text-amber-600 dark:text-amber-400 italic' : ''}">${item.endTime || '-- In Progress --'}</td>
+          <td class="py-3 px-3 font-mono font-bold text-emerald-600 dark:text-emerald-400">${item.duration}</td>
           <td class="py-3 px-3 text-center space-x-1.5">
             ${isProgress ? `
               <button onclick="finishOperation(${idx})" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-[11px] font-bold transition shadow-sm">
                 ✔ Mark Completed
               </button>
             ` : `
-              <span class="text-[11px] text-emerald-400 font-semibold">Done</span>
+              <span class="text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold">Done</span>
             `}
-            <button onclick="deleteLoadEntry('${item.vehicleNo}', ${idx})" class="text-rose-400 hover:text-rose-300 p-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+            <button onclick="deleteLoadEntry('${item.vehicleNo}', ${idx})" class="text-rose-500 hover:text-rose-600 p-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
           </td>
         `;
         tbody.appendChild(tr);
@@ -1499,23 +1577,23 @@
         const isLoad = record.opType === 'LOADING';
         return `
           <div class="p-4 rounded-3xl card-surface border ${isLoad ? 'border-amber-500/40' : 'border-sky-500/40'} space-y-1 text-xs shadow-md">
-            <div class="flex justify-between items-center font-bold text-slate-100">
-              <span class="font-black text-sky-400">${name}</span>
-              <span class="w-2.5 h-2.5 rounded-full ${isLoad ? 'bg-amber-400 animate-pulse' : 'bg-sky-400 animate-pulse'}"></span>
+            <div class="flex justify-between items-center font-bold">
+              <span class="font-black text-sky-600 dark:text-sky-400">${name}</span>
+              <span class="w-2.5 h-2.5 rounded-full ${isLoad ? 'bg-amber-500 animate-pulse' : 'bg-sky-500 animate-pulse'}"></span>
             </div>
-            <p class="text-slate-100 font-extrabold text-sm pt-1">${record.vehicleNo}</p>
-            <p class="text-[11px] font-bold ${isLoad ? 'text-amber-300' : 'text-sky-300'}">${record.status}</p>
-            <p class="text-[11px] text-slate-400">${record.operator} • Started: ${record.startTime}</p>
+            <p class="font-extrabold text-sm pt-1">${record.vehicleNo}</p>
+            <p class="text-[11px] font-bold ${isLoad ? 'text-amber-600 dark:text-amber-300' : 'text-sky-600 dark:text-sky-300'}">${record.status}</p>
+            <p class="text-[11px] opacity-70">${record.operator} • Started: ${record.startTime}</p>
           </div>
         `;
       }
       return `
-        <div class="p-4 rounded-3xl card-surface border border-white/5 text-xs text-slate-400 space-y-1">
-          <div class="flex justify-between items-center font-bold text-slate-400">
+        <div class="p-4 rounded-3xl card-surface text-xs opacity-60 space-y-1">
+          <div class="flex justify-between items-center font-bold">
             <span>${name}</span>
-            <span class="w-2 h-2 rounded-full bg-slate-600"></span>
+            <span class="w-2 h-2 rounded-full bg-slate-400"></span>
           </div>
-          <p class="text-center py-3 text-[11px] font-semibold text-slate-400">Empty / Available</p>
+          <p class="text-center py-3 text-[11px] font-semibold">Empty / Available</p>
         </div>
       `;
     }
@@ -1544,9 +1622,9 @@
       if (!summaryTbody || !planTbody) return;
 
       if (planEntries.length === 0) {
-        summaryTbody.innerHTML = `<tr><td colspan="7" class="text-center py-8 text-slate-400 font-medium">No vehicle summary available. Scan plan photo above.</td></tr>`;
-        planTbody.innerHTML = `<tr><td colspan="9" class="text-center py-8 text-slate-400 font-medium">No detailed plan data loaded.</td></tr>`;
-        repTbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-slate-400 font-medium">No report records available.</td></tr>`;
+        summaryTbody.innerHTML = `<tr><td colspan="7" class="text-center py-8 opacity-60 font-medium">No vehicle summary available. Scan plan photo above.</td></tr>`;
+        planTbody.innerHTML = `<tr><td colspan="9" class="text-center py-8 opacity-60 font-medium">No detailed plan data loaded.</td></tr>`;
+        repTbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 opacity-60 font-medium">No report records available.</td></tr>`;
         if (groupCount) groupCount.innerText = "0 Vehicles";
         return;
       }
@@ -1558,19 +1636,19 @@
       vehicleKeys.forEach(k => {
         const v = vehicleMap[k];
         const row = document.createElement('tr');
-        row.className = 'hover:bg-white/5 transition border-b border-white/5';
+        row.className = 'hover:bg-black/5 dark:hover:bg-white/5 transition border-b border-black/5 dark:border-white/5';
         row.innerHTML = `
-          <td class="py-3.5 px-4 font-black text-slate-100 text-xs">${v.destination}</td>
-          <td class="py-3.5 px-4 font-bold text-sky-400">${v.transporter}</td>
-          <td class="py-3.5 px-4 font-semibold text-slate-300">${v.vType}</td>
+          <td class="py-3.5 px-4 font-black text-xs">${v.destination}</td>
+          <td class="py-3.5 px-4 font-bold text-sky-600 dark:text-sky-400">${v.transporter}</td>
+          <td class="py-3.5 px-4 font-semibold">${v.vType}</td>
           <td class="py-3.5 px-4 text-center">
             <div class="font-extrabold font-mono text-white bg-sky-600 rounded-xl py-1 px-2.5 inline-block shadow-sm">
               ${v.totalCount} Del. <span class="text-[10px] text-sky-100 block font-normal">(AHPL: ${v.ahplCount} | AIL: ${v.ailCount})</span>
             </div>
           </td>
-          <td class="py-3.5 px-4 text-right font-mono font-black text-slate-100 text-sm">${v.totalWeight.toFixed(2)} Kg</td>
-          <td class="py-3.5 px-4 text-right font-mono font-black text-sky-400 text-sm">${v.totalCft.toFixed(2)} CFT</td>
-          <td class="py-3.5 px-4 text-center"><span class="px-3 py-1 rounded-full text-[10px] font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/25">Ready</span></td>
+          <td class="py-3.5 px-4 text-right font-mono font-black text-sm">${v.totalWeight.toFixed(2)} Kg</td>
+          <td class="py-3.5 px-4 text-right font-mono font-black text-sky-600 dark:text-sky-400 text-sm">${v.totalCft.toFixed(2)} CFT</td>
+          <td class="py-3.5 px-4 text-center"><span class="px-3 py-1 rounded-full text-[10px] font-bold bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/25">Ready</span></td>
         `;
         summaryTbody.appendChild(row);
       });
@@ -1579,31 +1657,31 @@
       repTbody.innerHTML = '';
       planEntries.forEach((item, idx) => {
         const planRow = document.createElement('tr');
-        planRow.className = 'hover:bg-white/5 font-medium transition';
+        planRow.className = 'hover:bg-black/5 dark:hover:bg-white/5 font-medium transition';
         planRow.innerHTML = `
-          <td class="py-3 px-3.5 font-mono font-bold text-slate-200">${item.deliveryNo}</td>
-          <td class="py-3 px-3.5 font-mono text-slate-400 font-semibold">${item.code}</td>
-          <td class="py-3 px-3.5 font-bold ${item.unit === 'AIL' ? 'text-indigo-400' : 'text-sky-400'}">${item.unit}</td>
-          <td class="py-3 px-3.5 font-bold text-slate-100">${item.destination}</td>
-          <td class="py-3 px-3.5 text-right font-mono font-bold text-slate-100">${Number(item.weight).toFixed(2)}</td>
-          <td class="py-3 px-3.5 text-right font-mono font-bold text-sky-400">${Number(item.cft).toFixed(2)}</td>
-          <td class="py-3 px-3.5 text-slate-300 font-bold">${item.vType}</td>
-          <td class="py-3 px-3.5 font-bold text-slate-200">${item.transporter}</td>
+          <td class="py-3 px-3.5 font-mono font-bold">${item.deliveryNo}</td>
+          <td class="py-3 px-3.5 font-mono opacity-70">${item.code}</td>
+          <td class="py-3 px-3.5 font-bold ${item.unit === 'AIL' ? 'text-indigo-600 dark:text-indigo-400' : 'text-sky-600 dark:text-sky-400'}">${item.unit}</td>
+          <td class="py-3 px-3.5 font-bold">${item.destination}</td>
+          <td class="py-3 px-3.5 text-right font-mono font-bold">${Number(item.weight).toFixed(2)}</td>
+          <td class="py-3 px-3.5 text-right font-mono font-bold text-sky-600 dark:text-sky-400">${Number(item.cft).toFixed(2)}</td>
+          <td class="py-3 px-3.5 font-bold">${item.vType}</td>
+          <td class="py-3 px-3.5 font-bold">${item.transporter}</td>
           <td class="py-3 px-3.5 text-center">
-            <button onclick="deletePlanEntry('${item.deliveryNo}', ${idx})" class="text-rose-400 hover:text-rose-300 p-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+            <button onclick="deletePlanEntry('${item.deliveryNo}', ${idx})" class="text-rose-500 hover:text-rose-600 p-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
           </td>
         `;
         planTbody.appendChild(planRow);
 
         const repRow = document.createElement('tr');
-        repRow.className = 'hover:bg-white/5';
+        repRow.className = 'hover:bg-black/5 dark:hover:bg-white/5';
         repRow.innerHTML = `
           <td class="py-2.5 px-3 font-mono font-bold">${item.deliveryNo}</td>
           <td class="py-2.5 px-3 font-mono">${item.code}</td>
-          <td class="py-2.5 px-3 text-sky-400">${item.unit}</td>
-          <td class="py-2.5 px-3 font-bold text-slate-100">${item.destination}</td>
+          <td class="py-2.5 px-3 text-sky-600 dark:text-sky-400">${item.unit}</td>
+          <td class="py-2.5 px-3 font-bold">${item.destination}</td>
           <td class="py-2.5 px-3 text-right font-mono">${Number(item.weight).toFixed(2)}</td>
-          <td class="py-2.5 px-3 text-right font-mono text-sky-400">${Number(item.cft).toFixed(2)}</td>
+          <td class="py-2.5 px-3 text-right font-mono text-sky-600 dark:text-sky-400">${Number(item.cft).toFixed(2)}</td>
           <td class="py-2.5 px-3">${item.vType}</td>
           <td class="py-2.5 px-3 font-bold">${item.transporter}</td>
         `;
@@ -1619,27 +1697,27 @@
       if (count) count.innerText = `${securityLogs.length} Records`;
 
       if (securityLogs.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-slate-400 font-medium">No vehicle movements logged yet.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 opacity-60 font-medium">No vehicle movements logged yet.</td></tr>`;
         return;
       }
       tbody.innerHTML = '';
       securityLogs.forEach((item, idx) => {
         const tr = document.createElement('tr');
-        tr.className = 'hover:bg-white/5';
+        tr.className = 'hover:bg-black/5 dark:hover:bg-white/5';
         tr.innerHTML = `
           <td class="py-3 px-3">
-            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold ${item.purpose === 'Loading' ? 'bg-sky-500/15 text-sky-300 border border-sky-500/25' : 'bg-indigo-500/15 text-indigo-300 border border-indigo-500/25'}">
+            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold ${item.purpose === 'Loading' ? 'bg-sky-500/15 text-sky-700 dark:text-sky-300 border border-sky-500/25' : 'bg-indigo-500/15 text-indigo-700 dark:text-indigo-300 border border-indigo-500/25'}">
               ${item.purpose || 'Loading'}
             </span>
           </td>
-          <td class="py-3 px-3 font-bold text-slate-100 font-mono">${item.vehicle} <span class="text-[10px] text-slate-400 block">${item.vType || ''}</span></td>
-          <td class="py-3 px-3 text-slate-300">${item.transporter || '-'}</td>
-          <td class="py-3 px-3 text-sky-300 font-mono">${item.mobile || '-'}</td>
-          <td class="py-3 px-3 text-slate-300 font-semibold">${item.fromLoc || '-'} ➔ ${item.toLoc || '-'}</td>
-          <td class="py-3 px-3 font-mono text-slate-300 text-[11px]">${item.dateTime || '-'}</td>
-          <td class="py-3 px-3 text-slate-400 text-xs">${item.remarks || '-'}</td>
+          <td class="py-3 px-3 font-bold font-mono">${item.vehicle} <span class="text-[10px] opacity-70 block">${item.vType || ''}</span></td>
+          <td class="py-3 px-3">${item.transporter || '-'}</td>
+          <td class="py-3 px-3 text-sky-600 dark:text-sky-300 font-mono">${item.mobile || '-'}</td>
+          <td class="py-3 px-3 font-semibold">${item.fromLoc || '-'} ➔ ${item.toLoc || '-'}</td>
+          <td class="py-3 px-3 font-mono text-[11px]">${item.dateTime || '-'}</td>
+          <td class="py-3 px-3 text-xs opacity-80">${item.remarks || '-'}</td>
           <td class="py-3 px-3 text-center">
-            <button onclick="deleteGateEntry('${item.vehicle}', ${idx})" class="text-xs font-bold text-rose-400 hover:underline">Delete</button>
+            <button onclick="deleteGateEntry('${item.vehicle}', ${idx})" class="text-xs font-bold text-rose-500 hover:underline">Delete</button>
           </td>
         `;
         tbody.appendChild(tr);
@@ -1663,32 +1741,32 @@
       if (document.getElementById('kpiTrackDelayed')) document.getElementById('kpiTrackDelayed').innerText = delayed;
 
       if (trackingRecords.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="8" class="text-center py-10 text-slate-400">No vehicle tracking data loaded. Upload CSV/Excel master sheet above.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center py-10 opacity-60">No vehicle tracking data loaded. Upload CSV/Excel master sheet above.</td></tr>`;
         return;
       }
 
       tbody.innerHTML = '';
       trackingRecords.forEach((item, idx) => {
-        let badgeClass = "bg-sky-500/15 text-sky-400 border-sky-500/25";
-        if (item.status.includes("On-Time")) badgeClass = "bg-emerald-500/15 text-emerald-400 border-emerald-500/25";
-        if (item.status.includes("Delay")) badgeClass = "bg-rose-500/15 text-rose-400 border-rose-500/25";
+        let badgeClass = "bg-sky-500/15 text-sky-700 dark:text-sky-400 border-sky-500/25";
+        if (item.status.includes("On-Time")) badgeClass = "bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border-emerald-500/25";
+        if (item.status.includes("Delay")) badgeClass = "bg-rose-500/15 text-rose-700 dark:text-rose-400 border-rose-500/25";
 
         const tr = document.createElement('tr');
-        tr.className = 'hover:bg-white/5 transition';
+        tr.className = 'hover:bg-black/5 dark:hover:bg-white/5 transition';
         tr.innerHTML = `
-          <td class="py-3 px-4 font-mono font-bold text-slate-100">${item.vehicleNo}</td>
-          <td class="py-3 px-4 font-semibold text-slate-300">${item.transporter}</td>
-          <td class="py-3 px-4 font-bold text-sky-400">${item.origin} ➔ ${item.destination}</td>
-          <td class="py-3 px-4 font-mono text-slate-400">${item.dispatchDate}</td>
-          <td class="py-3 px-4 font-mono text-slate-300">${item.expectedDate}</td>
-          <td class="py-3 px-4 font-mono text-slate-300">${item.actualDelivery}</td>
+          <td class="py-3 px-4 font-mono font-bold">${item.vehicleNo}</td>
+          <td class="py-3 px-4 font-semibold">${item.transporter}</td>
+          <td class="py-3 px-4 font-bold text-sky-600 dark:text-sky-400">${item.origin} ➔ ${item.destination}</td>
+          <td class="py-3 px-4 font-mono opacity-80">${item.dispatchDate}</td>
+          <td class="py-3 px-4 font-mono">${item.expectedDate}</td>
+          <td class="py-3 px-4 font-mono">${item.actualDelivery}</td>
           <td class="py-3 px-4 text-center">
             <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${badgeClass}">
               ${item.status}
             </span>
           </td>
           <td class="py-3 px-4 text-center">
-            <button onclick="deleteTrackingEntry(${idx})" class="text-rose-400 hover:text-rose-300 p-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+            <button onclick="deleteTrackingEntry(${idx})" class="text-rose-500 hover:text-rose-600 p-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
           </td>
         `;
         tbody.appendChild(tr);
@@ -1699,7 +1777,7 @@
     function deletePlanEntry(delNo, idx) {
       if (confirm("Are you sure you want to delete this record?")) {
         planEntries.splice(idx, 1);
-        localStorage.setItem("ich_plan_v52", JSON.stringify(planEntries));
+        localStorage.setItem("ich_plan_v62", JSON.stringify(planEntries));
         renderAllTables();
         renderLiveDockCards();
         deleteRowFromCloud("Plan_Received", delNo);
@@ -1709,7 +1787,7 @@
     function deleteLoadEntry(vehNo, idx) {
       if (confirm("Are you sure you want to delete this operation record?")) {
         loadEntries.splice(idx, 1);
-        localStorage.setItem("ich_load_v52", JSON.stringify(loadEntries));
+        localStorage.setItem("ich_load_v62", JSON.stringify(loadEntries));
         renderLoadUnloadTable();
         renderLiveDockCards();
         deleteRowFromCloud("Loading_Unloading_Log", vehNo);
@@ -1719,7 +1797,7 @@
     function deleteGateEntry(vehNo, idx) {
       if (confirm("Are you sure you want to delete this gate record?")) {
         securityLogs.splice(idx, 1);
-        localStorage.setItem("ich_sec_v52", JSON.stringify(securityLogs));
+        localStorage.setItem("ich_sec_v62", JSON.stringify(securityLogs));
         renderSecurityTable();
         updateLinkedGateVehicleDropdown();
         deleteRowFromCloud("Gate_Security_Log", vehNo);
@@ -1729,7 +1807,7 @@
     function deleteTrackingEntry(idx) {
       if (confirm("Are you sure you want to delete this tracking record?")) {
         trackingRecords.splice(idx, 1);
-        localStorage.setItem("ich_tracking_v52", JSON.stringify(trackingRecords));
+        localStorage.setItem("ich_tracking_v62", JSON.stringify(trackingRecords));
         renderTrackingTable();
         renderGraphicAnalytics();
       }
@@ -1739,10 +1817,10 @@
       currentPeriod = period;
       document.querySelectorAll('.period-btn').forEach(b => {
         b.classList.remove('active-nav-btn');
-        b.classList.add('text-slate-400');
+        b.classList.add('opacity-70');
       });
       btn.classList.add('active-nav-btn');
-      btn.classList.remove('text-slate-400');
+      btn.classList.remove('opacity-70');
       renderGraphicAnalytics();
     }
 
@@ -1758,8 +1836,8 @@
       });
 
       const isDark = currentTheme === "dark";
-      const textColor = isDark ? '#94A3B8' : '#64748B';
-      const gridColor = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)';
+      const textColor = isDark ? '#94A3B8' : '#57534E';
+      const gridColor = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.06)';
 
       const ctxTransit = document.getElementById('transitTrendlineChart');
       if (ctxTransit) {
@@ -1914,7 +1992,7 @@
           });
 
           trackingRecords = parsedList;
-          localStorage.setItem("ich_tracking_v52", JSON.stringify(trackingRecords));
+          localStorage.setItem("ich_tracking_v62", JSON.stringify(trackingRecords));
           renderTrackingTable();
           renderGraphicAnalytics();
           alert(`Success! Loaded ${trackingRecords.length} tracking records.`);
@@ -1949,7 +2027,7 @@
           planEntries.unshift(newRec);
           pushBatchToCloud([newRec]);
         });
-        localStorage.setItem("ich_plan_v52", JSON.stringify(planEntries));
+        localStorage.setItem("ich_plan_v62", JSON.stringify(planEntries));
         renderAllTables();
         alert(`Success! Loaded ${rows.length} plan records.`);
       };
@@ -1994,9 +2072,7 @@
       };
 
       fetch(googleWebhookUrl, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'text/plain' },
+        method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify(emailPayload)
       }).then(() => {
         alert(`Success! Report dispatched to ${targetEmail}.`);
@@ -2009,9 +2085,7 @@
     function pushBatchToCloud(records) {
       if (!googleWebhookUrl) return;
       fetch(googleWebhookUrl, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'text/plain' },
+        method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify({ action: "SYNC_BATCH_PLAN", records: records })
       }).then(() => setTimeout(fetchCloudUpdates, 500));
     }
@@ -2019,9 +2093,7 @@
     function pushLoadUnloadToCloud(record) {
       if (!googleWebhookUrl) return;
       fetch(googleWebhookUrl, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'text/plain' },
+        method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify({ action: "SYNC_LOAD_UNLOAD", record: record })
       }).then(() => setTimeout(fetchCloudUpdates, 500));
     }
@@ -2029,9 +2101,7 @@
     function pushGateEntryToCloud(gateRecord) {
       if (!googleWebhookUrl) return;
       fetch(googleWebhookUrl, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'text/plain' },
+        method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify({ action: "SYNC_GATE_ENTRY", record: gateRecord })
       });
     }
@@ -2039,9 +2109,7 @@
     function deleteRowFromCloud(sheetName, identifier) {
       if (!googleWebhookUrl) return;
       fetch(googleWebhookUrl, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'text/plain' },
+        method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify({ action: "DELETE_ROW", sheetName: sheetName, identifier: identifier })
       }).then(() => setTimeout(fetchCloudUpdates, 500));
     }
@@ -2050,16 +2118,17 @@
       if (data && typeof data === 'object') {
         if (Array.isArray(data.planEntries)) {
           planEntries = data.planEntries;
-          localStorage.setItem("ich_plan_v52", JSON.stringify(planEntries));
+          localStorage.setItem("ich_plan_v62", JSON.stringify(planEntries));
         }
         if (Array.isArray(data.loadEntries)) {
           loadEntries = data.loadEntries;
-          localStorage.setItem("ich_load_v52", JSON.stringify(loadEntries));
+          localStorage.setItem("ich_load_v62", JSON.stringify(loadEntries));
         }
         if (Array.isArray(data.gateEntries)) {
           securityLogs = data.gateEntries;
-          localStorage.setItem("ich_sec_v52", JSON.stringify(securityLogs));
+          localStorage.setItem("ich_sec_v62", JSON.stringify(securityLogs));
         }
+        renderExecutiveDashboard();
         renderAllTables();
         renderLoadUnloadTable();
         renderSecurityTable();
@@ -2185,7 +2254,8 @@
       if (extractedRows.length === 0) return alert("No valid rows recognized from image.");
 
       extractedRows.forEach(r => planEntries.unshift(r));
-      localStorage.setItem("ich_plan_v52", JSON.stringify(planEntries));
+      localStorage.setItem("ich_plan_v62", JSON.stringify(planEntries));
+      renderExecutiveDashboard();
       renderAllTables();
       renderLiveDockCards();
       pushBatchToCloud(extractedRows);
@@ -2194,6 +2264,7 @@
 
     // INITIAL LOAD
     populateAllLocationDropdowns();
+    renderExecutiveDashboard();
     renderAllTables();
     renderLoadUnloadTable();
     renderSecurityTable();
