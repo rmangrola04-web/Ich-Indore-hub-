@@ -109,9 +109,7 @@
         </div>
         <h1 class="text-2xl font-black text-slate-100 tracking-tight">Integrated Central Hub Indore</h1>
         <div class="flex items-center justify-center gap-2">
-          <button type="button" onclick="toggleVersionModal(true)" class="text-[10px] bg-sky-500/15 text-sky-300 font-bold px-2.5 py-0.5 rounded-full border border-sky-400/25 hover:bg-sky-500/25 transition flex items-center gap-1">
-            <i data-lucide="history" class="w-3 h-3"></i> v5.1.0-ENGLISH
-          </button>
+          <span class="text-[10px] bg-sky-500/15 text-sky-300 font-bold px-2.5 py-0.5 rounded-full border border-sky-400/25">v5.2.0-LIVE</span>
           <span class="text-xs text-slate-400 font-semibold">Warehouse Management System</span>
         </div>
       </div>
@@ -129,7 +127,7 @@
 
         <div>
           <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5 ml-1">Username</label>
-          <input type="text" id="loginUser" placeholder="admin" required class="w-full app-input rounded-2xl p-3 text-xs font-semibold focus:outline-none">
+          <input type="text" id="loginUser" placeholder="e.g. admin or supervisor" required class="w-full app-input rounded-2xl p-3 text-xs font-semibold focus:outline-none">
         </div>
 
         <div>
@@ -151,32 +149,6 @@
           </button>
         </div>
       </form>
-    </div>
-  </div>
-
-  <!-- VERSION HISTORY MODAL -->
-  <div id="versionModal" class="fixed inset-0 bg-slate-950/75 backdrop-blur-xl z-50 hidden flex items-center justify-center p-4">
-    <div class="glass-panel rounded-[2.5rem] max-w-lg w-full p-6 shadow-2xl space-y-4 border border-white/10 max-h-[85vh] overflow-y-auto">
-      <div class="flex justify-between items-center pb-3 border-b border-white/10">
-        <h3 class="font-bold text-slate-100 text-sm flex items-center gap-2">
-          <i data-lucide="git-commit" class="w-4 h-4 text-sky-400"></i> WMS Version History & Changelog
-        </h3>
-        <button onclick="toggleVersionModal(false)" class="text-slate-400 hover:text-white p-1"><i data-lucide="x" class="w-4 h-4"></i></button>
-      </div>
-
-      <div class="space-y-3.5 text-xs text-slate-300">
-        <div class="p-3.5 rounded-2xl card-surface border border-sky-500/30 space-y-1">
-          <div class="flex justify-between items-center font-bold">
-            <span class="text-sky-400">v5.1.0 (Latest Release)</span>
-            <span class="text-[10px] text-slate-400">Today</span>
-          </div>
-          <ul class="list-disc list-inside text-slate-300 space-y-0.5 text-[11px]">
-            <li>100% Pure Professional English UI (all Hindi labels & placeholders removed).</li>
-            <li>Clean and streamlined Loading/Unloading & Security Gate Routing Handshake.</li>
-            <li>Soft Eye-Care Color Theme with Light/Dark Mode Toggle.</li>
-          </ul>
-        </div>
-      </div>
     </div>
   </div>
 
@@ -217,6 +189,32 @@
           Save & Register User
         </button>
       </form>
+    </div>
+  </div>
+
+  <!-- VERSION HISTORY MODAL -->
+  <div id="versionModal" class="fixed inset-0 bg-slate-950/75 backdrop-blur-xl z-50 hidden flex items-center justify-center p-4">
+    <div class="glass-panel rounded-[2.5rem] max-w-lg w-full p-6 shadow-2xl space-y-4 border border-white/10 max-h-[85vh] overflow-y-auto">
+      <div class="flex justify-between items-center pb-3 border-b border-white/10">
+        <h3 class="font-bold text-slate-100 text-sm flex items-center gap-2">
+          <i data-lucide="git-commit" class="w-4 h-4 text-sky-400"></i> WMS Version History & Changelog
+        </h3>
+        <button onclick="toggleVersionModal(false)" class="text-slate-400 hover:text-white p-1"><i data-lucide="x" class="w-4 h-4"></i></button>
+      </div>
+
+      <div class="space-y-3.5 text-xs text-slate-300">
+        <div class="p-3.5 rounded-2xl card-surface border border-sky-500/30 space-y-1">
+          <div class="flex justify-between items-center font-bold">
+            <span class="text-sky-400">v5.2.0 (Latest Release)</span>
+            <span class="text-[10px] text-slate-400">Today</span>
+          </div>
+          <ul class="list-disc list-inside text-slate-300 space-y-0.5 text-[11px]">
+            <li>Universal Cross-Device Authentication Engine (Instant Mobile + PC Login).</li>
+            <li>Real-time Cloud User Sync directly linked to Google Sheet Webhook.</li>
+            <li>All modules streamlined: 3-Phase Loading/Unloading, Gate Routing, Tracking SLA & Live Docks.</li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -275,7 +273,7 @@
 
       <div class="space-y-2 pt-4 border-t border-white/10">
         <button onclick="toggleVersionModal(true)" class="w-full px-3 py-1.5 card-surface hover:border-sky-500/40 rounded-xl text-[10px] text-sky-400 font-mono text-center font-bold flex items-center justify-center gap-1.5 transition">
-          <i data-lucide="history" class="w-3 h-3"></i> VERSION HISTORY (v5.1)
+          <i data-lucide="history" class="w-3 h-3"></i> VERSION HISTORY (v5.2)
         </button>
         <button onclick="logout()" class="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-2xl text-xs font-bold text-rose-400 hover:bg-rose-950/30 transition">
           <i data-lucide="log-out" class="w-4 h-4"></i>
@@ -293,10 +291,10 @@
           <div class="flex items-center gap-2">
             <h1 class="text-sm font-black text-slate-100 tracking-tight">Integrated Central Hub Indore</h1>
             <button onclick="toggleVersionModal(true)" class="bg-sky-500/15 text-sky-300 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-sky-400/30 hover:bg-sky-500/25 transition">
-              v5.1.0-PRO
+              v5.2.0-PRO
             </button>
           </div>
-          <p class="text-[11px] text-slate-400 font-medium">Warehouse Management System • Operations & Logistics Portal</p>
+          <p class="text-[11px] text-slate-400 font-medium">Warehouse Management System • Real-Time Cloud Sync Engine</p>
         </div>
 
         <div class="flex items-center gap-3">
@@ -432,7 +430,7 @@
                   </select>
                 </div>
 
-                <!-- POD INSPECTION (SHOWN FOR UNLOADING ONLY) -->
+                <!-- POD INSPECTION -->
                 <div id="unloadingInspectionField" class="hidden bg-emerald-950/30 p-3 rounded-2xl border border-emerald-500/30 space-y-1">
                   <label class="block text-[11px] font-bold text-emerald-400 mb-1 ml-1">
                     Unloading POD / Inspection Status *
@@ -444,7 +442,7 @@
                   </select>
                 </div>
 
-                <!-- ROUTE: DYNAMIC LOCATION DROPDOWNS -->
+                <!-- ROUTE -->
                 <div class="grid grid-cols-2 gap-2.5">
                   <div>
                     <label class="block text-[11px] font-bold text-slate-400 mb-1 ml-1">From (Origin)</label>
@@ -456,7 +454,7 @@
                   </div>
                 </div>
 
-                <!-- SELECT COMPANY / UNIT -> DOCK NO. AUTO-UPDATES (AHPL: Dock 1-4, AIL: Dock 5-9) -->
+                <!-- DOCKS -->
                 <div class="grid grid-cols-2 gap-2.5">
                   <div>
                     <label class="block text-[11px] font-bold text-slate-400 mb-1 ml-1">Company / Unit</label>
@@ -512,7 +510,7 @@
               </form>
             </div>
 
-            <!-- LIVE LOADING/UNLOADING DASHBOARD & EXIT / COMPLETION TABLE -->
+            <!-- LIVE DOCK OPERATIONS TABLE -->
             <div class="glass-panel p-6 rounded-[2rem] border border-white/10 shadow-xl lg:col-span-2 space-y-4">
               
               <div class="flex flex-wrap justify-between items-center gap-3">
@@ -584,8 +582,6 @@
               </div>
 
               <form id="securityGateForm" class="space-y-3">
-                
-                <!-- 1. TOP FIELD: PURPOSE -->
                 <div>
                   <label class="block text-[11px] font-extrabold text-sky-300 uppercase tracking-wider mb-1 ml-1">
                     Purpose *
@@ -597,7 +593,6 @@
                   </select>
                 </div>
 
-                <!-- 2. Vehicle No & Short Form Vehicle Type -->
                 <div class="grid grid-cols-2 gap-2.5">
                   <div>
                     <label class="block text-[11px] font-bold text-slate-400 mb-1 ml-1">Vehicle No. *</label>
@@ -618,7 +613,6 @@
                   </div>
                 </div>
 
-                <!-- 3. Driver Mobile & Transporter -->
                 <div class="grid grid-cols-2 gap-2.5">
                   <div>
                     <label class="block text-[11px] font-bold text-slate-400 mb-1 ml-1">Driver Mobile *</label>
@@ -634,13 +628,10 @@
                       <option value="MCM">MCM</option>
                       <option value="FLY GREEN">FLY GREEN</option>
                       <option value="VARUNA">VARUNA</option>
-                      <option value="JEET">JEET</option>
-                      <option value="OTHER">OTHER</option>
                     </select>
                   </div>
                 </div>
 
-                <!-- 4. From Location & To Location -->
                 <div class="grid grid-cols-2 gap-2.5">
                   <div>
                     <label class="block text-[11px] font-bold text-slate-400 mb-1 ml-1">From Location *</label>
@@ -652,7 +643,6 @@
                   </div>
                 </div>
 
-                <!-- 5. Date & Time -->
                 <div>
                   <div class="flex justify-between items-center mb-1">
                     <label class="block text-[11px] font-bold text-slate-400 ml-1">Date & Time</label>
@@ -663,20 +653,17 @@
                   <input type="text" id="secDateTime" placeholder="28/08/2026, 12:30:00 AM" required class="w-full app-input rounded-2xl p-2.5 text-xs font-mono">
                 </div>
 
-                <!-- 6. Remarks -->
                 <div>
                   <label class="block text-[11px] font-bold text-slate-400 mb-1 ml-1">Remarks</label>
-                  <input type="text" id="secRemarks" placeholder="Any special notes / Gate Remarks" class="w-full app-input rounded-2xl p-2.5 text-xs">
+                  <input type="text" id="secRemarks" placeholder="Gate Remarks" class="w-full app-input rounded-2xl p-2.5 text-xs">
                 </div>
 
-                <!-- Save Entry Button -->
                 <button type="submit" class="w-full bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white font-bold py-3 rounded-2xl text-xs transition mt-2 flex items-center justify-center gap-2 shadow-md">
                   <i data-lucide="check-circle" class="w-4 h-4"></i> Save Gate Entry & Sync
                 </button>
               </form>
             </div>
 
-            <!-- SECURITY GATE LIVE LOG TABLE -->
             <div class="glass-panel p-6 rounded-[2rem] border border-white/10 lg:col-span-2">
               <div class="flex flex-wrap justify-between items-center mb-4 gap-2">
                 <h3 class="text-sm font-black text-slate-100 flex items-center gap-2">
@@ -755,7 +742,6 @@
               </div>
             </div>
 
-            <!-- Tracking Table -->
             <div class="overflow-x-auto rounded-3xl card-surface border border-white/10">
               <table class="w-full text-left text-xs whitespace-nowrap">
                 <thead class="bg-slate-800/80 text-slate-300 uppercase font-bold border-b border-white/10">
@@ -779,7 +765,7 @@
           </div>
         </section>
 
-        <!-- MODULE 6: REPORTS, CENTRAL MASTER IMPORTER & GRAPHIC ANALYSIS HUB -->
+        <!-- MODULE 6: REPORTS & GRAPHIC ANALYSIS HUB -->
         <section id="reportsView" class="view-panel hidden space-y-6">
           
           <div class="glass-panel p-6 rounded-[2rem] border border-white/10">
@@ -853,7 +839,6 @@
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <!-- CHART 1: VEHICLE TRANSIT SLA & DELAY TRENDLINE -->
               <div class="card-surface p-5 rounded-3xl border border-white/10 space-y-3 shadow-xs">
                 <div class="flex justify-between items-center">
                   <h3 class="text-xs font-extrabold text-rose-400 uppercase tracking-wider flex items-center gap-2">
@@ -866,7 +851,6 @@
                 </div>
               </div>
 
-              <!-- CHART 2: DISPATCH WEIGHT & VOLUME TREND -->
               <div class="card-surface p-5 rounded-3xl border border-white/10 space-y-3 shadow-xs">
                 <div class="flex justify-between items-center">
                   <h3 class="text-xs font-extrabold text-sky-400 uppercase tracking-wider flex items-center gap-2">
@@ -879,7 +863,6 @@
                 </div>
               </div>
 
-              <!-- CHART 3: VEHICLE FLEET DISTRIBUTION -->
               <div class="card-surface p-5 rounded-3xl border border-white/10 space-y-3 shadow-xs">
                 <div class="flex justify-between items-center">
                   <h3 class="text-xs font-extrabold text-indigo-400 uppercase tracking-wider flex items-center gap-2">
@@ -892,7 +875,6 @@
                 </div>
               </div>
 
-              <!-- CHART 4: TRANSPORTER SHARE -->
               <div class="card-surface p-5 rounded-3xl border border-white/10 space-y-3 shadow-xs">
                 <div class="flex justify-between items-center">
                   <h3 class="text-xs font-extrabold text-emerald-400 uppercase tracking-wider flex items-center gap-2">
@@ -943,13 +925,14 @@
     </button>
   </div>
 
-  <!-- JAVASCRIPT LOGIC -->
+  <!-- JAVASCRIPT LOGIC & CROSS-DEVICE AUTH ENGINE -->
   <script>
     lucide.createIcons();
 
     const HARDCODED_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbwoq5qyOeJda-fUdnz9JkmRiJrPNU6ogq4A0d9yj_lAZmKG0eY3qyYVIYnj0Xh2Mw2w/exec";
     let googleWebhookUrl = HARDCODED_WEBHOOK_URL;
 
+    // THEME ENGINE
     let currentTheme = localStorage.getItem("ich_theme_mode") || "dark";
     function applyTheme(theme) {
       const htmlEl = document.documentElement;
@@ -983,14 +966,15 @@
     }
     applyTheme(currentTheme);
 
-    const builtInUsers = [
+    // DEFAULT BUILT-IN CREDENTIALS
+    const defaultCredentials = [
       { user: 'admin', pass: 'admin123', role: 'ADMIN', name: 'Admin Officer' },
       { user: 'supervisor', pass: 'super123', role: 'SUPERVISOR', name: 'Duty Supervisor' },
       { user: 'security', pass: 'gate123', role: 'SECURITY', name: 'Gate Security' },
       { user: 'operator', pass: 'op123', role: 'OPERATOR', name: 'Dock Operator' }
     ];
 
-    let registeredUsers = JSON.parse(localStorage.getItem("ich_registered_users")) || [];
+    let registeredUsers = JSON.parse(localStorage.getItem("ich_registered_users_list")) || defaultCredentials;
     let currentLoggedInRole = localStorage.getItem("ich_active_role") || null;
     let currentLoggedInUser = localStorage.getItem("ich_active_user") || "Duty User";
 
@@ -1000,10 +984,10 @@
     ];
     let masterLocations = JSON.parse(localStorage.getItem("ich_master_locations")) || defaultLocations;
 
-    let planEntries = JSON.parse(localStorage.getItem("ich_plan_v51")) || [];
-    let loadEntries = JSON.parse(localStorage.getItem("ich_load_v51")) || [];
-    let securityLogs = JSON.parse(localStorage.getItem("ich_sec_v51")) || [];
-    let trackingRecords = JSON.parse(localStorage.getItem("ich_tracking_v51")) || [];
+    let planEntries = JSON.parse(localStorage.getItem("ich_plan_v52")) || [];
+    let loadEntries = JSON.parse(localStorage.getItem("ich_load_v52")) || [];
+    let securityLogs = JSON.parse(localStorage.getItem("ich_sec_v52")) || [];
+    let trackingRecords = JSON.parse(localStorage.getItem("ich_tracking_v52")) || [];
 
     let currentPeriod = 'daily';
     let chartTrend = null, chartFleet = null, chartTransporter = null, chartTransitTrend = null;
@@ -1018,6 +1002,150 @@
       const modal = document.getElementById('versionModal');
       if (show) modal.classList.remove('hidden');
       else modal.classList.add('hidden');
+    }
+
+    function toggleRegisterModal(show) {
+      const modal = document.getElementById('registerModal');
+      if (show) modal.classList.remove('hidden');
+      else modal.classList.add('hidden');
+    }
+
+    // UNIVERSAL FAIL-SAFE LOGIN LOGIC (Simultaneous Multi-Device Support)
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const inputUser = document.getElementById('loginUser').value.trim().toLowerCase();
+      const inputPass = document.getElementById('loginPass').value.trim();
+      const inputRole = document.getElementById('loginRole').value;
+      const err = document.getElementById('loginError');
+
+      // Check registered users list (or default)
+      let matched = registeredUsers.find(u => 
+        u.user.toLowerCase() === inputUser && u.pass === inputPass
+      );
+
+      // Fallback check on built-in users
+      if (!matched) {
+        matched = defaultCredentials.find(u => 
+          u.user.toLowerCase() === inputUser && u.pass === inputPass
+        );
+      }
+
+      if (matched) {
+        err.classList.add('hidden');
+        const assignedRole = inputUser === 'admin' ? 'ADMIN' : (matched.role || inputRole);
+        const assignedName = matched.name || inputUser;
+
+        currentLoggedInRole = assignedRole;
+        currentLoggedInUser = assignedName;
+
+        localStorage.setItem("ich_active_role", assignedRole);
+        localStorage.setItem("ich_active_user", assignedName);
+        applyRolePermissions(assignedRole, assignedName);
+      } else {
+        err.classList.remove('hidden');
+      }
+    });
+
+    // NEW USER ACCOUNT CREATION WITH CLOUD SYNC
+    document.getElementById('registerForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = document.getElementById('regFullName').value.trim();
+      const role = document.getElementById('regRole').value;
+      const user = document.getElementById('regUser').value.trim().toLowerCase();
+      const pass = document.getElementById('regPass').value.trim();
+
+      const newUserObj = { user: user, pass: pass, role: role, name: name };
+      
+      registeredUsers.push(newUserObj);
+      localStorage.setItem("ich_registered_users_list", JSON.stringify(registeredUsers));
+
+      // Sync Account to Google Sheet Webhook
+      if (googleWebhookUrl) {
+        fetch(googleWebhookUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain' },
+          body: JSON.stringify({ action: "SYNC_NEW_USER", userRecord: newUserObj })
+        });
+      }
+
+      alert(`Account created successfully!\nUsername: ${user}\nRole: ${role}\nYou can now login immediately on mobile or PC.`);
+      toggleRegisterModal(false);
+      this.reset();
+    });
+
+    function applyRolePermissions(role, name) {
+      document.getElementById('loginScreen').classList.add('hidden');
+      document.getElementById('mainApp').classList.remove('hidden');
+
+      document.getElementById('userBadgeName').innerText = name || role;
+      document.getElementById('userBadgeRole').innerText = role;
+      
+      const initials = role ? role.substring(0,3).toUpperCase() : "ICH";
+      document.getElementById('userAvatar').innerText = initials;
+
+      const navSecBtn = document.getElementById('navSecBtn');
+      if (role === 'SECURITY') {
+        switchView('gateSecView', navSecBtn);
+      } else {
+        switchView('planView', document.querySelectorAll('.sidebar-item')[0]);
+      }
+
+      populateAllLocationDropdowns();
+      updateDockOptions();
+      handleSecurityRouteChange();
+      handleSupervisorOpChange();
+      updateLinkedGateVehicleDropdown();
+      autoPickCurrentDateTime();
+      renderAllTables();
+      renderLoadUnloadTable();
+      renderSecurityTable();
+      renderTrackingTable();
+      renderLiveDockCards();
+      renderGraphicAnalytics();
+      fetchCloudUpdates();
+      lucide.createIcons();
+    }
+
+    function logout() {
+      localStorage.removeItem("ich_active_role");
+      localStorage.removeItem("ich_active_user");
+      currentLoggedInRole = null;
+      document.getElementById('loginPass').value = '';
+      document.getElementById('mainApp').classList.add('hidden');
+      document.getElementById('loginScreen').classList.remove('hidden');
+    }
+
+    if (currentLoggedInRole) {
+      applyRolePermissions(currentLoggedInRole, currentLoggedInUser);
+    }
+
+    function updateClock() {
+      const now = new Date();
+      document.getElementById('liveClock').innerText = now.toLocaleTimeString('en-IN', { 
+        hour: '2-digit', minute: '2-digit', second: '2-digit' 
+      });
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    function switchView(viewId, btn) {
+      document.querySelectorAll('.view-panel').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active-nav-btn'));
+
+      const targetView = document.getElementById(viewId);
+      if (targetView) targetView.classList.remove('hidden');
+      if (btn && btn.classList.contains('sidebar-item')) btn.classList.add('active-nav-btn');
+
+      if (viewId === 'gateSecView') autoPickCurrentDateTime();
+      if (viewId === 'loadUnloadView') {
+        updateDockOptions();
+        handleSupervisorOpChange();
+        updateLinkedGateVehicleDropdown();
+      }
+      if (viewId === 'trackingView') renderTrackingTable();
+      if (viewId === 'reportsView') setTimeout(renderGraphicAnalytics, 100);
+      lucide.createIcons();
     }
 
     function autoPickStartTime() {
@@ -1051,9 +1179,7 @@
             }
           });
 
-          if (newLocs.length <= 1) {
-            return alert("No valid locations found in file.");
-          }
+          if (newLocs.length <= 1) return alert("No valid locations found in file.");
 
           masterLocations = newLocs;
           localStorage.setItem("ich_master_locations", JSON.stringify(masterLocations));
@@ -1207,7 +1333,7 @@
       };
 
       loadEntries.unshift(newOp);
-      localStorage.setItem("ich_load_v51", JSON.stringify(loadEntries));
+      localStorage.setItem("ich_load_v52", JSON.stringify(loadEntries));
       renderLoadUnloadTable();
       renderLiveDockCards();
       pushLoadUnloadToCloud(newOp);
@@ -1243,7 +1369,7 @@
       item.duration = durText;
       item.status = item.opType === 'LOADING' ? 'LOADED' : 'UNLOADED';
 
-      localStorage.setItem("ich_load_v51", JSON.stringify(loadEntries));
+      localStorage.setItem("ich_load_v52", JSON.stringify(loadEntries));
       renderLoadUnloadTable();
       renderLiveDockCards();
       pushLoadUnloadToCloud(item);
@@ -1267,7 +1393,7 @@
       };
 
       securityLogs.unshift(newSec);
-      localStorage.setItem("ich_sec_v51", JSON.stringify(securityLogs));
+      localStorage.setItem("ich_sec_v52", JSON.stringify(securityLogs));
       renderSecurityTable();
       updateLinkedGateVehicleDropdown();
       pushGateEntryToCloud(newSec);
@@ -1573,7 +1699,7 @@
     function deletePlanEntry(delNo, idx) {
       if (confirm("Are you sure you want to delete this record?")) {
         planEntries.splice(idx, 1);
-        localStorage.setItem("ich_plan_v51", JSON.stringify(planEntries));
+        localStorage.setItem("ich_plan_v52", JSON.stringify(planEntries));
         renderAllTables();
         renderLiveDockCards();
         deleteRowFromCloud("Plan_Received", delNo);
@@ -1583,7 +1709,7 @@
     function deleteLoadEntry(vehNo, idx) {
       if (confirm("Are you sure you want to delete this operation record?")) {
         loadEntries.splice(idx, 1);
-        localStorage.setItem("ich_load_v51", JSON.stringify(loadEntries));
+        localStorage.setItem("ich_load_v52", JSON.stringify(loadEntries));
         renderLoadUnloadTable();
         renderLiveDockCards();
         deleteRowFromCloud("Loading_Unloading_Log", vehNo);
@@ -1593,7 +1719,7 @@
     function deleteGateEntry(vehNo, idx) {
       if (confirm("Are you sure you want to delete this gate record?")) {
         securityLogs.splice(idx, 1);
-        localStorage.setItem("ich_sec_v51", JSON.stringify(securityLogs));
+        localStorage.setItem("ich_sec_v52", JSON.stringify(securityLogs));
         renderSecurityTable();
         updateLinkedGateVehicleDropdown();
         deleteRowFromCloud("Gate_Security_Log", vehNo);
@@ -1603,7 +1729,7 @@
     function deleteTrackingEntry(idx) {
       if (confirm("Are you sure you want to delete this tracking record?")) {
         trackingRecords.splice(idx, 1);
-        localStorage.setItem("ich_tracking_v51", JSON.stringify(trackingRecords));
+        localStorage.setItem("ich_tracking_v52", JSON.stringify(trackingRecords));
         renderTrackingTable();
         renderGraphicAnalytics();
       }
@@ -1788,7 +1914,7 @@
           });
 
           trackingRecords = parsedList;
-          localStorage.setItem("ich_tracking_v51", JSON.stringify(trackingRecords));
+          localStorage.setItem("ich_tracking_v52", JSON.stringify(trackingRecords));
           renderTrackingTable();
           renderGraphicAnalytics();
           alert(`Success! Loaded ${trackingRecords.length} tracking records.`);
@@ -1823,7 +1949,7 @@
           planEntries.unshift(newRec);
           pushBatchToCloud([newRec]);
         });
-        localStorage.setItem("ich_plan_v51", JSON.stringify(planEntries));
+        localStorage.setItem("ich_plan_v52", JSON.stringify(planEntries));
         renderAllTables();
         alert(`Success! Loaded ${rows.length} plan records.`);
       };
@@ -1844,6 +1970,39 @@
       const body = planEntries.map(i => [i.deliveryNo, i.code, i.unit, i.destination, Number(i.weight).toFixed(2), Number(i.cft).toFixed(2), i.vType, i.transporter]);
       doc.autoTable({ startY: 18, head: [['Delivery No.', 'Code', 'Unit', 'Destination', 'Weight', 'CFT', 'Vehicle Type', 'Transporter']], body: body });
       doc.save(`ICH_Indore_Report_${new Date().toISOString().split('T')[0]}.pdf`);
+    }
+
+    function sendReportToEmailPrompt() {
+      if (planEntries.length === 0 && loadEntries.length === 0 && securityLogs.length === 0) {
+        return alert("No data available to dispatch via email.");
+      }
+      const targetEmail = prompt("Enter email address to send report:", "rmangrola04@gmail.com");
+      if (!targetEmail || !targetEmail.includes("@")) {
+        return alert("Please enter a valid email address.");
+      }
+
+      if (!googleWebhookUrl) return alert("Webhook URL not found.");
+
+      const emailPayload = {
+        action: "SEND_EMAIL_REPORT",
+        email: targetEmail.trim(),
+        totalPlans: planEntries.length,
+        totalLoading: loadEntries.length,
+        totalGateMovements: securityLogs.length,
+        timestamp: new Date().toLocaleString('en-IN'),
+        records: planEntries.slice(0, 50)
+      };
+
+      fetch(googleWebhookUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify(emailPayload)
+      }).then(() => {
+        alert(`Success! Report dispatched to ${targetEmail}.`);
+      }).catch(() => {
+        alert("Error sending email.");
+      });
     }
 
     // 2-WAY REALTIME SYNC ENGINE
@@ -1891,15 +2050,15 @@
       if (data && typeof data === 'object') {
         if (Array.isArray(data.planEntries)) {
           planEntries = data.planEntries;
-          localStorage.setItem("ich_plan_v51", JSON.stringify(planEntries));
+          localStorage.setItem("ich_plan_v52", JSON.stringify(planEntries));
         }
         if (Array.isArray(data.loadEntries)) {
           loadEntries = data.loadEntries;
-          localStorage.setItem("ich_load_v51", JSON.stringify(loadEntries));
+          localStorage.setItem("ich_load_v52", JSON.stringify(loadEntries));
         }
         if (Array.isArray(data.gateEntries)) {
           securityLogs = data.gateEntries;
-          localStorage.setItem("ich_sec_v51", JSON.stringify(securityLogs));
+          localStorage.setItem("ich_sec_v52", JSON.stringify(securityLogs));
         }
         renderAllTables();
         renderLoadUnloadTable();
@@ -2026,7 +2185,7 @@
       if (extractedRows.length === 0) return alert("No valid rows recognized from image.");
 
       extractedRows.forEach(r => planEntries.unshift(r));
-      localStorage.setItem("ich_plan_v51", JSON.stringify(planEntries));
+      localStorage.setItem("ich_plan_v52", JSON.stringify(planEntries));
       renderAllTables();
       renderLiveDockCards();
       pushBatchToCloud(extractedRows);
