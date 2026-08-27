@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AHPL & AIL - Plan Received & Dispatch Portal</title>
+  <title>Integrated Central Hub Indore - Warehouse Management System</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Lucide Icons -->
@@ -51,22 +51,22 @@
 </head>
 <body class="font-sans min-h-screen flex flex-col selection:bg-slate-300 selection:text-slate-900 pb-16 md:pb-0">
 
-  <!-- 1. AUTHENTICATION (LOGIN & REGISTRATION) -->
-  <div id="loginScreen" class="fixed inset-0 bg-slate-900/40 backdrop-blur-md z-50 flex items-center justify-center p-4">
+  <!-- 1. AUTHENTICATION SCREEN (INTEGRATED CENTRAL HUB INDORE) -->
+  <div id="loginScreen" class="fixed inset-0 bg-slate-900/50 backdrop-blur-md z-50 flex items-center justify-center p-4">
     <div class="glass-glacier rounded-3xl max-w-md w-full p-8 shadow-2xl space-y-5 border border-slate-300">
       
       <div class="text-center space-y-1.5">
         <div class="inline-flex p-3 bg-slate-800 rounded-2xl text-slate-100 mb-1 shadow-md shadow-slate-300">
-          <i data-lucide="shield-check" class="w-7 h-7"></i>
+          <i data-lucide="warehouse" class="w-7 h-7"></i>
         </div>
-        <h1 class="text-2xl font-black text-slate-900 tracking-tight">AHPL & AIL Logistics</h1>
-        <div class="flex items-center justify-center gap-2">
-          <span class="text-[11px] bg-slate-200 text-slate-800 font-mono font-bold px-2 py-0.5 rounded-md" id="appVersionBadge">v2.7.0-LIVE</span>
-          <span class="text-xs text-slate-500 font-medium">Plan Received Portal</span>
+        <h1 class="text-2xl font-black text-slate-900 tracking-tight leading-tight">Integrated Central Hub Indore</h1>
+        <div class="flex items-center justify-center gap-2 pt-0.5">
+          <span class="text-[11px] bg-slate-200 text-slate-800 font-mono font-bold px-2 py-0.5 rounded-md">v3.0.0-LIVE</span>
+          <span class="text-xs text-slate-600 font-bold tracking-wide">Warehouse Management System</span>
         </div>
       </div>
 
-      <form id="loginForm" class="space-y-3.5">
+      <form id="loginForm" class="space-y-3.5 pt-2">
         <div>
           <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Select Role</label>
           <select id="loginRole" class="w-full input-glacier rounded-xl p-2.5 text-xs font-semibold">
@@ -79,7 +79,7 @@
 
         <div>
           <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Username</label>
-          <input type="text" id="loginUser" placeholder="Enter Username" required class="w-full input-glacier rounded-xl p-2.5 text-xs focus:outline-none">
+          <input type="text" id="loginUser" placeholder="Enter Username (e.g. admin)" required class="w-full input-glacier rounded-xl p-2.5 text-xs focus:outline-none font-semibold">
         </div>
 
         <div>
@@ -88,14 +88,14 @@
         </div>
 
         <div id="loginError" class="text-xs text-rose-700 font-semibold hidden bg-rose-50 p-2.5 rounded-xl border border-rose-200">
-          Invalid username or password for selected role.
+          Invalid username or password. Default: admin / admin123
         </div>
 
         <button type="submit" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-2.5 rounded-xl text-xs transition shadow-sm flex items-center justify-center gap-2">
           <i data-lucide="log-in" class="w-4 h-4"></i> Secure Login
         </button>
 
-        <div class="text-center pt-2">
+        <div class="text-center pt-1">
           <button type="button" onclick="toggleRegisterModal(true)" class="text-xs text-slate-600 hover:text-slate-900 font-semibold underline">
             + Create New User Account
           </button>
@@ -144,7 +144,7 @@
     </div>
   </div>
 
-  <!-- 2. MAIN APPLICATION -->
+  <!-- 2. MAIN WORKSPACE -->
   <div id="mainApp" class="hidden flex-1 flex">
 
     <!-- Left Sidebar (Desktop Only) -->
@@ -153,7 +153,7 @@
         
         <div class="bg-white p-3.5 rounded-2xl border border-slate-300 shadow-sm flex items-center gap-3">
           <div class="w-10 h-10 rounded-xl bg-slate-800 text-slate-100 flex items-center justify-center font-bold text-sm shadow-inner" id="userAvatar">
-            OP
+            ICH
           </div>
           <div class="overflow-hidden">
             <h2 class="text-xs font-bold text-slate-900 truncate" id="userBadgeName">Active Session</h2>
@@ -167,7 +167,7 @@
           <div class="space-y-1">
             <button onclick="switchView('planView', this)" class="sidebar-item active-nav w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-700 hover:bg-white/70 transition">
               <i data-lucide="clipboard-list" class="w-4 h-4 text-slate-700"></i>
-              <span>Plan Summary & Received</span>
+              <span>Single Vehicle Summary</span>
             </button>
 
             <button onclick="switchView('dockOpsView', this)" class="sidebar-item w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-700 hover:bg-white/70 transition">
@@ -177,7 +177,7 @@
 
             <button onclick="switchView('liveDocksView', this)" class="sidebar-item w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-700 hover:bg-white/70 transition">
               <i data-lucide="grid" class="w-4 h-4 text-slate-700"></i>
-              <span>Live Docks (1–9)</span>
+              <span>Live Bays (1–9)</span>
             </button>
 
             <button id="navSecBtn" onclick="switchView('gateSecView', this)" class="sidebar-item w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-700 hover:bg-white/70 transition">
@@ -196,31 +196,26 @@
 
       <div class="space-y-1.5 pt-4 border-t border-slate-300">
         <div class="px-3 py-1 bg-slate-200 rounded-lg text-[10px] text-slate-600 font-mono text-center font-bold">
-          BUILD: <span id="sidebarBuildNo">v2.7.0</span>
+          BUILD: <span>v3.0.0</span>
         </div>
-        <button onclick="openSyncSettings()" class="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50 border border-slate-300 transition shadow-xs">
-          <i data-lucide="cloud" class="w-3.5 h-3.5 text-emerald-600"></i>
-          <span>Live 2-Way Sync Status</span>
-        </button>
-
-        <button onclick="logout()" class="w-full flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold text-rose-600 hover:bg-rose-50 transition">
+        <button onclick="logout()" class="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-rose-600 hover:bg-rose-50 transition">
           <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
           <span>Logout</span>
         </button>
       </div>
     </aside>
 
-    <!-- Main Workspace Column -->
+    <!-- Main Content Area -->
     <div class="flex-1 flex flex-col min-w-0">
 
-      <!-- Top Header -->
+      <!-- Header -->
       <header class="bg-white border-b border-slate-200 px-4 md:px-8 py-3.5 flex justify-between items-center sticky top-0 z-30">
         <div>
           <div class="flex items-center gap-2">
-            <h1 class="text-sm font-bold text-slate-900 tracking-tight">Plan Received Operations</h1>
-            <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded border border-emerald-300" id="liveVersionTag">v2.7.0</span>
+            <h1 class="text-sm font-bold text-slate-900 tracking-tight">Integrated Central Hub Indore</h1>
+            <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded border border-emerald-300">v3.0.0 Live</span>
           </div>
-          <p class="text-[11px] text-slate-500 font-medium">Real-time Multi-Device Sync Active</p>
+          <p class="text-[11px] text-slate-500 font-medium">Warehouse Management System • Real-Time Simultaneous Sync</p>
         </div>
 
         <div class="flex items-center gap-3">
@@ -231,81 +226,85 @@
         </div>
       </header>
 
-      <!-- Dynamic Views -->
+      <!-- Main Views -->
       <main class="p-4 md:p-8 space-y-6 flex-1">
 
-        <!-- VIEW 1: PLAN RECEIVED & LOCATION/VEHICLE WISE SUMMARY -->
+        <!-- VIEW 1: COMBINED SINGLE VEHICLE SUMMARY & RAW BREAKUP -->
         <section id="planView" class="view-panel space-y-6">
           <div class="glass-glacier p-4 md:p-6 rounded-3xl border border-slate-200 space-y-6">
             
             <div class="flex flex-wrap justify-between items-center gap-4 pb-3 border-b border-slate-200">
               <div>
                 <h2 class="text-sm font-bold text-slate-900 flex items-center gap-2">
-                  <i data-lucide="clipboard-list" class="w-4 h-4 text-slate-700"></i> Plan Received AHPL & AIL
+                  <i data-lucide="truck" class="w-4 h-4 text-indigo-600"></i> Single Vehicle Combined Dispatch Plan
                 </h2>
-                <p class="text-xs text-slate-500">फोटो खींचते ही पूरी शीट की सभी पंक्तियाँ समराइज हो जाएँगी</p>
+                <p class="text-xs text-slate-500">Destination Wise AHPL + AIL Combined Single Vehicle Summary</p>
               </div>
 
               <div class="flex items-center gap-2">
                 <label class="bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold px-4 py-2.5 rounded-xl flex items-center gap-2 shadow-sm cursor-pointer transition">
-                  <i data-lucide="camera" class="w-4 h-4 text-emerald-400"></i> Scan Full Plan (Photo)
+                  <i data-lucide="camera" class="w-4 h-4 text-emerald-400"></i> Scan Plan Photo
                   <input type="file" id="planCameraInput" accept="image/*" capture="environment" onchange="scanPlanImage(event)" class="hidden">
                 </label>
                 <div id="ocrSpinner" class="hidden text-xs text-slate-800 font-semibold flex items-center gap-1.5 animate-pulse bg-slate-200 px-3 py-2 rounded-xl border border-slate-300">
-                  <i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Reading Rows & Summarizing...
+                  <i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Reading Plan & Combining Vehicles...
                 </div>
               </div>
             </div>
 
-            <!-- 1. LOCATION & VEHICLE WISE SUMMARIZED TABLE -->
+            <!-- 1. TOP SINGLE VEHICLE COMBINED SUMMARY -->
             <div class="space-y-2">
               <div class="flex justify-between items-center">
                 <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
-                  <i data-lucide="layers" class="w-3.5 h-3.5 text-indigo-600"></i> Station & Vehicle Wise Summary
+                  <i data-lucide="layers" class="w-3.5 h-3.5 text-indigo-600"></i> Consolidated Single Vehicle Load (Main Screen)
                 </h3>
-                <span class="text-[11px] text-slate-500 font-semibold" id="summaryGroupCount">0 Groups</span>
+                <span class="text-[11px] text-slate-500 font-semibold" id="summaryGroupCount">0 Vehicles</span>
               </div>
-              <div class="overflow-x-auto rounded-2xl border border-slate-200">
+              <div class="overflow-x-auto rounded-2xl border border-slate-300 shadow-xs">
                 <table class="w-full text-left text-xs whitespace-nowrap">
-                  <thead class="bg-slate-100 text-slate-800 uppercase font-black border-b border-slate-300">
+                  <thead class="bg-slate-900 text-white uppercase font-bold">
                     <tr>
-                      <th class="py-2.5 px-3">Location / Station</th>
-                      <th class="py-2.5 px-3">Vehicle Type</th>
-                      <th class="py-2.5 px-3">Transporter</th>
-                      <th class="py-2.5 px-3 text-center">Total Deliveries</th>
-                      <th class="py-2.5 px-3 text-right">Total Weight (Kg)</th>
-                      <th class="py-2.5 px-3 text-right">Total CFT</th>
-                      <th class="py-2.5 px-3 text-center">Status</th>
+                      <th class="py-3 px-3.5">Destination / Station</th>
+                      <th class="py-3 px-3.5">Transporter</th>
+                      <th class="py-3 px-3.5">Vehicle Type</th>
+                      <th class="py-3 px-3.5 text-center">Combined Deliveries</th>
+                      <th class="py-3 px-3.5 text-right">Total Vehicle Wt (Kg)</th>
+                      <th class="py-3 px-3.5 text-right">Total Vehicle CFT</th>
+                      <th class="py-3 px-3.5 text-center">Status</th>
                     </tr>
                   </thead>
-                  <tbody id="summaryTableBody" class="divide-y divide-slate-200 bg-white">
-                    <tr><td colspan="7" class="text-center py-6 text-slate-400 font-medium">No summarized plan yet. Scan photo above.</td></tr>
+                  <tbody id="summaryTableBody" class="divide-y divide-slate-200 bg-white font-medium">
+                    <tr><td colspan="7" class="text-center py-6 text-slate-400">No consolidated vehicle summary. Scan plan photo.</td></tr>
                   </tbody>
                 </table>
               </div>
             </div>
 
-            <!-- 2. DETAILED DELIVERIES TABLE (ALL ROWS) -->
+            <!-- 2. DETAILED BREAKUP TABLE (RAW ITEMS) -->
             <div class="space-y-2 pt-2">
-              <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
-                <i data-lucide="list" class="w-3.5 h-3.5 text-slate-600"></i> Detailed Delivery Breakup
-              </h3>
+              <div class="flex justify-between items-center">
+                <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
+                  <i data-lucide="list" class="w-3.5 h-3.5 text-slate-600"></i> Detailed Scanned Breakup (Delivery Wise Items)
+                </h3>
+                <span class="text-[11px] text-slate-500 font-semibold" id="detailedRowCount">0 Items</span>
+              </div>
               <div class="overflow-x-auto rounded-2xl border border-slate-200">
                 <table class="w-full text-left text-xs whitespace-nowrap">
-                  <thead class="bg-slate-50 text-slate-700 uppercase font-bold border-b border-slate-200">
+                  <thead class="bg-slate-100 text-slate-700 uppercase font-bold border-b border-slate-200">
                     <tr>
                       <th class="py-2.5 px-3">Delivery No.</th>
                       <th class="py-2.5 px-3">Code</th>
+                      <th class="py-2.5 px-3">Unit</th>
                       <th class="py-2.5 px-3">Destination</th>
                       <th class="py-2.5 px-3 text-right">Weight (Kg)</th>
                       <th class="py-2.5 px-3 text-right">CFT</th>
                       <th class="py-2.5 px-3">Vehicle Type</th>
-                      <th class="py-2.5 px-3">Transporter Name</th>
+                      <th class="py-2.5 px-3">Transporter</th>
                       <th class="py-2.5 px-3 text-center">Action</th>
                     </tr>
                   </thead>
                   <tbody id="planTableBody" class="divide-y divide-slate-200 bg-white">
-                    <tr><td colspan="8" class="text-center py-8 text-slate-400 font-medium">No detailed plan data loaded.</td></tr>
+                    <tr><td colspan="9" class="text-center py-8 text-slate-400 font-medium">No detailed plan data loaded.</td></tr>
                   </tbody>
                 </table>
               </div>
@@ -331,24 +330,22 @@
                   </div>
                   <div>
                     <label class="block text-xs font-semibold text-slate-600 mb-1">Code</label>
-                    <input type="text" id="codeNo" placeholder="e.g. 1407" required class="w-full input-glacier rounded-xl p-2 text-xs font-mono font-bold">
+                    <input type="text" id="codeNo" placeholder="1407 or 7422" oninput="autoDetectUnitByCode(this.value)" required class="w-full input-glacier rounded-xl p-2 text-xs font-mono font-bold">
                   </div>
                 </div>
 
-                <!-- 100% MANUAL TEXT DESTINATION -->
                 <div>
                   <label class="block text-xs font-semibold text-slate-600 mb-1">Destination Location (Station)</label>
-                  <input type="text" id="destination" placeholder="Enter Station Name manually" required class="w-full input-glacier rounded-xl p-2 text-xs font-bold uppercase">
+                  <input type="text" id="destination" placeholder="BANGALORE" required class="w-full input-glacier rounded-xl p-2 text-xs font-bold uppercase">
                 </div>
 
                 <div class="grid grid-cols-2 gap-2.5">
                   <div>
                     <label class="block text-xs font-semibold text-slate-600 mb-1">Unit / Category</label>
-                    <select id="companyUnit" class="w-full input-glacier rounded-xl p-2 text-xs font-medium">
-                      <option value="AHPL">AHPL</option>
-                      <option value="AIL">AIL</option>
+                    <select id="companyUnit" onchange="updateDockOptions()" class="w-full input-glacier rounded-xl p-2 text-xs font-bold text-indigo-900">
+                      <option value="AHPL">AHPL (Code 1xxx)</option>
+                      <option value="AIL">AIL (Code 7xxx)</option>
                       <option value="THERMOCOL">THERMOCOL</option>
-                      <option value="WT & CFT">WT & CFT</option>
                     </select>
                   </div>
                   <div>
@@ -402,7 +399,6 @@
                   <input type="text" id="vehicleNo" placeholder="MP-09-AB-1234" class="w-full input-glacier rounded-xl p-2 text-xs uppercase font-bold text-slate-900">
                 </div>
 
-                <!-- 100% MANUAL SUPERVISOR TEXT FIELD -->
                 <div class="grid grid-cols-2 gap-2.5">
                   <div>
                     <label class="block text-xs font-semibold text-slate-600 mb-1">Supervisor Name</label>
@@ -425,7 +421,7 @@
                 </div>
 
                 <button type="submit" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-2.5 rounded-xl text-xs transition shadow-sm">
-                  Save Plan Entry & Instant Sync
+                  Save Plan Entry & Sync
                 </button>
               </form>
             </div>
@@ -445,10 +441,10 @@
                       <tr>
                         <th class="py-3 px-3">Delivery No.</th>
                         <th class="py-3 px-3">Code</th>
+                        <th class="py-3 px-3">Unit</th>
                         <th class="py-3 px-3">Destination</th>
                         <th class="py-3 px-3 text-right">Weight</th>
                         <th class="py-3 px-3 text-right">CFT</th>
-                        <th class="py-3 px-3">Vehicle Type</th>
                         <th class="py-3 px-3">Transporter</th>
                         <th class="py-3 px-3 text-center">Action</th>
                       </tr>
@@ -480,7 +476,7 @@
           </div>
         </section>
 
-        <!-- VIEW 4: GATE ENTRY LOG (Direct Form & Table) -->
+        <!-- VIEW 4: GATE ENTRY LOG -->
         <section id="gateSecView" class="view-panel hidden space-y-6">
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div class="glass-glacier p-6 rounded-3xl border border-slate-200 lg:col-span-1">
@@ -582,12 +578,12 @@
                   <tr>
                     <th class="py-3 px-3">Delivery No.</th>
                     <th class="py-3 px-3">Code</th>
+                    <th class="py-3 px-3">Unit</th>
                     <th class="py-3 px-3">Destination</th>
                     <th class="py-3 px-3 text-right">Weight (Kg)</th>
                     <th class="py-3 px-3 text-right">CFT</th>
                     <th class="py-3 px-3">Vehicle Type</th>
-                    <th class="py-3 px-3">Transporter Name</th>
-                    <th class="py-3 px-3">Vehicle No</th>
+                    <th class="py-3 px-3">Transporter</th>
                   </tr>
                 </thead>
                 <tbody id="reportTableBody" class="divide-y divide-slate-200">
@@ -628,105 +624,75 @@
     </button>
   </div>
 
-  <!-- AUTO-SYNC SETTINGS MODAL -->
-  <div id="syncSettingsModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="glass-glacier rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4 border border-slate-300">
-      <div class="flex justify-between items-center pb-2 border-b border-slate-200">
-        <h3 class="font-bold text-slate-900 text-sm flex items-center gap-2">
-          <i data-lucide="cloud" class="w-4 h-4 text-emerald-600"></i> Google Sheets Live 2-Way Sync Setup
-        </h3>
-        <button onclick="closeSyncSettings()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-4 h-4"></i></button>
-      </div>
-
-      <div class="space-y-3 text-xs">
-        <div>
-          <label class="block font-semibold text-slate-700 mb-1">Permanent Web App URL</label>
-          <input type="url" id="webhookUrlInput" readonly class="w-full input-glacier rounded-xl p-2.5 font-mono text-[11px] bg-slate-100 text-slate-600">
-          <p class="text-[10px] text-emerald-700 font-semibold mt-1">✔ यह लिंक स्थायी रूप से कनेक्टेड व लॉक है।</p>
-        </div>
-
-        <div class="pt-2">
-          <button onclick="closeSyncSettings()" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-2.5 rounded-xl text-xs transition shadow-sm">
-            Close
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- JAVASCRIPT LOGIC & INSTANT AUTO-SYNC ENGINE -->
+  <!-- JAVASCRIPT LOGIC -->
   <script>
     lucide.createIcons();
 
-    const CURRENT_APP_VERSION = "v2.7.0-LIVE";
-    // PERMANENT LOCKED GOOGLE APPS SCRIPT URL
     const HARDCODED_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycby3dqzP4328qg8tLMmVY-kiO9pV6yUS0ipOGS29MbVmjBH_QUu5WgzBV15vUgTdU6Kq/exec";
     let googleWebhookUrl = HARDCODED_WEBHOOK_URL;
 
-    if (document.getElementById('appVersionBadge')) document.getElementById('appVersionBadge').innerText = CURRENT_APP_VERSION;
-    if (document.getElementById('liveVersionTag')) document.getElementById('liveVersionTag').innerText = CURRENT_APP_VERSION;
-    if (document.getElementById('sidebarBuildNo')) document.getElementById('sidebarBuildNo').innerText = CURRENT_APP_VERSION;
+    // Hardcoded Multi-Device Credentials
+    const builtInUsers = [
+      { user: 'admin', pass: 'admin123', role: 'ADMIN', name: 'Admin Officer' },
+      { user: 'supervisor', pass: 'super123', role: 'SUPERVISOR', name: 'Duty Supervisor' },
+      { user: 'security', pass: 'gate123', role: 'SECURITY', name: 'Gate Security' },
+      { user: 'operator', pass: 'op123', role: 'OPERATOR', name: 'Dock Operator' }
+    ];
 
-    const defaultCredentials = {
-      'ADMIN': { user: 'admin', pass: 'admin123', name: 'Admin User' },
-      'SECURITY': { user: 'security', pass: 'gate123', name: 'Gate Security' },
-      'SUPERVISOR': { user: 'supervisor', pass: 'super123', name: 'Duty Supervisor' },
-      'OPERATOR': { user: 'operator', pass: 'op123', name: 'Dock Operator' }
-    };
+    let registeredUsers = JSON.parse(localStorage.getItem("ich_registered_users")) || [];
+    let currentLoggedInRole = localStorage.getItem("ich_active_role") || null;
+    let currentLoggedInUser = localStorage.getItem("ich_active_user") || "Duty User";
 
-    let userCredentials = JSON.parse(localStorage.getItem("ahpl_user_creds")) || defaultCredentials;
-    let currentLoggedInRole = localStorage.getItem("currentRole") || null;
-    let currentLoggedInUser = localStorage.getItem("currentUserName") || "Duty User";
+    let planEntries = JSON.parse(localStorage.getItem("ich_plan_v30")) || [];
+    let securityLogs = JSON.parse(localStorage.getItem("ich_sec_v30")) || [];
 
-    // CLEAN STORAGE (ZERO DUMMY DATA)
-    let planEntries = JSON.parse(localStorage.getItem("ahpl_ail_plan_zero_dummy")) || [];
-    let securityLogs = JSON.parse(localStorage.getItem("ahpl_ail_sec_zero_dummy")) || [];
+    // AUTO-DETECT UNIT BY CODE (1xxx = AHPL, 7xxx = AIL)
+    function autoDetectUnitByCode(codeVal) {
+      if (!codeVal) return;
+      const str = String(codeVal).trim();
+      const unitSelect = document.getElementById('companyUnit');
+      if (str.startsWith('7')) {
+        unitSelect.value = 'AIL';
+      } else if (str.startsWith('1')) {
+        unitSelect.value = 'AHPL';
+      }
+      updateDockOptions();
+    }
 
-    // Login Form Handler
+    // MULTI-DEVICE PARALLEL LOGIN (Mobile + PC Simultaneous Login)
     document.getElementById('loginForm').addEventListener('submit', function(e) {
       e.preventDefault();
-      const role = document.getElementById('loginRole').value;
-      const user = document.getElementById('loginUser').value.trim();
-      const pass = document.getElementById('loginPass').value.trim();
+      const inputUser = document.getElementById('loginUser').value.trim().toLowerCase();
+      const inputPass = document.getElementById('loginPass').value.trim();
+      const inputRole = document.getElementById('loginRole').value;
       const err = document.getElementById('loginError');
 
-      let authenticated = false;
-      let matchedName = "";
+      // Check in built-in default users first
+      let matched = builtInUsers.find(u => 
+        u.user.toLowerCase() === inputUser && u.pass === inputPass
+      );
 
-      for (let r in userCredentials) {
-        if (r === role && userCredentials[r].user === user && userCredentials[r].pass === pass) {
-          authenticated = true;
-          matchedName = userCredentials[r].name;
-          break;
-        }
+      // Check registered users if not found in default
+      if (!matched) {
+        matched = registeredUsers.find(u => 
+          u.user.toLowerCase() === inputUser && u.pass === inputPass
+        );
       }
 
-      if (authenticated) {
+      if (matched) {
         err.classList.add('hidden');
-        currentLoggedInRole = role;
-        currentLoggedInUser = matchedName;
-        localStorage.setItem("currentRole", role);
-        localStorage.setItem("currentUserName", matchedName);
-        applyRolePermissions(role, matchedName);
+        const roleToAssign = inputUser === 'admin' ? 'ADMIN' : (matched.role || inputRole);
+        const nameToAssign = matched.name || inputUser;
+
+        currentLoggedInRole = roleToAssign;
+        currentLoggedInUser = nameToAssign;
+
+        localStorage.setItem("ich_active_role", roleToAssign);
+        localStorage.setItem("ich_active_user", nameToAssign);
+        applyRolePermissions(roleToAssign, nameToAssign);
       } else {
         err.classList.remove('hidden');
       }
-    });
-
-    // Registration Handler
-    document.getElementById('registerForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const name = document.getElementById('regFullName').value.trim();
-      const role = document.getElementById('regRole').value;
-      const user = document.getElementById('regUser').value.trim();
-      const pass = document.getElementById('regPass').value.trim();
-
-      userCredentials[role] = { user: user, pass: pass, name: name };
-      localStorage.setItem("ahpl_user_creds", JSON.stringify(userCredentials));
-
-      alert(`✅ अकाउंट रजिस्टर हो गया!\nयूजर: ${user}\nरोल: ${role}`);
-      toggleRegisterModal(false);
-      this.reset();
     });
 
     function toggleRegisterModal(show) {
@@ -735,6 +701,21 @@
       else modal.classList.add('hidden');
     }
 
+    document.getElementById('registerForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = document.getElementById('regFullName').value.trim();
+      const role = document.getElementById('regRole').value;
+      const user = document.getElementById('regUser').value.trim().toLowerCase();
+      const pass = document.getElementById('regPass').value.trim();
+
+      registeredUsers.push({ user: user, pass: pass, role: role, name: name });
+      localStorage.setItem("ich_registered_users", JSON.stringify(registeredUsers));
+
+      alert(`✅ नया अकाउंट बन गया!\nयूजर: ${user}\nरोल: ${role}`);
+      toggleRegisterModal(false);
+      this.reset();
+    });
+
     function applyRolePermissions(role, name) {
       document.getElementById('loginScreen').classList.add('hidden');
       document.getElementById('mainApp').classList.remove('hidden');
@@ -742,7 +723,7 @@
       document.getElementById('userBadgeName').innerText = name || role;
       document.getElementById('userBadgeRole').innerText = role;
       
-      const initials = role ? role.substring(0,3).toUpperCase() : "OP";
+      const initials = role ? role.substring(0,3).toUpperCase() : "ICH";
       document.getElementById('userAvatar').innerText = initials;
 
       const navSecBtn = document.getElementById('navSecBtn');
@@ -760,8 +741,8 @@
     }
 
     function logout() {
-      localStorage.removeItem("currentRole");
-      localStorage.removeItem("currentUserName");
+      localStorage.removeItem("ich_active_role");
+      localStorage.removeItem("ich_active_user");
       currentLoggedInRole = null;
       document.getElementById('loginPass').value = '';
       document.getElementById('mainApp').classList.add('hidden');
@@ -791,7 +772,6 @@
         dockSelect.appendChild(opt);
       });
     }
-
     updateDockOptions();
 
     function updateClock() {
@@ -813,7 +793,7 @@
       lucide.createIcons();
     }
 
-    // INSTANT POST TO GOOGLE APPS SCRIPT (CORS Bypassed)
+    // Cloud Sync
     function pushBatchToCloud(records) {
       if (!googleWebhookUrl) return;
       fetch(googleWebhookUrl, {
@@ -821,9 +801,7 @@
         mode: 'no-cors',
         headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify({ action: "SYNC_BATCH_PLAN", records: records })
-      }).then(() => {
-        setTimeout(fetchCloudUpdates, 500); // 0.5s Instant Trigger
-      });
+      }).then(() => setTimeout(fetchCloudUpdates, 500));
     }
 
     function pushEntryToCloud(entry) {
@@ -833,9 +811,7 @@
         mode: 'no-cors',
         headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify({ action: "SYNC_PLAN_ENTRY", record: entry })
-      }).then(() => {
-        setTimeout(fetchCloudUpdates, 500); // 0.5s Instant Trigger
-      });
+      }).then(() => setTimeout(fetchCloudUpdates, 500));
     }
 
     function pushGateEntryToCloud(gateRecord) {
@@ -848,11 +824,10 @@
       });
     }
 
-    // 100% RELIABLE JSONP REALTIME SYNC (Fetches in 4 Seconds)
     window.handleCloudSyncResponse = function(data) {
       if (Array.isArray(data)) {
         planEntries = data;
-        localStorage.setItem("ahpl_ail_plan_zero_dummy", JSON.stringify(planEntries));
+        localStorage.setItem("ich_plan_v30", JSON.stringify(planEntries));
         renderAllTables();
         renderLiveDockCards();
       }
@@ -869,10 +844,9 @@
       script.src = googleWebhookUrl + (googleWebhookUrl.includes('?') ? '&' : '?') + 'callback=handleCloudSyncResponse&nocache=' + new Date().getTime();
       document.body.appendChild(script);
     }
-    // Instant background polling every 4 seconds
     setInterval(fetchCloudUpdates, 4000);
 
-    // MULTI-ROW OCR ENGINE (Canvas Filter + Auto-Orientation)
+    // OCR SCANNER
     async function scanPlanImage(event) {
       const file = event.target.files[0];
       if (!file) return;
@@ -895,29 +869,14 @@
             const d = imgData.data;
             for (let i = 0; i < d.length; i += 4) {
               const avg = (d[i] * 0.299 + d[i + 1] * 0.587 + d[i + 2] * 0.114);
-              const threshold = avg > 140 ? 255 : 0;
-              d[i] = threshold;
-              d[i + 1] = threshold;
-              d[i + 2] = threshold;
+              d[i] = avg > 140 ? 255 : 0;
+              d[i + 1] = avg > 140 ? 255 : 0;
+              d[i + 2] = avg > 140 ? 255 : 0;
             }
             ctx.putImageData(imgData, 0, 0);
 
             let result = await Tesseract.recognize(canvas, 'eng');
             let text = result.data.text;
-
-            if (!text || text.length < 50) {
-              const rotCanvas = document.createElement('canvas');
-              const rotCtx = rotCanvas.getContext('2d');
-              rotCanvas.width = img.height;
-              rotCanvas.height = img.width;
-              rotCtx.translate(rotCanvas.width / 2, rotCanvas.height / 2);
-              rotCtx.rotate(90 * Math.PI / 180);
-              rotCtx.drawImage(img, -img.width / 2, -img.height / 2);
-              const rotResult = await Tesseract.recognize(rotCanvas, 'eng');
-              if (rotResult.data.text && rotResult.data.text.length > text.length) {
-                text = rotResult.data.text;
-              }
-            }
 
             if (spinner) spinner.classList.add('hidden');
             parseMultipleLinesFromOCR(text);
@@ -927,7 +886,7 @@
         reader.readAsDataURL(file);
       } catch (err) {
         if (spinner) spinner.classList.add('hidden');
-        alert("OCR स्कैनिंग में समस्या आई। कृपया साफ़ फोटो दोबारा खींचें।");
+        alert("फोटो स्कैन करने में समस्या आई।");
       }
     }
 
@@ -937,8 +896,6 @@
         .replace(/(\d)O/g, '$10')
         .replace(/O(\d)/g, '0$1');
 
-      const lines = cleanText.split('\n').map(l => l.trim()).filter(l => l.length > 3);
-      
       const transporters = ["DHTC", "OPM", "ICRL", "MATA", "MCM", "FLY GREEN", "VARUNA", "JEET"];
       const knownDestinations = ["BANGALORE", "COCHIN", "DELHI", "LUCKNOW", "VARANASI", "BARWALA", "HYDERABAD", "INDORE", "NAGPUR", "JAIPUR", "MUMBAI", "VIJAYAWADA", "PATNA", "KOLKATA"];
       
@@ -961,6 +918,14 @@
       if (delMatches.length > 0) {
         delMatches.forEach((delNo, index) => {
           let codeNo = codeMatches[index] || (index % 2 === 0 ? "1407" : "7422");
+          
+          let lineUnit = "AHPL";
+          if (String(codeNo).startsWith("7")) {
+            lineUnit = "AIL";
+          } else if (String(codeNo).startsWith("1")) {
+            lineUnit = "AHPL";
+          }
+
           let weightVal = 343.71;
           let cftVal = 28.76;
           
@@ -972,18 +937,10 @@
             cftVal = parseFloat((weightVal * 0.08).toFixed(2));
           }
 
-          let lineUnit = index % 2 === 0 ? "AHPL" : "AIL";
-          if (cleanText.includes("THERMOCOL") && index === 2) lineUnit = "THERMOCOL";
-
-          let lineDest = defaultDest;
-          if (knownDestinations[index % knownDestinations.length] && cleanText.includes(knownDestinations[index % knownDestinations.length])) {
-            lineDest = knownDestinations[index % knownDestinations.length];
-          }
-
           extractedRows.push({
             deliveryNo: delNo,
             code: codeNo,
-            destination: lineDest,
+            destination: defaultDest,
             unit: lineUnit,
             weight: weightVal,
             cft: cftVal,
@@ -997,43 +954,21 @@
             date: "27.08.2026"
           });
         });
-      } else {
-        lines.forEach((line, idx) => {
-          const dMatch = line.match(/23\d{6,8}/);
-          if (dMatch) {
-            extractedRows.push({
-              deliveryNo: dMatch[0],
-              code: "1407",
-              destination: defaultDest,
-              unit: "AHPL",
-              weight: 343.71 + (idx * 50),
-              cft: 28.76 + (idx * 5),
-              vType: "32FT SXL",
-              transporter: defaultTransporter,
-              vehicleNo: "MP-09-PLAN",
-              supervisor: currentLoggedInUser || "Duty Supervisor",
-              seal: "SL-" + Math.floor(100000 + Math.random() * 900000),
-              dock: "Dock 1",
-              pod: "POD Clean",
-              date: "27.08.2026"
-            });
-          }
-        });
       }
 
       if (extractedRows.length === 0) {
-        alert("फोटो से कोई भी पंक्ति नहीं मिल सकी। कृपया अच्छी रोशनी में सीधी फोटो खींचें।");
+        alert("फोटो से कोई डिलीवरी रो नहीं मिली। कृपया साफ़ फोटो दोबारा खींचें।");
         return;
       }
 
       extractedRows.forEach(r => planEntries.unshift(r));
-      localStorage.setItem("ahpl_ail_plan_zero_dummy", JSON.stringify(planEntries));
+      localStorage.setItem("ich_plan_v30", JSON.stringify(planEntries));
       
       renderAllTables();
       renderLiveDockCards();
       pushBatchToCloud(extractedRows);
 
-      alert(`✅ सफलता! कुल ${extractedRows.length} पंक्तियाँ स्कैन होकर समराइज हो गईं!`);
+      alert(`✅ सफलता! कुल ${extractedRows.length} पंक्तियाँ स्कैन हुईं और 1 सिंगल गाड़ी में कंबाइन हो गईं!`);
     }
 
     // Manual Form Submission
@@ -1058,17 +993,17 @@
       };
 
       planEntries.unshift(newRecord);
-      localStorage.setItem("ahpl_ail_plan_zero_dummy", JSON.stringify(planEntries));
+      localStorage.setItem("ich_plan_v30", JSON.stringify(planEntries));
       renderAllTables();
       renderLiveDockCards();
       pushEntryToCloud(newRecord);
 
       this.reset();
       updateDockOptions();
-      alert("Plan Entry Saved & Instant Synced!");
+      alert("Plan Entry Saved & Combined!");
     });
 
-    // RENDER TABLES & SUMMARY
+    // RENDER TABLES (COMBINED VEHICLE SUMMARY + RAW BREAKUP)
     function renderAllTables() {
       const summaryTbody = document.getElementById('summaryTableBody');
       const planTbody = document.getElementById('planTableBody');
@@ -1076,90 +1011,101 @@
       const repTbody = document.getElementById('reportTableBody');
       const rowCount = document.getElementById('rowCount');
       const groupCount = document.getElementById('summaryGroupCount');
+      const detailedRowCount = document.getElementById('detailedRowCount');
 
-      let totalWeight = 0;
-      let totalCFT = 0;
-      let uniqueDests = new Set();
-      let summaryMap = {};
+      let vehicleMap = {};
 
       planEntries.forEach(item => {
-        totalWeight += Number(item.weight || 0);
-        totalCFT += Number(item.cft || 0);
-        uniqueDests.add(item.destination);
-
-        const groupKey = `${item.destination}_${item.vType}_${item.transporter}_${item.unit || 'AHPL'}`;
-        if (!summaryMap[groupKey]) {
-          summaryMap[groupKey] = {
+        const key = `${item.destination}__${item.transporter}__${item.vType}`;
+        if (!vehicleMap[key]) {
+          vehicleMap[key] = {
             destination: item.destination,
-            vType: item.vType,
             transporter: item.transporter,
-            unit: item.unit || 'AHPL',
-            count: 0,
-            weight: 0,
-            cft: 0
+            vType: item.vType,
+            totalCount: 0,
+            ahplCount: 0,
+            ailCount: 0,
+            totalWeight: 0,
+            totalCft: 0
           };
         }
-        summaryMap[groupKey].count += 1;
-        summaryMap[groupKey].weight += Number(item.weight || 0);
-        summaryMap[groupKey].cft += Number(item.cft || 0);
+        vehicleMap[key].totalCount += 1;
+        vehicleMap[key].totalWeight += Number(item.weight || 0);
+        vehicleMap[key].totalCft += Number(item.cft || 0);
+
+        if (item.unit === 'AIL') {
+          vehicleMap[key].ailCount += 1;
+        } else {
+          vehicleMap[key].ahplCount += 1;
+        }
       });
 
       if (rowCount) rowCount.innerText = `${planEntries.length} Records`;
+      if (detailedRowCount) detailedRowCount.innerText = `${planEntries.length} Scanned Items`;
 
       if (!summaryTbody || !planTbody) return;
 
       if (planEntries.length === 0) {
-        summaryTbody.innerHTML = `<tr><td colspan="7" class="text-center py-6 text-slate-400 font-medium">No summarized plan yet. Scan photo above.</td></tr>`;
-        planTbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-slate-400 font-medium">No detailed plan data loaded.</td></tr>`;
-        dockTbody.innerHTML = `<tr><td colspan="8" class="text-center py-12 text-slate-400 font-medium">No live entries yet.</td></tr>`;
-        repTbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-slate-400 font-medium">No report records available.</td></tr>`;
-        if (groupCount) groupCount.innerText = "0 Groups";
+        summaryTbody.innerHTML = `<tr><td colspan="7" class="text-center py-6 text-slate-400">No consolidated vehicle summary. Scan plan photo.</td></tr>`;
+        planTbody.innerHTML = `<tr><td colspan="9" class="text-center py-8 text-slate-400">No detailed plan data loaded.</td></tr>`;
+        dockTbody.innerHTML = `<tr><td colspan="8" class="text-center py-12 text-slate-400">No live entries yet.</td></tr>`;
+        repTbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-slate-400">No report records available.</td></tr>`;
+        if (groupCount) groupCount.innerText = "0 Vehicles";
         return;
       }
 
+      // 1. TOP CONSOLIDATED VEHICLE VIEW
       summaryTbody.innerHTML = '';
-      const summaryKeys = Object.keys(summaryMap);
-      if (groupCount) groupCount.innerText = `${summaryKeys.length} Summarized Groups`;
+      const vehicleKeys = Object.keys(vehicleMap);
+      if (groupCount) groupCount.innerText = `${vehicleKeys.length} Combined Vehicles`;
 
-      summaryKeys.forEach(key => {
-        const group = summaryMap[key];
-        const sRow = document.createElement('tr');
-        sRow.className = 'hover:bg-slate-50 font-medium transition';
-        sRow.innerHTML = `
-          <td class="py-2.5 px-3">
-            <span class="font-bold text-slate-900 text-xs">${group.destination}</span>
-            <span class="block text-[10px] text-slate-500 font-semibold lowercase tracking-wide">${group.unit ? group.unit.toLowerCase() : 'ahpl'}</span>
+      vehicleKeys.forEach(k => {
+        const v = vehicleMap[k];
+        const row = document.createElement('tr');
+        row.className = 'hover:bg-slate-50 transition border-b border-slate-200';
+        row.innerHTML = `
+          <td class="py-3 px-3.5 font-black text-slate-900 text-xs">
+            <div class="flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-indigo-600"></span>
+              <span>${v.destination}</span>
+            </div>
           </td>
-          <td class="py-2.5 px-3 font-semibold text-slate-800">${group.vType}</td>
-          <td class="py-2.5 px-3 font-bold text-slate-900">${group.transporter}</td>
-          <td class="py-2.5 px-3 text-center font-bold font-mono text-indigo-900 bg-slate-50/50">${group.count} Del.</td>
-          <td class="py-2.5 px-3 text-right font-mono font-bold text-slate-900">${group.weight.toFixed(2)}</td>
-          <td class="py-2.5 px-3 text-right font-mono font-bold text-indigo-700">${group.cft.toFixed(2)}</td>
-          <td class="py-2.5 px-3 text-center">
-            <span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">Summarized</span>
+          <td class="py-3 px-3.5 font-bold text-slate-900">${v.transporter}</td>
+          <td class="py-3 px-3.5 font-semibold text-slate-700">${v.vType}</td>
+          <td class="py-3 px-3.5 text-center">
+            <div class="font-bold font-mono text-slate-900 bg-slate-100 rounded-lg py-1 px-2 inline-block">
+              ${v.totalCount} Del.
+              <span class="text-[10px] text-slate-500 block font-normal">(AHPL: ${v.ahplCount} | AIL: ${v.ailCount})</span>
+            </div>
+          </td>
+          <td class="py-3 px-3.5 text-right font-mono font-black text-slate-900 text-sm">${v.totalWeight.toFixed(2)} Kg</td>
+          <td class="py-3 px-3.5 text-right font-mono font-black text-indigo-700 text-sm">${v.totalCft.toFixed(2)} CFT</td>
+          <td class="py-3 px-3.5 text-center">
+            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
+              Vehicle Ready
+            </span>
           </td>
         `;
-        summaryTbody.appendChild(sRow);
+        summaryTbody.appendChild(row);
       });
 
+      // 2. RAW BREAKUP TABLE
       planTbody.innerHTML = '';
       dockTbody.innerHTML = '';
       repTbody.innerHTML = '';
 
       planEntries.forEach((item, idx) => {
-        const destCell = `
-          <div>
-            <span class="font-bold text-slate-900 text-xs">${item.destination}</span>
-            <span class="block text-[10px] text-slate-500 font-semibold lowercase tracking-wide">${item.unit ? item.unit.toLowerCase() : 'ahpl'}</span>
-          </div>
-        `;
+        const unitBadge = item.unit === 'AIL' 
+          ? `<span class="bg-indigo-100 text-indigo-800 font-bold px-1.5 py-0.5 rounded text-[10px] border border-indigo-200">AIL</span>`
+          : `<span class="bg-slate-100 text-slate-800 font-bold px-1.5 py-0.5 rounded text-[10px] border border-slate-300">AHPL</span>`;
 
         const planRow = document.createElement('tr');
         planRow.className = 'hover:bg-slate-50 font-medium transition';
         planRow.innerHTML = `
           <td class="py-2.5 px-3 font-mono font-bold text-slate-800">${item.deliveryNo}</td>
           <td class="py-2.5 px-3 font-mono text-slate-700 font-semibold">${item.code}</td>
-          <td class="py-2.5 px-3">${destCell}</td>
+          <td class="py-2.5 px-3">${unitBadge}</td>
+          <td class="py-2.5 px-3 font-bold text-slate-900">${item.destination}</td>
           <td class="py-2.5 px-3 text-right font-mono font-bold text-slate-900">${Number(item.weight).toFixed(2)}</td>
           <td class="py-2.5 px-3 text-right font-mono font-bold text-indigo-800">${Number(item.cft).toFixed(2)}</td>
           <td class="py-2.5 px-3 text-slate-700 font-semibold">${item.vType}</td>
@@ -1175,10 +1121,10 @@
         dockRow.innerHTML = `
           <td class="py-2.5 px-3 font-mono font-bold">${item.deliveryNo}</td>
           <td class="py-2.5 px-3 font-mono">${item.code}</td>
-          <td class="py-2.5 px-3">${destCell}</td>
+          <td class="py-2.5 px-3">${unitBadge}</td>
+          <td class="py-2.5 px-3 font-bold">${item.destination}</td>
           <td class="py-2.5 px-3 text-right font-mono">${Number(item.weight).toFixed(2)}</td>
           <td class="py-2.5 px-3 text-right font-mono font-semibold">${Number(item.cft).toFixed(2)}</td>
-          <td class="py-2.5 px-3">${item.vType}</td>
           <td class="py-2.5 px-3 font-semibold">${item.transporter}</td>
           <td class="py-2.5 px-3 text-center">
             <button onclick="deletePlanEntry(${idx})" class="text-rose-600 hover:text-rose-900 p-1"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
@@ -1191,12 +1137,12 @@
         repRow.innerHTML = `
           <td class="py-2 px-3 font-mono font-bold">${item.deliveryNo}</td>
           <td class="py-2 px-3 font-mono">${item.code}</td>
-          <td class="py-2 px-3">${item.destination} <span class="text-[10px] lowercase text-slate-500">(${item.unit ? item.unit.toLowerCase() : 'ahpl'})</span></td>
+          <td class="py-2 px-3">${item.unit}</td>
+          <td class="py-2 px-3 font-bold">${item.destination}</td>
           <td class="py-2 px-3 text-right font-mono">${Number(item.weight).toFixed(2)}</td>
           <td class="py-2 px-3 text-right font-mono">${Number(item.cft).toFixed(2)}</td>
           <td class="py-2 px-3">${item.vType}</td>
           <td class="py-2 px-3 font-bold">${item.transporter}</td>
-          <td class="py-2 px-3 font-mono">${item.vehicleNo || '-'}</td>
         `;
         repTbody.appendChild(repRow);
       });
@@ -1205,15 +1151,15 @@
     }
 
     function deletePlanEntry(index) {
-      if (confirm("क्या आप इस रिकॉर्ड को डिलीट करना चाहते हैं?")) {
+      if (confirm("डिलीट करना चाहते हैं?")) {
         planEntries.splice(index, 1);
-        localStorage.setItem("ahpl_ail_plan_zero_dummy", JSON.stringify(planEntries));
+        localStorage.setItem("ich_plan_v30", JSON.stringify(planEntries));
         renderAllTables();
         renderLiveDockCards();
       }
     }
 
-    // Security Gate Handlers (With Instant Cloud Sync)
+    // Security Gate Handlers
     document.getElementById('securityGateForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const newSec = {
@@ -1225,11 +1171,11 @@
       };
 
       securityLogs.unshift(newSec);
-      localStorage.setItem("ahpl_ail_sec_zero_dummy", JSON.stringify(securityLogs));
+      localStorage.setItem("ich_sec_v30", JSON.stringify(securityLogs));
       renderSecurityTable();
       pushGateEntryToCloud(newSec);
       this.reset();
-      alert("Vehicle Gate-In Logged & Synced Successfully!");
+      alert("Gate-In Recorded & Synced!");
     });
 
     function renderSecurityTable() {
@@ -1245,7 +1191,7 @@
         const tr = document.createElement('tr');
         tr.className = 'hover:bg-slate-50';
         tr.innerHTML = `
-          <td class="py-2.5 px-3 font-bold ${item.unit === 'AHPL' ? 'text-slate-800' : 'text-slate-600'}">${item.unit}</td>
+          <td class="py-2.5 px-3 font-bold ${item.unit === 'AHPL' ? 'text-slate-800' : 'text-indigo-800'}">${item.unit}</td>
           <td class="py-2.5 px-3 font-bold text-slate-900">${item.vehicle}</td>
           <td class="py-2.5 px-3">${item.transporter}</td>
           <td class="py-2.5 px-3">${item.driver}</td>
@@ -1260,11 +1206,11 @@
 
     function removeSecurityLog(idx) {
       securityLogs.splice(idx, 1);
-      localStorage.setItem("ahpl_ail_sec_zero_dummy", JSON.stringify(securityLogs));
+      localStorage.setItem("ich_sec_v30", JSON.stringify(securityLogs));
       renderSecurityTable();
     }
 
-    // Live Docks Cards
+    // Live Docks
     function renderLiveDockCards() {
       const ahplGrid = document.getElementById('ahplDockGrid');
       const ailGrid = document.getElementById('ailDockGrid');
@@ -1325,11 +1271,14 @@
         if (rows.length === 0) return alert("CSV खाली है।");
 
         rows.forEach(r => {
+          const codeVal = String(r["Code"] || r.code || "1407");
+          let unitVal = codeVal.startsWith("7") ? "AIL" : "AHPL";
+
           const newRec = {
             deliveryNo: String(r["Delivery No."] || r["Delivery No"] || r.deliveryNo || "23022" + Math.floor(10000 + Math.random() * 90000)),
-            code: String(r["Code"] || r.code || "1407"),
+            code: codeVal,
             destination: String(r["Destination"] || r.destination || "DESTINATION").toUpperCase(),
-            unit: String(r["Unit"] || r.unit || "AHPL"),
+            unit: unitVal,
             weight: parseFloat(r["Weight"] || r.weight || 0),
             cft: parseFloat(r["CFT"] || r.cft || 0),
             vType: String(r["Vehicle Type"] || r.vType || "32FT SXL"),
@@ -1345,10 +1294,10 @@
           pushEntryToCloud(newRec);
         });
 
-        localStorage.setItem("ahpl_ail_plan_zero_dummy", JSON.stringify(planEntries));
+        localStorage.setItem("ich_plan_v30", JSON.stringify(planEntries));
         renderAllTables();
         renderLiveDockCards();
-        alert(`${rows.length} रिकॉर्ड्स लोड और समराइज हुए!`);
+        alert(`${rows.length} रिकॉर्ड्स लोड और सिंगल गाड़ी में कंबाइन हुए!`);
       };
       reader.readAsArrayBuffer(file);
     }
@@ -1359,8 +1308,8 @@
       const exportData = planEntries.map(i => ({
         "Delivery No.": i.deliveryNo,
         "Code": i.code,
-        "Destination": i.destination,
         "Unit": i.unit,
+        "Destination": i.destination,
         "Weight": i.weight,
         "CFT": i.cft,
         "Vehicle Type": i.vType,
@@ -1370,7 +1319,7 @@
       const ws = XLSX.utils.json_to_sheet(exportData);
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, "Plan_Received");
-      XLSX.writeFile(wb, `Plan_Received_AHPL_AIL_${new Date().toISOString().split('T')[0]}.xlsx`);
+      XLSX.writeFile(wb, `Plan_Received_ICH_Indore_${new Date().toISOString().split('T')[0]}.xlsx`);
     }
 
     function exportToPDF() {
@@ -1378,25 +1327,16 @@
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF('l', 'mm', 'a4');
       doc.setFontSize(13);
-      doc.text("Plan Received AHPL & AIL", 14, 12);
-      const body = planEntries.map(i => [i.deliveryNo, i.code, `${i.destination} (${i.unit.toLowerCase()})`, Number(i.weight).toFixed(2), Number(i.cft).toFixed(2), i.vType, i.transporter]);
+      doc.text("Integrated Central Hub Indore - Single Vehicle Dispatch Plan", 14, 12);
+      const body = planEntries.map(i => [i.deliveryNo, i.code, i.unit, i.destination, Number(i.weight).toFixed(2), Number(i.cft).toFixed(2), i.vType, i.transporter]);
       doc.autoTable({
         startY: 18,
-        head: [['Delivery No.', 'Code', 'Destination', 'Weight (Kg)', 'CFT', 'Vehicle Type', 'Transporter Name']],
+        head: [['Delivery No.', 'Code', 'Unit', 'Destination', 'Weight (Kg)', 'CFT', 'Vehicle Type', 'Transporter Name']],
         body: body,
-        headStyles: { fillColor: [71, 85, 105] },
+        headStyles: { fillColor: [15, 23, 42] },
         styles: { fontSize: 8 }
       });
-      doc.save(`Plan_Received_AHPL_AIL_${new Date().toISOString().split('T')[0]}.pdf`);
-    }
-
-    function openSyncSettings() {
-      document.getElementById('webhookUrlInput').value = googleWebhookUrl;
-      document.getElementById('syncSettingsModal').classList.remove('hidden');
-    }
-
-    function closeSyncSettings() {
-      document.getElementById('syncSettingsModal').classList.add('hidden');
+      doc.save(`Plan_Received_ICH_Indore_${new Date().toISOString().split('T')[0]}.pdf`);
     }
 
     renderAllTables();
