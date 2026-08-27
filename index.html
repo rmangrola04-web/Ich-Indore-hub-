@@ -23,11 +23,12 @@
     
     :root {
       --ios-dark-bg: #0F172A;
-      --ios-dark-surface: rgba(30, 41, 59, 0.82);
+      --ios-dark-surface: rgba(30, 41, 59, 0.85);
       --ios-dark-card: rgba(30, 41, 59, 0.95);
-      --ios-dark-border: rgba(255, 255, 255, 0.12);
-      --ios-blue: #38BDF8;
-      --ios-accent: #0284C7;
+      --ios-dark-border: rgba(245, 158, 11, 0.2);
+      --amber-gold: #F59E0B;
+      --amber-bright: #FBBF24;
+      --amber-dark: #D97706;
     }
     
     body {
@@ -55,15 +56,15 @@
 
     .ios-input-dark {
       background: rgba(15, 23, 42, 0.85);
-      border: 1px solid rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(245, 158, 11, 0.25);
       color: #FFFFFF;
       transition: all 0.2s ease-in-out;
     }
 
     .ios-input-dark:focus {
       background: #0B132B;
-      border-color: #38BDF8;
-      box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.2);
+      border-color: #F59E0B;
+      box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.2);
     }
 
     .ios-input-dark option {
@@ -71,45 +72,49 @@
       color: #FFFFFF;
     }
 
-    .ios-btn-blue {
-      background: linear-gradient(180deg, #0284C7 0%, #0369A1 100%);
-      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.4);
+    .ios-btn-amber {
+      background: linear-gradient(180deg, #F59E0B 0%, #D97706 100%);
+      color: #0F172A;
+      font-weight: 800;
+      box-shadow: 0 4px 14px rgba(217, 119, 6, 0.4);
     }
 
-    .ios-btn-blue:active {
+    .ios-btn-amber:active {
       transform: scale(0.98);
       opacity: 0.9;
     }
 
     .active-nav-dark {
-      background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%) !important;
-      color: #FFFFFF !important;
-      font-weight: 700 !important;
-      box-shadow: 0 4px 15px rgba(2, 132, 199, 0.4) !important;
-      border: 1px solid rgba(255, 255, 255, 0.2) !important;
+      background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%) !important;
+      color: #0F172A !important;
+      font-weight: 800 !important;
+      box-shadow: 0 4px 15px rgba(217, 119, 6, 0.4) !important;
+      border: 1px solid rgba(255, 255, 255, 0.3) !important;
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col selection:bg-sky-500 selection:text-white pb-20 md:pb-0">
+<body class="min-h-screen flex flex-col selection:bg-amber-500 selection:text-slate-900 pb-20 md:pb-0">
 
   <!-- 1. AUTHENTICATION SCREEN -->
   <div id="loginScreen" class="fixed inset-0 bg-black/70 backdrop-blur-2xl z-50 flex items-center justify-center p-4">
-    <div class="ios-glass-dark rounded-[2.5rem] max-w-md w-full p-8 shadow-2xl space-y-5 border border-white/15">
+    <div class="ios-glass-dark rounded-[2.5rem] max-w-md w-full p-8 shadow-2xl space-y-5 border border-amber-500/30">
       
       <div class="text-center space-y-2">
-        <div class="inline-flex p-4 bg-gradient-to-tr from-sky-500 to-blue-700 rounded-3xl text-white shadow-lg shadow-sky-500/30">
-          <i data-lucide="warehouse" class="w-8 h-8 stroke-[2.2]"></i>
+        <div class="inline-flex p-4 bg-gradient-to-tr from-amber-500 to-amber-700 rounded-3xl text-slate-900 shadow-lg shadow-amber-500/30">
+          <i data-lucide="warehouse" class="w-8 h-8 stroke-[2.5]"></i>
         </div>
         <h1 class="text-2xl font-black text-white tracking-tight">Integrated Central Hub Indore</h1>
         <div class="flex items-center justify-center gap-2">
-          <span class="text-[10px] bg-sky-500/20 text-sky-400 font-bold px-2.5 py-0.5 rounded-full border border-sky-400/30">v4.0.0-PRO</span>
+          <button type="button" onclick="toggleVersionModal(true)" class="text-[10px] bg-amber-500/20 text-amber-300 font-bold px-2.5 py-0.5 rounded-full border border-amber-400/40 hover:bg-amber-500/30 transition flex items-center gap-1">
+            <i data-lucide="history" class="w-3 h-3"></i> v4.5.0-PRO
+          </button>
           <span class="text-xs text-slate-400 font-semibold">Warehouse Management System</span>
         </div>
       </div>
 
       <form id="loginForm" class="space-y-3.5 pt-1">
         <div>
-          <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5 ml-1">Select Role</label>
+          <label class="block text-[11px] font-bold text-amber-300/80 uppercase tracking-wider mb-1.5 ml-1">Select Role</label>
           <select id="loginRole" class="w-full ios-input-dark rounded-2xl p-3 text-xs font-semibold outline-none">
             <option value="ADMIN">Admin (Full Control)</option>
             <option value="SUPERVISOR">Supervisor (Plan & Loading Ops)</option>
@@ -119,12 +124,12 @@
         </div>
 
         <div>
-          <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5 ml-1">Username</label>
+          <label class="block text-[11px] font-bold text-amber-300/80 uppercase tracking-wider mb-1.5 ml-1">Username</label>
           <input type="text" id="loginUser" placeholder="admin" required class="w-full ios-input-dark rounded-2xl p-3 text-xs font-semibold focus:outline-none">
         </div>
 
         <div>
-          <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5 ml-1">Password</label>
+          <label class="block text-[11px] font-bold text-amber-300/80 uppercase tracking-wider mb-1.5 ml-1">Password</label>
           <input type="password" id="loginPass" placeholder="••••••••" required class="w-full ios-input-dark rounded-2xl p-3 text-xs focus:outline-none">
         </div>
 
@@ -132,12 +137,12 @@
           Invalid username or password. Default: admin / admin123
         </div>
 
-        <button type="submit" class="w-full ios-btn-blue text-white font-bold py-3.5 rounded-2xl text-xs transition flex items-center justify-center gap-2">
+        <button type="submit" class="w-full ios-btn-amber py-3.5 rounded-2xl text-xs transition flex items-center justify-center gap-2">
           <i data-lucide="lock" class="w-4 h-4"></i> Secure Login
         </button>
 
         <div class="text-center pt-1">
-          <button type="button" onclick="toggleRegisterModal(true)" class="text-xs text-sky-400 hover:text-sky-300 font-semibold">
+          <button type="button" onclick="toggleRegisterModal(true)" class="text-xs text-amber-400 hover:text-amber-300 font-semibold">
             + Create New User Account
           </button>
         </div>
@@ -145,12 +150,62 @@
     </div>
   </div>
 
+  <!-- VERSION HISTORY MODAL -->
+  <div id="versionModal" class="fixed inset-0 bg-black/75 backdrop-blur-xl z-50 hidden flex items-center justify-center p-4">
+    <div class="ios-glass-dark rounded-[2.5rem] max-w-lg w-full p-6 shadow-2xl space-y-4 border border-amber-500/30 max-h-[85vh] overflow-y-auto">
+      <div class="flex justify-between items-center pb-3 border-b border-white/10">
+        <h3 class="font-bold text-white text-sm flex items-center gap-2">
+          <i data-lucide="git-commit" class="w-4 h-4 text-amber-400"></i> WMS Version History & Changelog
+        </h3>
+        <button onclick="toggleVersionModal(false)" class="text-slate-400 hover:text-white p-1"><i data-lucide="x" class="w-4 h-4"></i></button>
+      </div>
+
+      <div class="space-y-3.5 text-xs text-slate-300">
+        <div class="p-3.5 rounded-2xl ios-card-dark border border-amber-500/30 space-y-1">
+          <div class="flex justify-between items-center font-bold">
+            <span class="text-amber-400">v4.5.0 (Latest Release)</span>
+            <span class="text-[10px] text-slate-400">Today</span>
+          </div>
+          <ul class="list-disc list-inside text-slate-300 space-y-0.5 text-[11px]">
+            <li>Added interactive Version History Modal with complete release tracking.</li>
+            <li>Added <b>Send Report to Email</b> feature with instant HTML mail dispatch.</li>
+            <li>Reinforced Live Docks (1–9) with auto Bin/Bay configuration.</li>
+          </ul>
+        </div>
+
+        <div class="p-3.5 rounded-2xl ios-card-dark border border-white/10 space-y-1">
+          <div class="flex justify-between items-center font-bold">
+            <span class="text-slate-200">v4.2.0 & v4.3.0</span>
+            <span class="text-[10px] text-slate-400">Stable</span>
+          </div>
+          <ul class="list-disc list-inside text-slate-400 space-y-0.5 text-[11px]">
+            <li>Smart Route Auto-Fill: Default <b>INDORE HUB</b> for Loading & Unloading.</li>
+            <li>Direct Handshake: Security Gate IN log auto-links to Loading/Unloading dropdown.</li>
+            <li>Vehicle Type converted to short form: 32SXL, 32MXL, 24-9T, PTL.</li>
+          </ul>
+        </div>
+
+        <div class="p-3.5 rounded-2xl ios-card-dark border border-white/10 space-y-1">
+          <div class="flex justify-between items-center font-bold">
+            <span class="text-slate-200">v3.8.0 - v4.1.0</span>
+            <span class="text-[10px] text-slate-400">Archive</span>
+          </div>
+          <ul class="list-disc list-inside text-slate-400 space-y-0.5 text-[11px]">
+            <li>Upgraded UI to Dark Eye-Care Slate & Warm Amber Gold theme.</li>
+            <li>Bin/Dock separation: AHPL (Dock 1–4) and AIL (Dock 5–9).</li>
+            <li>Multi-line OCR block parsing by TOTAL & Wt/CFT spacing.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- REGISTRATION MODAL -->
   <div id="registerModal" class="fixed inset-0 bg-black/70 backdrop-blur-xl z-50 hidden flex items-center justify-center p-4">
-    <div class="ios-glass-dark rounded-[2.5rem] max-w-md w-full p-6 shadow-2xl space-y-4 border border-white/15">
+    <div class="ios-glass-dark rounded-[2.5rem] max-w-md w-full p-6 shadow-2xl space-y-4 border border-amber-500/30">
       <div class="flex justify-between items-center pb-2 border-b border-white/10">
         <h3 class="font-bold text-white text-sm flex items-center gap-2">
-          <i data-lucide="user-plus" class="w-4 h-4 text-sky-400"></i> Register New User Account
+          <i data-lucide="user-plus" class="w-4 h-4 text-amber-400"></i> Register New User Account
         </h3>
         <button onclick="toggleRegisterModal(false)" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
       </div>
@@ -178,7 +233,7 @@
           <input type="password" id="regPass" placeholder="Set password" required class="w-full ios-input-dark rounded-2xl p-2.5">
         </div>
 
-        <button type="submit" class="w-full ios-btn-blue text-white font-bold py-3 rounded-2xl text-xs transition mt-2">
+        <button type="submit" class="w-full ios-btn-amber py-3 rounded-2xl text-xs transition mt-2">
           Save & Register User
         </button>
       </form>
@@ -192,13 +247,13 @@
     <aside class="hidden md:flex w-64 ios-glass-dark border-r border-white/10 flex-col justify-between p-4 min-h-screen sticky top-0 shrink-0">
       <div class="space-y-5">
         
-        <div class="ios-card-dark p-3.5 rounded-2xl flex items-center gap-3 border border-white/10">
-          <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-sky-500 to-blue-600 text-white flex items-center justify-center font-black text-xs shadow-md shadow-sky-500/20" id="userAvatar">
+        <div class="ios-card-dark p-3.5 rounded-2xl flex items-center gap-3 border border-amber-500/20">
+          <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-500 to-amber-700 text-slate-950 flex items-center justify-center font-black text-xs shadow-md shadow-amber-500/20" id="userAvatar">
             ICH
           </div>
           <div class="overflow-hidden">
             <h2 class="text-xs font-bold text-white truncate" id="userBadgeName">Active Session</h2>
-            <p class="text-[10px] text-sky-400 font-bold uppercase tracking-wider" id="userBadgeRole">SUPERVISOR</p>
+            <p class="text-[10px] text-amber-400 font-bold uppercase tracking-wider" id="userBadgeRole">SUPERVISOR</p>
           </div>
         </div>
 
@@ -206,29 +261,27 @@
           <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-3 mb-2">Modules</p>
           
           <button onclick="switchView('planView', this)" class="sidebar-item active-nav-dark w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs font-semibold text-slate-300 hover:bg-white/5 transition">
-            <i data-lucide="clipboard-list" class="w-4 h-4 text-sky-400"></i>
+            <i data-lucide="clipboard-list" class="w-4 h-4 text-amber-400"></i>
             <span>Plan (Vehicle Summary)</span>
           </button>
 
-          <!-- LOADING / UNLOADING OPERATIONS LINKED TO GATE -->
           <button onclick="switchView('loadUnloadView', this)" class="sidebar-item w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs font-semibold text-slate-300 hover:bg-white/5 transition">
-            <i data-lucide="arrow-left-right" class="w-4 h-4 text-emerald-400"></i>
+            <i data-lucide="arrow-left-right" class="w-4 h-4 text-amber-400"></i>
             <span>Loading / Unloading Ops</span>
           </button>
 
           <button onclick="switchView('liveDocksView', this)" class="sidebar-item w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs font-semibold text-slate-300 hover:bg-white/5 transition">
             <i data-lucide="layers" class="w-4 h-4 text-amber-400"></i>
-            <span>Live Bays (1–9)</span>
+            <span>Live Docks (1–9)</span>
           </button>
 
-          <!-- SECURITY GATE ENTRY -->
           <button id="navSecBtn" onclick="switchView('gateSecView', this)" class="sidebar-item w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs font-semibold text-slate-300 hover:bg-white/5 transition">
-            <i data-lucide="shield-check" class="w-4 h-4 text-rose-400"></i>
+            <i data-lucide="shield-check" class="w-4 h-4 text-amber-400"></i>
             <span>Security Gate Movement</span>
           </button>
 
           <button onclick="switchView('reportsView', this)" class="sidebar-item w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs font-semibold text-slate-300 hover:bg-white/5 transition">
-            <i data-lucide="bar-chart-3" class="w-4 h-4 text-purple-400"></i>
+            <i data-lucide="bar-chart-3" class="w-4 h-4 text-amber-400"></i>
             <span>Reports & Graphic Hub</span>
           </button>
         </div>
@@ -236,9 +289,9 @@
       </div>
 
       <div class="space-y-2 pt-4 border-t border-white/10">
-        <div class="px-3 py-1 ios-card-dark rounded-xl text-[10px] text-slate-400 font-mono text-center font-bold">
-          LIVE 2-WAY SYNC ACTIVE
-        </div>
+        <button onclick="toggleVersionModal(true)" class="w-full px-3 py-1.5 ios-card-dark hover:border-amber-500/40 rounded-xl text-[10px] text-amber-400 font-mono text-center font-bold flex items-center justify-center gap-1.5 transition">
+          <i data-lucide="history" class="w-3 h-3"></i> VERSION HISTORY (v4.5)
+        </button>
         <button onclick="logout()" class="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-2xl text-xs font-bold text-rose-400 hover:bg-rose-950/40 transition">
           <i data-lucide="log-out" class="w-4 h-4"></i>
           <span>Logout</span>
@@ -254,13 +307,15 @@
         <div>
           <div class="flex items-center gap-2">
             <h1 class="text-sm font-black text-white tracking-tight">Integrated Central Hub Indore</h1>
-            <span class="bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-emerald-500/30">Live Sync</span>
+            <button onclick="toggleVersionModal(true)" class="bg-amber-500/20 text-amber-300 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-amber-500/30 hover:bg-amber-500/30 transition">
+              v4.5.0-PRO
+            </button>
           </div>
-          <p class="text-[11px] text-slate-400 font-medium">Warehouse Management System • Bin 1–4 (AHPL) & Bin 5–9 (AIL)</p>
+          <p class="text-[11px] text-slate-400 font-medium">Warehouse Management System • Real-Time 2-Way Sync Engine</p>
         </div>
 
         <div class="flex items-center gap-3">
-          <div class="bg-slate-800/90 text-sky-400 border border-sky-500/30 px-3 py-1 rounded-full text-[11px] font-bold flex items-center gap-1.5 shadow-sm">
+          <div class="bg-slate-800/90 text-amber-400 border border-amber-500/30 px-3 py-1 rounded-full text-[11px] font-bold flex items-center gap-1.5 shadow-sm">
             <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Sheet Live
           </div>
           <span id="liveClock" class="font-mono text-xs text-slate-300 font-bold hidden sm:inline-block"></span>
@@ -277,18 +332,18 @@
             <div class="flex flex-wrap justify-between items-center gap-4 pb-4 border-b border-white/10">
               <div>
                 <h2 class="text-sm font-extrabold text-white flex items-center gap-2">
-                  <i data-lucide="clipboard-list" class="w-4 h-4 text-sky-400"></i> Plan Received & Single Vehicle Summary
+                  <i data-lucide="clipboard-list" class="w-4 h-4 text-amber-400"></i> Plan Received & Single Vehicle Summary
                 </h2>
                 <p class="text-xs text-slate-400 mt-0.5">जहाँ बोल्ड में TOTAL व स्पेस आता है, वहाँ 1 अलग गाड़ी कैप्चर होगी</p>
               </div>
 
               <div class="flex items-center gap-2">
-                <label class="ios-btn-blue text-white text-xs font-bold px-4 py-3 rounded-2xl flex items-center gap-2 shadow-lg cursor-pointer transition">
-                  <i data-lucide="camera" class="w-4 h-4 text-white"></i> Scan Plan Photo
+                <label class="ios-btn-amber px-4 py-3 rounded-2xl flex items-center gap-2 shadow-lg cursor-pointer transition">
+                  <i data-lucide="camera" class="w-4 h-4 text-slate-950"></i> Scan Plan Photo
                   <input type="file" id="planCameraInput" accept="image/*" capture="environment" onchange="scanPlanImage(event)" class="hidden">
                 </label>
-                <div id="ocrSpinner" class="hidden text-xs text-sky-300 font-bold flex items-center gap-1.5 animate-pulse ios-card-dark px-4 py-2.5 rounded-2xl border border-sky-400/40">
-                  <i data-lucide="loader-2" class="w-4 h-4 animate-spin text-sky-400"></i> Scanning Plan Rows...
+                <div id="ocrSpinner" class="hidden text-xs text-amber-300 font-bold flex items-center gap-1.5 animate-pulse ios-card-dark px-4 py-2.5 rounded-2xl border border-amber-400/40">
+                  <i data-lucide="loader-2" class="w-4 h-4 animate-spin text-amber-400"></i> Scanning Plan Rows...
                 </div>
               </div>
             </div>
@@ -296,10 +351,10 @@
             <!-- 1. TOP SINGLE VEHICLE COMBINED SUMMARY -->
             <div class="space-y-2.5">
               <div class="flex justify-between items-center px-1">
-                <h3 class="text-xs font-extrabold text-sky-400 uppercase tracking-wider flex items-center gap-1.5">
+                <h3 class="text-xs font-extrabold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
                   <i data-lucide="layers" class="w-3.5 h-3.5"></i> Consolidated Vehicle Load Summary
                 </h3>
-                <span class="text-[11px] text-sky-300 bg-sky-500/20 font-bold px-2.5 py-0.5 rounded-full border border-sky-500/30" id="summaryGroupCount">0 Vehicles</span>
+                <span class="text-[11px] text-amber-300 bg-amber-500/20 font-bold px-2.5 py-0.5 rounded-full border border-amber-500/30" id="summaryGroupCount">0 Vehicles</span>
               </div>
               <div class="overflow-x-auto rounded-3xl ios-card-dark border border-white/10">
                 <table class="w-full text-left text-xs whitespace-nowrap">
@@ -361,52 +416,64 @@
             <div class="ios-glass-dark p-6 rounded-[2rem] border border-white/10 shadow-xl lg:col-span-1 space-y-4">
               <div class="flex items-center justify-between pb-2 border-b border-white/10">
                 <h2 class="text-sm font-black text-white flex items-center gap-2">
-                  <i data-lucide="arrow-left-right" class="w-4 h-4 text-emerald-400"></i> Loading / Unloading Operation
+                  <i data-lucide="arrow-left-right" class="w-4 h-4 text-amber-400"></i> Loading / Unloading Operation
                 </h2>
-                <span class="text-[10px] bg-sky-500/20 text-sky-300 font-bold px-2 py-0.5 rounded-full border border-sky-500/30">Auto-Linked</span>
+                <span class="text-[10px] bg-amber-500/20 text-amber-300 font-bold px-2 py-0.5 rounded-full border border-amber-500/30">Auto-Linked</span>
               </div>
               
               <form id="loadUnloadForm" class="space-y-3">
                 
                 <!-- AUTO-LINKED GATE LOG SELECTOR DROPDOWN -->
-                <div class="bg-sky-950/40 p-3 rounded-2xl border border-sky-500/30 space-y-1">
-                  <label class="block text-[11px] font-extrabold text-sky-300 uppercase tracking-wider flex items-center gap-1.5">
-                    <i data-lucide="link" class="w-3.5 h-3.5 text-sky-400"></i> Select Vehicle from Security Gate IN Log
+                <div class="bg-amber-950/30 p-3 rounded-2xl border border-amber-500/30 space-y-1">
+                  <label class="block text-[11px] font-extrabold text-amber-300 uppercase tracking-wider flex items-center gap-1.5">
+                    <i data-lucide="link" class="w-3.5 h-3.5 text-amber-400"></i> Select Vehicle from Security Gate Log
                   </label>
-                  <select id="linkedGateSelect" onchange="autoFillFromGateLog(this.value)" class="w-full ios-input-dark rounded-xl p-2 text-xs font-bold text-emerald-300 border-sky-500/40">
+                  <select id="linkedGateSelect" onchange="autoFillFromGateLog(this.value)" class="w-full ios-input-dark rounded-xl p-2 text-xs font-bold text-amber-300 border-amber-500/40">
                     <option value="">-- Choose Arrived Vehicle (Auto-Fill) --</option>
                   </select>
-                  <p class="text-[10px] text-slate-400 italic">Select करते ही Vehicle No, Transporter और Bins auto-load हो जाएँगे।</p>
+                  <p class="text-[10px] text-slate-400 italic">Select करते ही Vehicle No, Route, Transporter और Docks auto-load हो जाएँगे।</p>
                 </div>
 
                 <div>
                   <label class="block text-[11px] font-bold text-slate-400 mb-1 ml-1">Operation Type</label>
-                  <select id="opType" class="w-full ios-input-dark rounded-2xl p-2.5 text-xs font-bold text-emerald-400">
-                    <option value="LOADING">⬆ LOADING OPERATION</option>
-                    <option value="UNLOADING">⬇ UNLOADING OPERATION</option>
+                  <select id="opType" onchange="handleSupervisorOpChange()" class="w-full ios-input-dark rounded-2xl p-2.5 text-xs font-bold text-amber-400">
+                    <option value="LOADING">⬆ LOADING OPERATION (Origin: INDORE HUB)</option>
+                    <option value="UNLOADING">⬇ UNLOADING OPERATION (Destination: INDORE HUB)</option>
                   </select>
                 </div>
 
-                <!-- SELECT COMPANY / UNIT -> BIN NO. AUTO-UPDATES (AHPL: Bin 1-4, AIL: Bin 5-9) -->
+                <!-- ROUTE: FROM & TO (DEFAULT INDORE HUB) -->
+                <div class="grid grid-cols-2 gap-2.5">
+                  <div>
+                    <label class="block text-[11px] font-bold text-slate-400 mb-1 ml-1">From (Origin)</label>
+                    <input type="text" id="loadFromLoc" value="INDORE HUB" required class="w-full ios-input-dark rounded-2xl p-2.5 text-xs uppercase font-semibold text-amber-300">
+                  </div>
+                  <div>
+                    <label class="block text-[11px] font-bold text-slate-400 mb-1 ml-1">To (Destination)</label>
+                    <input type="text" id="loadToLoc" placeholder="e.g. Bangalore" required class="w-full ios-input-dark rounded-2xl p-2.5 text-xs uppercase font-semibold">
+                  </div>
+                </div>
+
+                <!-- SELECT COMPANY / UNIT -> DOCK NO. AUTO-UPDATES (AHPL: Dock 1-4, AIL: Dock 5-9) -->
                 <div class="grid grid-cols-2 gap-2.5">
                   <div>
                     <label class="block text-[11px] font-bold text-slate-400 mb-1 ml-1">Select Company / Unit</label>
-                    <select id="loadUnit" onchange="updateBinOptions()" class="w-full ios-input-dark rounded-2xl p-2.5 text-xs font-bold text-sky-400">
-                      <option value="AHPL">AHPL (Bin 1 to 4)</option>
-                      <option value="AIL">AIL (Bin 5 to 9)</option>
-                      <option value="THERMOCOL">THERMOCOL (All Bins)</option>
+                    <select id="loadUnit" onchange="updateDockOptions()" class="w-full ios-input-dark rounded-2xl p-2.5 text-xs font-bold text-amber-400">
+                      <option value="AHPL">AHPL (Dock 1 to 4)</option>
+                      <option value="AIL">AIL (Dock 5 to 9)</option>
+                      <option value="THERMOCOL">THERMOCOL (All Docks)</option>
                     </select>
                   </div>
                   <div>
-                    <label class="block text-[11px] font-bold text-slate-400 mb-1 ml-1">Assigned Bin / Bay No.</label>
-                    <select id="loadBayNo" class="w-full ios-input-dark rounded-2xl p-2.5 text-xs font-bold text-emerald-400"></select>
+                    <label class="block text-[11px] font-bold text-slate-400 mb-1 ml-1">Assigned Dock / Bay No.</label>
+                    <select id="loadBayNo" class="w-full ios-input-dark rounded-2xl p-2.5 text-xs font-bold text-amber-300"></select>
                   </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-2.5">
                   <div>
                     <label class="block text-[11px] font-bold text-slate-400 mb-1 ml-1">Vehicle Number</label>
-                    <input type="text" id="loadVehicleNo" placeholder="MP-09-AB-1234" required class="w-full ios-input-dark rounded-2xl p-2.5 text-xs uppercase font-bold text-sky-400">
+                    <input type="text" id="loadVehicleNo" placeholder="MP-09-AB-1234" required class="w-full ios-input-dark rounded-2xl p-2.5 text-xs uppercase font-bold text-amber-300">
                   </div>
                   <div>
                     <label class="block text-[11px] font-bold text-slate-400 mb-1 ml-1">Transporter</label>
@@ -418,8 +485,6 @@
                       <option value="MCM">MCM</option>
                       <option value="FLY GREEN">FLY GREEN</option>
                       <option value="VARUNA">VARUNA</option>
-                      <option value="JEET">JEET</option>
-                      <option value="OTHER">OTHER</option>
                     </select>
                   </div>
                 </div>
@@ -440,7 +505,7 @@
                   </div>
                 </div>
 
-                <button type="submit" class="w-full ios-btn-blue text-white font-bold py-3 rounded-2xl text-xs transition mt-2">
+                <button type="submit" class="w-full ios-btn-amber py-3 rounded-2xl text-xs transition mt-2">
                   Record Operation & 2-Way Sync
                 </button>
               </form>
@@ -448,7 +513,7 @@
 
             <div class="ios-glass-dark p-6 rounded-[2rem] border border-white/10 shadow-xl lg:col-span-2">
               <h3 class="text-sm font-black text-white mb-4 flex items-center gap-2">
-                <i data-lucide="activity" class="w-4 h-4 text-emerald-400"></i> Live Loading / Unloading Operational Log
+                <i data-lucide="activity" class="w-4 h-4 text-amber-400"></i> Live Loading / Unloading Operational Log
               </h3>
               <div class="overflow-x-auto rounded-3xl ios-card-dark border border-white/10">
                 <table class="w-full text-left text-xs whitespace-nowrap">
@@ -456,9 +521,9 @@
                     <tr>
                       <th class="py-3 px-3">Type</th>
                       <th class="py-3 px-3">Company</th>
-                      <th class="py-3 px-3">Bin / Bay</th>
+                      <th class="py-3 px-3">Dock</th>
                       <th class="py-3 px-3">Vehicle No</th>
-                      <th class="py-3 px-3">Transporter</th>
+                      <th class="py-3 px-3">Route (From ➔ To)</th>
                       <th class="py-3 px-3">Operator</th>
                       <th class="py-3 px-3">TAT Duration</th>
                       <th class="py-3 px-3 text-center">Action</th>
@@ -473,42 +538,54 @@
           </div>
         </section>
 
-        <!-- MODULE 3: LIVE BAYS (1 TO 9) -->
+        <!-- MODULE 3: LIVE DOCKS (1 TO 9) -->
         <section id="liveDocksView" class="view-panel hidden space-y-6">
-          <div class="ios-glass-dark p-6 rounded-[2rem] border border-white/10">
+          <div class="ios-glass-dark p-6 rounded-[2rem] border border-white/10 shadow-xl">
             <h2 class="text-sm font-black text-white mb-4 flex items-center gap-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-sky-400"></span> AHPL Dedicated Bins (Bin 1 to 4)
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span> AHPL Dedicated Docks (Dock 1 to 4)
             </h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4" id="ahplDockGrid"></div>
           </div>
 
-          <div class="ios-glass-dark p-6 rounded-[2rem] border border-white/10">
+          <div class="ios-glass-dark p-6 rounded-[2rem] border border-white/10 shadow-xl">
             <h2 class="text-sm font-black text-white mb-4 flex items-center gap-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-indigo-400"></span> AIL Dedicated Bins (Bin 5 to 9)
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> AIL Dedicated Docks (Dock 5 to 9)
             </h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4" id="ailDockGrid"></div>
           </div>
         </section>
 
-        <!-- MODULE 4: SECURITY GATE – VEHICLE MOVEMENT FORM (WITH SHORT-FORM VEHICLE TYPES) -->
+        <!-- MODULE 4: SECURITY GATE – VEHICLE MOVEMENT FORM -->
         <section id="gateSecView" class="view-panel hidden space-y-6">
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             
             <div class="ios-glass-dark p-6 rounded-[2rem] border border-white/10 shadow-xl lg:col-span-1 space-y-4">
               <div class="flex items-center justify-between pb-2 border-b border-white/10">
                 <h3 class="text-sm font-black text-white flex items-center gap-2">
-                  <i data-lucide="truck" class="w-4 h-4 text-emerald-400"></i> Security Gate – Vehicle Movement
+                  <i data-lucide="truck" class="w-4 h-4 text-amber-400"></i> Security Gate Movement
                 </h3>
-                <span class="text-[10px] bg-emerald-500/20 text-emerald-300 font-bold px-2 py-0.5 rounded-full border border-emerald-500/30">Gate In/Out</span>
+                <span class="text-[10px] bg-amber-500/20 text-amber-300 font-bold px-2.5 py-0.5 rounded-full border border-amber-500/30">Gate Entry</span>
               </div>
 
               <form id="securityGateForm" class="space-y-3">
                 
-                <!-- 1. Vehicle No & Short Form Vehicle Type -->
+                <!-- 1. TOP FIELD: PURPOSE -->
+                <div>
+                  <label class="block text-[11px] font-extrabold text-amber-300 uppercase tracking-wider mb-1 ml-1">
+                    Purpose (गाड़ी किसके लिए है?) *
+                  </label>
+                  <select id="secPurpose" onchange="handleSecurityRouteChange()" class="w-full ios-input-dark rounded-2xl p-2.5 text-xs font-bold text-amber-300 border-amber-500/40">
+                    <option value="Loading">📦 Loading (लोकेशन लोड होकर जाएगी - From: INDORE HUB)</option>
+                    <option value="Unloading">📥 Unloading (अनलोडिंग के लिए आई है - To: INDORE HUB)</option>
+                    <option value="Parking / Transit">🅿 Parking / Transit</option>
+                  </select>
+                </div>
+
+                <!-- 2. Vehicle No & Short Form Vehicle Type -->
                 <div class="grid grid-cols-2 gap-2.5">
                   <div>
                     <label class="block text-[11px] font-bold text-slate-400 mb-1 ml-1">Vehicle No. *</label>
-                    <input type="text" id="secVehicleNo" placeholder="MP-09-AB-1234" required class="w-full ios-input-dark rounded-2xl p-2.5 text-xs uppercase font-bold text-sky-400">
+                    <input type="text" id="secVehicleNo" placeholder="MP-09-AB-1234" required class="w-full ios-input-dark rounded-2xl p-2.5 text-xs uppercase font-bold text-amber-300">
                   </div>
                   <div>
                     <label class="block text-[11px] font-bold text-slate-400 mb-1 ml-1">Vehicle Type (Short)</label>
@@ -525,58 +602,11 @@
                   </div>
                 </div>
 
-                <!-- 2. Driver Name & Driver Mobile -->
+                <!-- 3. Driver Mobile & Transporter -->
                 <div class="grid grid-cols-2 gap-2.5">
                   <div>
-                    <label class="block text-[11px] font-bold text-slate-400 mb-1 ml-1">Driver Name</label>
-                    <input type="text" id="secDriverName" placeholder="Driver Name" class="w-full ios-input-dark rounded-2xl p-2.5 text-xs">
-                  </div>
-                  <div>
-                    <label class="block text-[11px] font-bold text-slate-400 mb-1 ml-1">Driver Mobile</label>
-                    <input type="tel" id="secDriverMobile" placeholder="9876543210" class="w-full ios-input-dark rounded-2xl p-2.5 text-xs font-mono">
-                  </div>
-                </div>
-
-                <!-- 3. From Location & To Location -->
-                <div class="grid grid-cols-2 gap-2.5">
-                  <div>
-                    <label class="block text-[11px] font-bold text-slate-400 mb-1 ml-1">From Location *</label>
-                    <input type="text" id="secFromLocation" placeholder="Origin (e.g. Mumbai)" required class="w-full ios-input-dark rounded-2xl p-2.5 text-xs uppercase font-semibold">
-                  </div>
-                  <div>
-                    <label class="block text-[11px] font-bold text-slate-400 mb-1 ml-1">To Location *</label>
-                    <input type="text" id="secToLocation" placeholder="Destination (e.g. Indore)" required class="w-full ios-input-dark rounded-2xl p-2.5 text-xs uppercase font-semibold">
-                  </div>
-                </div>
-
-                <!-- 4. Movement (IN / OUT) & Purpose (Loading / Unloading) -->
-                <div class="grid grid-cols-2 gap-2.5">
-                  <div>
-                    <label class="block text-[11px] font-bold text-slate-400 mb-1 ml-1">Movement</label>
-                    <select id="secMovement" class="w-full ios-input-dark rounded-2xl p-2.5 text-xs font-bold text-emerald-400">
-                      <option value="IN">🟢 IN (Gate Entry)</option>
-                      <option value="OUT">🔴 OUT (Gate Exit)</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label class="block text-[11px] font-bold text-slate-400 mb-1 ml-1">Purpose</label>
-                    <select id="secPurpose" class="w-full ios-input-dark rounded-2xl p-2.5 text-xs font-bold text-sky-400">
-                      <option value="Loading">📦 Loading</option>
-                      <option value="Unloading">📥 Unloading</option>
-                      <option value="Parking / Transit">🅿 Parking / Transit</option>
-                    </select>
-                  </div>
-                </div>
-
-                <!-- 5. Transporter & Unit Selection -->
-                <div class="grid grid-cols-2 gap-2.5">
-                  <div>
-                    <label class="block text-[11px] font-bold text-slate-400 mb-1 ml-1">Unit</label>
-                    <select id="secUnit" class="w-full ios-input-dark rounded-2xl p-2.5 text-xs font-semibold">
-                      <option value="AHPL">AHPL</option>
-                      <option value="AIL">AIL</option>
-                      <option value="THERMOCOL">THERMOCOL</option>
-                    </select>
+                    <label class="block text-[11px] font-bold text-slate-400 mb-1 ml-1">Driver Mobile *</label>
+                    <input type="tel" id="secDriverMobile" placeholder="9876543210" required class="w-full ios-input-dark rounded-2xl p-2.5 text-xs font-mono">
                   </div>
                   <div>
                     <label class="block text-[11px] font-bold text-slate-400 mb-1 ml-1">Transporter</label>
@@ -594,25 +624,37 @@
                   </div>
                 </div>
 
-                <!-- 6. Date & Time -->
+                <!-- 4. From Location & To Location -->
+                <div class="grid grid-cols-2 gap-2.5">
+                  <div>
+                    <label class="block text-[11px] font-bold text-slate-400 mb-1 ml-1">From Location (कहाँ से) *</label>
+                    <input type="text" id="secFromLocation" value="INDORE HUB" required class="w-full ios-input-dark rounded-2xl p-2.5 text-xs uppercase font-semibold text-amber-300">
+                  </div>
+                  <div>
+                    <label class="block text-[11px] font-bold text-slate-400 mb-1 ml-1">To Location (कहाँ जाएगी) *</label>
+                    <input type="text" id="secToLocation" placeholder="Destination" required class="w-full ios-input-dark rounded-2xl p-2.5 text-xs uppercase font-semibold">
+                  </div>
+                </div>
+
+                <!-- 5. Date & Time -->
                 <div>
                   <div class="flex justify-between items-center mb-1">
                     <label class="block text-[11px] font-bold text-slate-400 ml-1">Date & Time</label>
-                    <button type="button" onclick="autoPickCurrentDateTime()" class="text-[10px] text-sky-400 hover:text-sky-300 font-bold underline">
+                    <button type="button" onclick="autoPickCurrentDateTime()" class="text-[10px] text-amber-400 hover:text-amber-300 font-bold underline">
                       ⚡ Auto Pick Current Time
                     </button>
                   </div>
                   <input type="text" id="secDateTime" placeholder="27/08/2026, 10:30:00 PM" required class="w-full ios-input-dark rounded-2xl p-2.5 text-xs font-mono">
                 </div>
 
-                <!-- 7. Remarks -->
+                <!-- 6. Remarks -->
                 <div>
                   <label class="block text-[11px] font-bold text-slate-400 mb-1 ml-1">Remarks</label>
                   <input type="text" id="secRemarks" placeholder="Any special notes / Gate Remarks" class="w-full ios-input-dark rounded-2xl p-2.5 text-xs">
                 </div>
 
                 <!-- Save Entry Button -->
-                <button type="submit" class="w-full ios-btn-blue text-white font-bold py-3 rounded-2xl text-xs transition mt-2 flex items-center justify-center gap-2">
+                <button type="submit" class="w-full ios-btn-amber py-3 rounded-2xl text-xs transition mt-2 flex items-center justify-center gap-2">
                   <i data-lucide="check-circle" class="w-4 h-4"></i> Save Gate Entry & Sync
                 </button>
               </form>
@@ -622,7 +664,7 @@
             <div class="ios-glass-dark p-6 rounded-[2rem] border border-white/10 lg:col-span-2">
               <div class="flex flex-wrap justify-between items-center mb-4 gap-2">
                 <h3 class="text-sm font-black text-white flex items-center gap-2">
-                  <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i> Security Gate Movement Log
+                  <i data-lucide="shield-check" class="w-4 h-4 text-amber-400"></i> Security Gate Log
                 </h3>
                 <span class="text-xs bg-slate-800 text-slate-300 border border-white/10 px-3 py-1 rounded-full font-mono font-bold" id="gateRowCount">0 Records</span>
               </div>
@@ -631,11 +673,11 @@
                 <table class="w-full text-left text-xs whitespace-nowrap">
                   <thead class="bg-slate-900/80 text-slate-400 uppercase font-bold border-b border-white/10">
                     <tr>
-                      <th class="py-3 px-3">Movement</th>
                       <th class="py-3 px-3">Purpose</th>
                       <th class="py-3 px-3">Vehicle No</th>
+                      <th class="py-3 px-3">Transporter</th>
+                      <th class="py-3 px-3">Driver Contact</th>
                       <th class="py-3 px-3">Route (From ➔ To)</th>
-                      <th class="py-3 px-3">Driver & Contact</th>
                       <th class="py-3 px-3">Date & Time</th>
                       <th class="py-3 px-3">Remarks</th>
                       <th class="py-3 px-3 text-center">Action</th>
@@ -657,21 +699,26 @@
             <div class="flex flex-wrap justify-between items-center gap-3 mb-4 pb-4 border-b border-white/10">
               <div>
                 <h2 class="text-sm font-black text-white">Reports Data Center & Export</h2>
-                <p class="text-[11px] text-slate-400">Excel / PDF Download</p>
+                <p class="text-[11px] text-slate-400">Excel / PDF / Instant Email Dispatch</p>
               </div>
               
               <div class="flex flex-wrap items-center gap-2">
                 <label class="bg-slate-800 text-white text-xs font-bold px-3.5 py-2.5 rounded-2xl flex items-center gap-1.5 shadow-sm cursor-pointer hover:bg-slate-700 transition border border-white/10">
-                  <i data-lucide="file-input" class="w-3.5 h-3.5 text-emerald-400"></i> Import CSV
+                  <i data-lucide="file-input" class="w-3.5 h-3.5 text-amber-400"></i> Import CSV
                   <input type="file" id="csvFileInput" accept=".csv,.xlsx" onchange="handleCSVImport(event)" class="hidden">
                 </label>
 
-                <button onclick="exportToExcel()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-3.5 py-2.5 rounded-2xl flex items-center gap-1.5 shadow-sm transition">
+                <button onclick="exportToExcel()" class="bg-amber-600 hover:bg-amber-500 text-slate-950 text-xs font-bold px-3.5 py-2.5 rounded-2xl flex items-center gap-1.5 shadow-sm transition">
                   <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> Export Excel
                 </button>
 
-                <button onclick="exportToPDF()" class="bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold px-3.5 py-2.5 rounded-2xl flex items-center gap-1.5 shadow-sm transition">
+                <button onclick="exportToPDF()" class="bg-slate-800 hover:bg-slate-700 text-amber-400 text-xs font-bold px-3.5 py-2.5 rounded-2xl flex items-center gap-1.5 shadow-sm transition border border-amber-500/30">
                   <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Export PDF
+                </button>
+
+                <!-- SEND TO EMAIL BUTTON -->
+                <button onclick="sendReportToEmailPrompt()" class="bg-gradient-to-r from-sky-600 to-blue-700 hover:from-sky-500 hover:to-blue-600 text-white text-xs font-bold px-3.5 py-2.5 rounded-2xl flex items-center gap-1.5 shadow-md transition">
+                  <i data-lucide="mail" class="w-3.5 h-3.5"></i> Send to Email
                 </button>
               </div>
             </div>
@@ -702,7 +749,7 @@
             <div class="flex flex-wrap justify-between items-center gap-4 pb-4 border-b border-white/10">
               <div>
                 <h2 class="text-sm font-extrabold text-white flex items-center gap-2">
-                  <i data-lucide="pie-chart" class="w-4 h-4 text-purple-400"></i> Graphic Analysis Dashboard (KPIs & Fleet)
+                  <i data-lucide="pie-chart" class="w-4 h-4 text-amber-400"></i> Graphic Analysis Dashboard (KPIs & Fleet)
                 </h2>
                 <p class="text-xs text-slate-400 mt-0.5">Real-time Turnaround Time, Weight & Fleet Graphic Performance</p>
               </div>
@@ -718,7 +765,7 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div class="ios-card-dark p-5 rounded-3xl border border-white/10 space-y-3 shadow-xs">
                 <div class="flex justify-between items-center">
-                  <h3 class="text-xs font-extrabold text-sky-400 uppercase tracking-wider flex items-center gap-2">
+                  <h3 class="text-xs font-extrabold text-amber-400 uppercase tracking-wider flex items-center gap-2">
                     <i data-lucide="trending-up" class="w-4 h-4"></i> Dispatch Weight & Volume Trend
                   </h3>
                   <span class="text-[10px] text-slate-400 font-mono" id="chart1Subtitle">Daily Trend</span>
@@ -730,7 +777,7 @@
 
               <div class="ios-card-dark p-5 rounded-3xl border border-white/10 space-y-3 shadow-xs">
                 <div class="flex justify-between items-center">
-                  <h3 class="text-xs font-extrabold text-indigo-400 uppercase tracking-wider flex items-center gap-2">
+                  <h3 class="text-xs font-extrabold text-amber-300 uppercase tracking-wider flex items-center gap-2">
                     <i data-lucide="truck" class="w-4 h-4"></i> Vehicle Fleet & Type Distribution
                   </h3>
                   <span class="text-[10px] text-slate-400 font-mono">By Fleet Class</span>
@@ -742,7 +789,7 @@
 
               <div class="ios-card-dark p-5 rounded-3xl border border-white/10 space-y-3 shadow-xs">
                 <div class="flex justify-between items-center">
-                  <h3 class="text-xs font-extrabold text-emerald-400 uppercase tracking-wider flex items-center gap-2">
+                  <h3 class="text-xs font-extrabold text-amber-500 uppercase tracking-wider flex items-center gap-2">
                     <i data-lucide="pie-chart" class="w-4 h-4"></i> Transporter Share & Trip Allocation
                   </h3>
                   <span class="text-[10px] text-slate-400 font-mono">Trip Load</span>
@@ -754,7 +801,7 @@
 
               <div class="ios-card-dark p-5 rounded-3xl border border-white/10 space-y-3 shadow-xs">
                 <div class="flex justify-between items-center">
-                  <h3 class="text-xs font-extrabold text-amber-400 uppercase tracking-wider flex items-center gap-2">
+                  <h3 class="text-xs font-extrabold text-amber-200 uppercase tracking-wider flex items-center gap-2">
                     <i data-lucide="clock" class="w-4 h-4"></i> Operator Efficiency & Output TAT
                   </h3>
                   <span class="text-[10px] text-slate-400 font-mono">Deliveries Completed</span>
@@ -774,26 +821,26 @@
 
   </div>
 
-  <!-- FLOATING IPHONE BOTTOM APP NAVIGATION BAR -->
-  <div class="md:hidden fixed bottom-3 left-4 right-4 ios-glass-dark border border-white/15 rounded-3xl px-2 py-2.5 flex justify-around items-center z-50 shadow-2xl">
-    <button onclick="switchView('planView', this)" class="flex flex-col items-center gap-1 text-sky-400">
+  <!-- FLOATING IPHONE BOTTOM APP NAVIGATION BAR (LIVE DOCKS) -->
+  <div class="md:hidden fixed bottom-3 left-4 right-4 ios-glass-dark border border-amber-500/20 rounded-3xl px-2 py-2.5 flex justify-around items-center z-50 shadow-2xl">
+    <button onclick="switchView('planView', this)" class="flex flex-col items-center gap-1 text-amber-400">
       <i data-lucide="clipboard-list" class="w-5 h-5"></i>
       <span class="text-[9px] font-bold">Plan</span>
     </button>
     <button onclick="switchView('loadUnloadView', this)" class="flex flex-col items-center gap-1 text-slate-400 hover:text-white">
-      <i data-lucide="arrow-left-right" class="w-5 h-5 text-emerald-400"></i>
+      <i data-lucide="arrow-left-right" class="w-5 h-5 text-amber-400"></i>
       <span class="text-[9px] font-bold">Load/Unload</span>
     </button>
     <button onclick="switchView('liveDocksView', this)" class="flex flex-col items-center gap-1 text-slate-400 hover:text-white">
       <i data-lucide="layers" class="w-5 h-5 text-amber-400"></i>
-      <span class="text-[9px] font-bold">Bays</span>
+      <span class="text-[9px] font-bold">Live Docks</span>
     </button>
     <button onclick="switchView('gateSecView', this)" class="flex flex-col items-center gap-1 text-slate-400 hover:text-white">
-      <i data-lucide="shield-check" class="w-5 h-5 text-rose-400"></i>
+      <i data-lucide="shield-check" class="w-5 h-5 text-amber-400"></i>
       <span class="text-[9px] font-bold">Gate</span>
     </button>
     <button onclick="switchView('reportsView', this)" class="flex flex-col items-center gap-1 text-slate-400 hover:text-white">
-      <i data-lucide="bar-chart-3" class="w-5 h-5 text-purple-400"></i>
+      <i data-lucide="bar-chart-3" class="w-5 h-5 text-amber-400"></i>
       <span class="text-[9px] font-bold">Reports</span>
     </button>
   </div>
@@ -816,32 +863,75 @@
     let currentLoggedInRole = localStorage.getItem("ich_active_role") || null;
     let currentLoggedInUser = localStorage.getItem("ich_active_user") || "Duty User";
 
-    let planEntries = JSON.parse(localStorage.getItem("ich_plan_v40")) || [];
-    let loadEntries = JSON.parse(localStorage.getItem("ich_load_v40")) || [];
-    let securityLogs = JSON.parse(localStorage.getItem("ich_sec_v40")) || [];
+    let planEntries = JSON.parse(localStorage.getItem("ich_plan_v45")) || [];
+    let loadEntries = JSON.parse(localStorage.getItem("ich_load_v45")) || [];
+    let securityLogs = JSON.parse(localStorage.getItem("ich_sec_v45")) || [];
 
     let currentPeriod = 'daily';
     let chartTrend = null, chartFleet = null, chartTransporter = null, chartSupervisor = null;
 
-    // BIN CONFIGURATION (AHPL = Bin 1 to 4, AIL = Bin 5 to 9, THERMOCOL = Bin 1 to 9)
-    const binConfig = {
-      'AHPL': ['Bin 1', 'Bin 2', 'Bin 3', 'Bin 4'],
-      'AIL': ['Bin 5', 'Bin 6', 'Bin 7', 'Bin 8', 'Bin 9'],
-      'THERMOCOL': ['Bin 1', 'Bin 2', 'Bin 3', 'Bin 4', 'Bin 5', 'Bin 6', 'Bin 7', 'Bin 8', 'Bin 9']
+    // DOCK CONFIGURATION (AHPL = Dock 1 to 4, AIL = Dock 5 to 9, THERMOCOL = Dock 1 to 9)
+    const dockConfig = {
+      'AHPL': ['Dock 1', 'Dock 2', 'Dock 3', 'Dock 4'],
+      'AIL': ['Dock 5', 'Dock 6', 'Dock 7', 'Dock 8', 'Dock 9'],
+      'THERMOCOL': ['Dock 1', 'Dock 2', 'Dock 3', 'Dock 4', 'Dock 5', 'Dock 6', 'Dock 7', 'Dock 8', 'Dock 9']
     };
 
-    function updateBinOptions() {
+    function toggleVersionModal(show) {
+      const modal = document.getElementById('versionModal');
+      if (show) modal.classList.remove('hidden');
+      else modal.classList.add('hidden');
+    }
+
+    function updateDockOptions() {
       const selectedUnit = document.getElementById('loadUnit').value;
       const baySelect = document.getElementById('loadBayNo');
-      const availableBins = binConfig[selectedUnit] || binConfig['AHPL'];
+      const availableDocks = dockConfig[selectedUnit] || dockConfig['AHPL'];
 
       baySelect.innerHTML = '';
-      availableBins.forEach(bin => {
+      availableDocks.forEach(dock => {
         const opt = document.createElement('option');
-        opt.value = bin;
-        opt.textContent = `${bin} (${selectedUnit})`;
+        opt.value = dock;
+        opt.textContent = `${dock} (${selectedUnit})`;
         baySelect.appendChild(opt);
       });
+    }
+
+    // SMART ROUTE HANDLER FOR SECURITY GATE FORM
+    function handleSecurityRouteChange() {
+      const purpose = document.getElementById('secPurpose').value;
+      const fromInput = document.getElementById('secFromLocation');
+      const toInput = document.getElementById('secToLocation');
+
+      if (purpose === 'Loading') {
+        fromInput.value = "INDORE HUB";
+        if (toInput.value === "INDORE HUB") toInput.value = "";
+        toInput.placeholder = "Destination (कहाँ जाएगी, e.g. Bangalore)";
+      } else if (purpose === 'Unloading') {
+        toInput.value = "INDORE HUB";
+        if (fromInput.value === "INDORE HUB") fromInput.value = "";
+        fromInput.placeholder = "Origin (कहाँ से आई, e.g. Mumbai)";
+      } else {
+        fromInput.placeholder = "Origin Location";
+        toInput.placeholder = "Destination Location";
+      }
+    }
+
+    // SMART ROUTE HANDLER FOR SUPERVISOR LOADING/UNLOADING FORM
+    function handleSupervisorOpChange() {
+      const op = document.getElementById('opType').value;
+      const fromInput = document.getElementById('loadFromLoc');
+      const toInput = document.getElementById('loadToLoc');
+
+      if (op === 'LOADING') {
+        fromInput.value = "INDORE HUB";
+        if (toInput.value === "INDORE HUB") toInput.value = "";
+        toInput.placeholder = "e.g. Bangalore / Mumbai";
+      } else {
+        toInput.value = "INDORE HUB";
+        if (fromInput.value === "INDORE HUB") fromInput.value = "";
+        fromInput.placeholder = "e.g. Bhiwandi / Delhi";
+      }
     }
 
     // UPDATE LINKED VEHICLE SELECTOR IN LOADING FORM
@@ -850,11 +940,10 @@
       if (!select) return;
       select.innerHTML = '<option value="">-- Choose Arrived Vehicle (Auto-Fill) --</option>';
 
-      const inVehicles = securityLogs.filter(s => s.movement === 'IN' || !s.movement);
-      inVehicles.forEach((veh) => {
+      securityLogs.forEach((veh) => {
         const opt = document.createElement('option');
         opt.value = veh.vehicle;
-        opt.textContent = `🚗 ${veh.vehicle} | ${veh.transporter || 'Transp'} | ${veh.purpose || 'Loading'} (${veh.unit || 'AHPL'})`;
+        opt.textContent = `🚗 ${veh.vehicle} | ${veh.transporter || 'Transp'} | ${veh.purpose || 'Loading'} (${veh.fromLoc || 'Origin'} ➔ ${veh.toLoc || 'INDORE HUB'})`;
         select.appendChild(opt);
       });
     }
@@ -867,14 +956,16 @@
 
       document.getElementById('loadVehicleNo').value = item.vehicle;
       if (item.transporter) document.getElementById('loadTransporter').value = item.transporter;
-      if (item.unit) {
-        document.getElementById('loadUnit').value = item.unit;
-        updateBinOptions();
-      }
+      
+      if (item.fromLoc) document.getElementById('loadFromLoc').value = item.fromLoc;
+      if (item.toLoc) document.getElementById('loadToLoc').value = item.toLoc;
+
       if (item.purpose === 'Unloading') {
         document.getElementById('opType').value = 'UNLOADING';
+        document.getElementById('loadToLoc').value = "INDORE HUB";
       } else {
         document.getElementById('opType').value = 'LOADING';
+        document.getElementById('loadFromLoc').value = "INDORE HUB";
       }
 
       const now = new Date();
@@ -886,6 +977,40 @@
       const now = new Date();
       const formatted = now.toLocaleDateString('en-IN') + ', ' + now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
       document.getElementById('secDateTime').value = formatted;
+    }
+
+    // SEND REPORT TO EMAIL PROMPT & DISPATCH
+    function sendReportToEmailPrompt() {
+      if (planEntries.length === 0 && loadEntries.length === 0 && securityLogs.length === 0) {
+        return alert("ईमेल करने के लिए कोई डेटा मौजूद नहीं है।");
+      }
+      const targetEmail = prompt("रिपोर्ट किस ईमेल आईडी पर भेजनी है?", "rmangrola04@gmail.com");
+      if (!targetEmail || !targetEmail.includes("@")) {
+        return alert("कृपया वैध ईमेल आईडी दर्ज करें।");
+      }
+
+      if (!googleWebhookUrl) return alert("Webhook URL उपलब्ध नहीं है।");
+
+      const emailPayload = {
+        action: "SEND_EMAIL_REPORT",
+        email: targetEmail.trim(),
+        totalPlans: planEntries.length,
+        totalLoading: loadEntries.length,
+        totalGateMovements: securityLogs.length,
+        timestamp: new Date().toLocaleString('en-IN'),
+        records: planEntries.slice(0, 50)
+      };
+
+      fetch(googleWebhookUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify(emailPayload)
+      }).then(() => {
+        alert(`✅ रिपोर्ट सफलतापूर्वक ${targetEmail} पर भेज दी गई है!`);
+      }).catch(() => {
+        alert("ईमेल भेजने में समस्या आई। कृपया पुनः प्रयास करें।");
+      });
     }
 
     document.getElementById('loginForm').addEventListener('submit', function(e) {
@@ -951,7 +1076,9 @@
         switchView('planView', document.querySelectorAll('.sidebar-item')[0]);
       }
 
-      updateBinOptions();
+      updateDockOptions();
+      handleSecurityRouteChange();
+      handleSupervisorOpChange();
       updateLinkedGateVehicleDropdown();
       autoPickCurrentDateTime();
       renderAllTables();
@@ -993,9 +1120,13 @@
       if (targetView) targetView.classList.remove('hidden');
       if (btn && btn.classList.contains('sidebar-item')) btn.classList.add('active-nav-dark');
 
-      if (viewId === 'gateSecView') autoPickCurrentDateTime();
+      if (viewId === 'gateSecView') {
+        autoPickCurrentDateTime();
+        handleSecurityRouteChange();
+      }
       if (viewId === 'loadUnloadView') {
-        updateBinOptions();
+        updateDockOptions();
+        handleSupervisorOpChange();
         updateLinkedGateVehicleDropdown();
       }
       if (viewId === 'reportsView') setTimeout(renderGraphicAnalytics, 100);
@@ -1047,15 +1178,15 @@
       if (data && typeof data === 'object') {
         if (Array.isArray(data.planEntries)) {
           planEntries = data.planEntries;
-          localStorage.setItem("ich_plan_v40", JSON.stringify(planEntries));
+          localStorage.setItem("ich_plan_v45", JSON.stringify(planEntries));
         }
         if (Array.isArray(data.loadEntries)) {
           loadEntries = data.loadEntries;
-          localStorage.setItem("ich_load_v40", JSON.stringify(loadEntries));
+          localStorage.setItem("ich_load_v45", JSON.stringify(loadEntries));
         }
         if (Array.isArray(data.gateEntries)) {
           securityLogs = data.gateEntries;
-          localStorage.setItem("ich_sec_v40", JSON.stringify(securityLogs));
+          localStorage.setItem("ich_sec_v45", JSON.stringify(securityLogs));
         }
         renderAllTables();
         renderLoadUnloadTable();
@@ -1183,7 +1314,7 @@
       if (extractedRows.length === 0) return alert("फ़ोटो से पंक्तियाँ नहीं मिल सकीं।");
 
       extractedRows.forEach(r => planEntries.unshift(r));
-      localStorage.setItem("ich_plan_v40", JSON.stringify(planEntries));
+      localStorage.setItem("ich_plan_v45", JSON.stringify(planEntries));
       renderAllTables();
       renderLiveDockCards();
       pushBatchToCloud(extractedRows);
@@ -1210,6 +1341,8 @@
         unit: document.getElementById('loadUnit').value,
         bayNo: document.getElementById('loadBayNo').value,
         vehicleNo: document.getElementById('loadVehicleNo').value.toUpperCase(),
+        fromLoc: document.getElementById('loadFromLoc').value.toUpperCase().trim(),
+        toLoc: document.getElementById('loadToLoc').value.toUpperCase().trim(),
         transporter: document.getElementById('loadTransporter').value,
         operator: document.getElementById('loadOperator').value.trim(),
         startTime: start,
@@ -1219,41 +1352,40 @@
       };
 
       loadEntries.unshift(newOp);
-      localStorage.setItem("ich_load_v40", JSON.stringify(loadEntries));
+      localStorage.setItem("ich_load_v45", JSON.stringify(loadEntries));
       renderLoadUnloadTable();
       pushLoadUnloadToCloud(newOp);
       this.reset();
-      updateBinOptions();
+      updateDockOptions();
+      handleSupervisorOpChange();
       updateLinkedGateVehicleDropdown();
       alert("Operation Recorded & Synced!");
     });
 
-    // FORM HANDLER: SECURITY GATE MOVEMENT (SHORT FORM VEHICLE TYPE)
+    // FORM HANDLER: SECURITY GATE MOVEMENT
     document.getElementById('securityGateForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const newSec = {
+        purpose: document.getElementById('secPurpose').value,
         vehicle: document.getElementById('secVehicleNo').value.toUpperCase().trim(),
         vType: document.getElementById('secVehicleType').value,
-        driver: document.getElementById('secDriverName').value.trim() || '-',
         mobile: document.getElementById('secDriverMobile').value.trim() || '-',
+        transporter: document.getElementById('secTransporter').value,
         fromLoc: document.getElementById('secFromLocation').value.toUpperCase().trim(),
         toLoc: document.getElementById('secToLocation').value.toUpperCase().trim(),
-        movement: document.getElementById('secMovement').value,
-        purpose: document.getElementById('secPurpose').value,
-        unit: document.getElementById('secUnit').value,
-        transporter: document.getElementById('secTransporter').value,
         dateTime: document.getElementById('secDateTime').value.trim() || new Date().toLocaleString('en-IN'),
         remarks: document.getElementById('secRemarks').value.trim() || '-'
       };
 
       securityLogs.unshift(newSec);
-      localStorage.setItem("ich_sec_v40", JSON.stringify(securityLogs));
+      localStorage.setItem("ich_sec_v45", JSON.stringify(securityLogs));
       renderSecurityTable();
       updateLinkedGateVehicleDropdown();
       pushGateEntryToCloud(newSec);
       this.reset();
+      handleSecurityRouteChange();
       autoPickCurrentDateTime();
-      alert("Vehicle Movement Saved & Linked to Loading/Unloading Form!");
+      alert("Security Gate Entry Saved & Synced Successfully!");
     });
 
     // TABLE RENDERING & DELETION
@@ -1298,16 +1430,16 @@
         row.className = 'hover:bg-white/5 transition border-b border-white/5';
         row.innerHTML = `
           <td class="py-3.5 px-4 font-black text-white text-xs">${v.destination}</td>
-          <td class="py-3.5 px-4 font-bold text-sky-400">${v.transporter}</td>
+          <td class="py-3.5 px-4 font-bold text-amber-400">${v.transporter}</td>
           <td class="py-3.5 px-4 font-semibold text-slate-300">${v.vType}</td>
           <td class="py-3.5 px-4 text-center">
-            <div class="font-extrabold font-mono text-white bg-slate-800 rounded-xl py-1 px-2.5 inline-block border border-white/10">
-              ${v.totalCount} Del. <span class="text-[10px] text-slate-400 block font-normal">(AHPL: ${v.ahplCount} | AIL: ${v.ailCount})</span>
+            <div class="font-extrabold font-mono text-slate-950 bg-amber-400 rounded-xl py-1 px-2.5 inline-block">
+              ${v.totalCount} Del. <span class="text-[10px] text-slate-800 block font-semibold">(AHPL: ${v.ahplCount} | AIL: ${v.ailCount})</span>
             </div>
           </td>
           <td class="py-3.5 px-4 text-right font-mono font-black text-white text-sm">${v.totalWeight.toFixed(2)} Kg</td>
-          <td class="py-3.5 px-4 text-right font-mono font-black text-sky-400 text-sm">${v.totalCft.toFixed(2)} CFT</td>
-          <td class="py-3.5 px-4 text-center"><span class="px-3 py-1 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">Ready</span></td>
+          <td class="py-3.5 px-4 text-right font-mono font-black text-amber-400 text-sm">${v.totalCft.toFixed(2)} CFT</td>
+          <td class="py-3.5 px-4 text-center"><span class="px-3 py-1 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">Ready</span></td>
         `;
         summaryTbody.appendChild(row);
       });
@@ -1320,10 +1452,10 @@
         planRow.innerHTML = `
           <td class="py-3 px-3.5 font-mono font-bold text-slate-200">${item.deliveryNo}</td>
           <td class="py-3 px-3.5 font-mono text-slate-400 font-semibold">${item.code}</td>
-          <td class="py-3 px-3.5 font-bold ${item.unit === 'AIL' ? 'text-indigo-400' : 'text-sky-400'}">${item.unit}</td>
+          <td class="py-3 px-3.5 font-bold text-amber-400">${item.unit}</td>
           <td class="py-3 px-3.5 font-bold text-white">${item.destination}</td>
           <td class="py-3 px-3.5 text-right font-mono font-bold text-white">${Number(item.weight).toFixed(2)}</td>
-          <td class="py-3 px-3.5 text-right font-mono font-bold text-sky-400">${Number(item.cft).toFixed(2)}</td>
+          <td class="py-3 px-3.5 text-right font-mono font-bold text-amber-400">${Number(item.cft).toFixed(2)}</td>
           <td class="py-3 px-3.5 text-slate-300 font-bold">${item.vType}</td>
           <td class="py-3 px-3.5 font-bold text-slate-200">${item.transporter}</td>
           <td class="py-3 px-3.5 text-center">
@@ -1337,11 +1469,11 @@
         repRow.innerHTML = `
           <td class="py-2.5 px-3 font-mono font-bold">${item.deliveryNo}</td>
           <td class="py-2.5 px-3 font-mono">${item.code}</td>
-          <td class="py-2.5 px-3">${item.unit}</td>
+          <td class="py-2.5 px-3 text-amber-400">${item.unit}</td>
           <td class="py-2.5 px-3 font-bold text-white">${item.destination}</td>
           <td class="py-2.5 px-3 text-right font-mono">${Number(item.weight).toFixed(2)}</td>
-          <td class="py-2.5 px-3 text-right font-mono text-sky-400">${Number(item.cft).toFixed(2)}</td>
-          <td class="py-2.5 px-3 font-bold">${item.vType}</td>
+          <td class="py-2.5 px-3 text-right font-mono text-amber-400">${Number(item.cft).toFixed(2)}</td>
+          <td class="py-2.5 px-3">${item.vType}</td>
           <td class="py-2.5 px-3 font-bold">${item.transporter}</td>
         `;
         repTbody.appendChild(repRow);
@@ -1361,13 +1493,13 @@
         const tr = document.createElement('tr');
         tr.className = 'hover:bg-white/5';
         tr.innerHTML = `
-          <td class="py-3 px-3 font-bold ${item.opType === 'LOADING' ? 'text-sky-400' : 'text-amber-400'}">${item.opType}</td>
-          <td class="py-3 px-3 font-bold text-sky-400">${item.unit}</td>
-          <td class="py-3 px-3 font-bold text-slate-200">${item.bayNo}</td>
-          <td class="py-3 px-3 font-bold text-white">${item.vehicleNo}</td>
-          <td class="py-3 px-3 text-slate-300">${item.transporter}</td>
+          <td class="py-3 px-3 font-bold text-amber-400">${item.opType}</td>
+          <td class="py-3 px-3 font-bold text-amber-300">${item.unit}</td>
+          <td class="py-3 px-3 font-bold text-white">${item.bayNo}</td>
+          <td class="py-3 px-3 font-bold text-white font-mono">${item.vehicleNo}</td>
+          <td class="py-3 px-3 text-slate-300">${item.fromLoc || 'INDORE HUB'} ➔ ${item.toLoc || 'INDORE HUB'}</td>
           <td class="py-3 px-3 font-semibold text-slate-400">${item.operator}</td>
-          <td class="py-3 px-3 font-mono font-bold text-emerald-400">${item.duration}</td>
+          <td class="py-3 px-3 font-mono font-bold text-amber-400">${item.duration}</td>
           <td class="py-3 px-3 text-center">
             <button onclick="deleteLoadEntry('${item.vehicleNo}', ${idx})" class="text-rose-400 hover:text-rose-300 p-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
           </td>
@@ -1391,17 +1523,12 @@
       securityLogs.forEach((item, idx) => {
         const tr = document.createElement('tr');
         tr.className = 'hover:bg-white/5';
-        const isEntry = item.movement === 'IN';
         tr.innerHTML = `
-          <td class="py-3 px-3">
-            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold ${isEntry ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-rose-500/20 text-rose-300 border border-rose-500/30'}">
-              ${item.movement || 'IN'}
-            </span>
-          </td>
-          <td class="py-3 px-3 font-bold text-sky-400">${item.purpose || 'Loading'}</td>
-          <td class="py-3 px-3 font-bold text-white font-mono">${item.vehicle} <span class="text-[10px] text-slate-400 block">${item.vType || ''} (${item.unit || 'AHPL'})</span></td>
+          <td class="py-3 px-3 font-bold text-amber-400">${item.purpose || 'Loading'}</td>
+          <td class="py-3 px-3 font-bold text-white font-mono">${item.vehicle} <span class="text-[10px] text-slate-400 block">${item.vType || ''}</span></td>
+          <td class="py-3 px-3 text-slate-300">${item.transporter || '-'}</td>
+          <td class="py-3 px-3 text-amber-300 font-mono">${item.mobile || '-'}</td>
           <td class="py-3 px-3 text-slate-300 font-semibold">${item.fromLoc || '-'} ➔ ${item.toLoc || '-'}</td>
-          <td class="py-3 px-3 text-slate-300">${item.driver || '-'} <span class="text-[10px] text-slate-400 block font-mono">${item.mobile || ''}</span></td>
           <td class="py-3 px-3 font-mono text-slate-300 text-[11px]">${item.dateTime || '-'}</td>
           <td class="py-3 px-3 text-slate-400 text-xs">${item.remarks || '-'}</td>
           <td class="py-3 px-3 text-center">
@@ -1416,7 +1543,7 @@
     function deletePlanEntry(delNo, idx) {
       if (confirm("क्या आप इसे डिलीट करना चाहते हैं? यह Google Sheet से भी तुरंत डिलीट हो जाएगा।")) {
         planEntries.splice(idx, 1);
-        localStorage.setItem("ich_plan_v40", JSON.stringify(planEntries));
+        localStorage.setItem("ich_plan_v45", JSON.stringify(planEntries));
         renderAllTables();
         renderLiveDockCards();
         deleteRowFromCloud("Plan_Received", delNo);
@@ -1426,7 +1553,7 @@
     function deleteLoadEntry(vehNo, idx) {
       if (confirm("ऑपरेशन रिकॉर्ड डिलीट करें?")) {
         loadEntries.splice(idx, 1);
-        localStorage.setItem("ich_load_v40", JSON.stringify(loadEntries));
+        localStorage.setItem("ich_load_v45", JSON.stringify(loadEntries));
         renderLoadUnloadTable();
         deleteRowFromCloud("Loading_Unloading_Log", vehNo);
       }
@@ -1435,7 +1562,7 @@
     function deleteGateEntry(vehNo, idx) {
       if (confirm("गेट एंट्री डिलीट करें?")) {
         securityLogs.splice(idx, 1);
-        localStorage.setItem("ich_sec_v40", JSON.stringify(securityLogs));
+        localStorage.setItem("ich_sec_v45", JSON.stringify(securityLogs));
         renderSecurityTable();
         updateLinkedGateVehicleDropdown();
         deleteRowFromCloud("Gate_Security_Log", vehNo);
@@ -1448,14 +1575,14 @@
       if (!ahplGrid || !ailGrid) return;
       ahplGrid.innerHTML = ''; ailGrid.innerHTML = '';
 
-      binConfig['AHPL'].forEach(binName => {
-        const active = loadEntries.find(d => d.bayNo === binName);
-        ahplGrid.innerHTML += createDockCard(binName, active);
+      dockConfig['AHPL'].forEach(dockName => {
+        const active = loadEntries.find(d => d.bayNo === dockName);
+        ahplGrid.innerHTML += createDockCard(dockName, active);
       });
 
-      binConfig['AIL'].forEach(binName => {
-        const active = loadEntries.find(d => d.bayNo === binName);
-        ailGrid.innerHTML += createDockCard(binName, active);
+      dockConfig['AIL'].forEach(dockName => {
+        const active = loadEntries.find(d => d.bayNo === dockName);
+        ailGrid.innerHTML += createDockCard(dockName, active);
       });
       lucide.createIcons();
     }
@@ -1463,14 +1590,14 @@
     function createDockCard(name, record) {
       if (record) {
         return `
-          <div class="p-4 rounded-3xl ios-card-dark border border-white/10 space-y-1 text-xs shadow-md">
+          <div class="p-4 rounded-3xl ios-card-dark border border-amber-500/30 space-y-1 text-xs shadow-md">
             <div class="flex justify-between items-center font-bold text-white">
-              <span class="font-black">${name}</span>
+              <span class="font-black text-amber-400">${name}</span>
               <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-sm shadow-emerald-400/50 animate-pulse"></span>
             </div>
             <p class="text-white font-extrabold text-sm pt-1">${record.vehicleNo}</p>
-            <p class="text-[11px] text-slate-400 font-mono">${record.opType} • ${record.operator}</p>
-            <p class="text-[11px] text-sky-400 font-bold">${record.transporter} (${record.duration})</p>
+            <p class="text-[11px] text-slate-400 font-mono">${record.opType} • ${record.fromLoc || 'INDORE HUB'} ➔ ${record.toLoc || 'DEST'}</p>
+            <p class="text-[11px] text-amber-400 font-bold">${record.transporter} (${record.duration})</p>
           </div>
         `;
       }
@@ -1522,8 +1649,8 @@
           data: {
             labels: labels,
             datasets: [
-              { label: 'Weight (Kg)', data: dataWeight, borderColor: '#38BDF8', backgroundColor: 'rgba(56, 189, 248, 0.15)', tension: 0.4, fill: true },
-              { label: 'CFT Volume', data: dataCFT, borderColor: '#818CF8', backgroundColor: 'rgba(129, 140, 248, 0.1)', tension: 0.4, fill: true }
+              { label: 'Weight (Kg)', data: dataWeight, borderColor: '#F59E0B', backgroundColor: 'rgba(245, 158, 11, 0.15)', tension: 0.4, fill: true },
+              { label: 'CFT Volume', data: dataCFT, borderColor: '#FBBF24', backgroundColor: 'rgba(251, 191, 36, 0.1)', tension: 0.4, fill: true }
             ]
           },
           options: {
@@ -1545,7 +1672,7 @@
           type: 'bar',
           data: {
             labels: Object.keys(fleetMap).length ? Object.keys(fleetMap) : ['32SXL', '32MXL', '24-9T'],
-            datasets: [{ label: 'Vehicles', data: Object.values(fleetMap).length ? Object.values(fleetMap) : [5, 3, 2], backgroundColor: ['#38BDF8', '#818CF8', '#34D399'] }]
+            datasets: [{ label: 'Vehicles', data: Object.values(fleetMap).length ? Object.values(fleetMap) : [5, 3, 2], backgroundColor: ['#F59E0B', '#D97706', '#FBBF24'] }]
           },
           options: {
             responsive: true,
@@ -1566,7 +1693,7 @@
           type: 'doughnut',
           data: {
             labels: Object.keys(transpMap).length ? Object.keys(transpMap) : ['DHTC', 'OPM', 'ICRL'],
-            datasets: [{ data: Object.values(transpMap).length ? Object.values(transpMap) : [10, 6, 4], backgroundColor: ['#38BDF8', '#34D399', '#FBBF24', '#F472B6'] }]
+            datasets: [{ data: Object.values(transpMap).length ? Object.values(transpMap) : [10, 6, 4], backgroundColor: ['#F59E0B', '#D97706', '#FBBF24', '#B45309'] }]
           },
           options: {
             responsive: true,
@@ -1584,7 +1711,7 @@
           type: 'bar',
           data: {
             labels: Object.keys(supervisorMap).length ? Object.keys(supervisorMap) : ['Supervisor 1', 'Supervisor 2'],
-            datasets: [{ label: 'Output', data: Object.values(supervisorMap).length ? Object.values(supervisorMap) : [12, 8], backgroundColor: '#FBBF24' }]
+            datasets: [{ label: 'Output', data: Object.values(supervisorMap).length ? Object.values(supervisorMap) : [12, 8], backgroundColor: '#F59E0B' }]
           },
           options: {
             indexAxis: 'y',
@@ -1624,7 +1751,7 @@
           planEntries.unshift(newRec);
           pushBatchToCloud([newRec]);
         });
-        localStorage.setItem("ich_plan_v40", JSON.stringify(planEntries));
+        localStorage.setItem("ich_plan_v45", JSON.stringify(planEntries));
         renderAllTables();
         alert(`${rows.length} रिकॉर्ड्स लोड हुए!`);
       };
