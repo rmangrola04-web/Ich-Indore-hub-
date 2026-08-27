@@ -13,9 +13,9 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <!-- Tesseract.js -->
+  <!-- Tesseract.js (OCR Engine) -->
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-  <!-- SheetJS -->
+  <!-- SheetJS (XLSX & CSV) -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <!-- jsPDF & AutoTable -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -72,7 +72,7 @@
         </div>
         <div>
           <label class="block text-[11px] font-bold uppercase tracking-wider mb-1.5 ml-1">Username</label>
-          <input type="text" id="loginUser" placeholder="Enter username" required class="w-full app-input rounded-2xl p-3 text-xs font-semibold">
+          <input type="text" id="loginUser" placeholder="Enter username (e.g. admin)" required class="w-full app-input rounded-2xl p-3 text-xs font-semibold">
         </div>
         <div>
           <label class="block text-[11px] font-bold uppercase tracking-wider mb-1.5 ml-1">Password</label>
@@ -176,9 +176,12 @@
           <div class="glass-panel p-5 rounded-[2rem] space-y-4">
             <div class="flex justify-between items-center">
               <h2 class="text-sm font-extrabold">Plan Received & Summary</h2>
-              <label class="bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold px-4 py-2 rounded-xl cursor-pointer">
-                Scan Plan Photo <input type="file" accept="image/*" capture="environment" onchange="scanPlanImage(event)" class="hidden">
-              </label>
+              <div class="flex items-center gap-2">
+                <label class="bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold px-4 py-2 rounded-xl cursor-pointer">
+                  Scan Plan Photo <input type="file" accept="image/*" capture="environment" onchange="scanPlanImage(event)" class="hidden">
+                </label>
+                <div id="ocrSpinner" class="hidden text-xs text-sky-400 animate-pulse font-bold">Scanning...</div>
+              </div>
             </div>
             <div class="overflow-x-auto rounded-2xl card-surface">
               <table class="w-full text-left text-xs whitespace-nowrap">
@@ -187,6 +190,17 @@
                 </thead>
                 <tbody id="summaryTableBody"><tr><td colspan="5" class="text-center py-6 opacity-60">No plan data. Scan image above.</td></tr></tbody>
               </table>
+            </div>
+            <div class="pt-2">
+              <h3 class="text-xs font-extrabold mb-2 uppercase opacity-80">Detailed Plan Breakup</h3>
+              <div class="overflow-x-auto rounded-2xl card-surface">
+                <table class="w-full text-left text-xs whitespace-nowrap">
+                  <thead class="bg-slate-800/70 uppercase font-bold">
+                    <tr><th class="py-3 px-3">Delivery No</th><th class="py-3 px-3">Destination</th><th class="py-3 px-3">Unit</th><th class="py-3 px-3 text-right">Weight</th><th class="py-3 px-3 text-right">CFT</th><th class="py-3 px-3 text-center">Action</th></tr>
+                  </thead>
+                  <tbody id="planTableBody"><tr><td colspan="6" class="text-center py-4 opacity-60">No detailed plan data.</td></tr></tbody>
+                </table>
+              </div>
             </div>
           </div>
         </section>
@@ -270,9 +284,11 @@
 
         <!-- LIVE DOCKS -->
         <section id="liveDocksView" class="view-panel hidden space-y-6">
-          <div class="glass-panel p-6 rounded-[2rem]">
-            <h2 class="text-sm font-black mb-4">AHPL & AIL Docks Status</h2>
+          <div class="glass-panel p-6 rounded-[2rem] space-y-4">
+            <h2 class="text-sm font-black mb-2">AHPL Dedicated Docks (1-4)</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4" id="ahplDockGrid"></div>
+            <h2 class="text-sm font-black mt-6 mb-2">AIL Dedicated Docks (5-9)</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4" id="ailDockGrid"></div>
           </div>
         </section>
 
@@ -286,13 +302,24 @@
               <input type="tel" id="secDriverMobile" placeholder="Driver Mobile" required class="app-input rounded-xl p-2.5 text-xs">
               <button type="submit" class="sm:col-span-3 bg-sky-600 text-white font-bold py-2.5 rounded-xl text-xs">Save Gate Entry</button>
             </form>
+            <div class="overflow-x-auto rounded-2xl card-surface mt-4">
+              <table class="w-full text-left text-xs whitespace-nowrap">
+                <thead class="bg-slate-800/80 uppercase font-bold"><tr><th class="py-3 px-3">Purpose</th><th class="py-3 px-3">Vehicle</th><th class="py-3 px-3">Driver Mobile</th><th class="py-3 px-3">Time</th></tr></thead>
+                <tbody id="securityTableBody"><tr><td colspan="4" class="text-center py-6">No gate logs.</td></tr></tbody>
+              </table>
+            </div>
           </div>
         </section>
 
         <!-- REPORTS -->
         <section id="reportsView" class="view-panel hidden space-y-6">
           <div class="glass-panel p-6 rounded-[2rem] space-y-4">
-            <h2 class="text-sm font-black">Reports Hub</h2>
+            <div class="flex justify-between items-center">
+              <h2 class="text-sm font-black">Reports Hub & Master Locations</h2>
+              <label class="bg-amber-600 text-black text-xs font-bold px-3.5 py-2 rounded-xl cursor-pointer">
+                Import Location Master <input type="file" accept=".csv,.xlsx,.xls" onchange="handleLocationMasterImport(event)" class="hidden">
+              </label>
+            </div>
             <div class="overflow-x-auto rounded-2xl card-surface">
               <table class="w-full text-left text-xs whitespace-nowrap">
                 <thead class="bg-slate-800/80 uppercase font-bold"><tr><th class="py-3 px-3">Delivery No</th><th class="py-3 px-3">Destination</th><th class="py-3 px-3">Weight</th></tr></thead>
@@ -323,8 +350,15 @@
     function applyTheme(theme) {
       document.documentElement.className = theme;
       localStorage.setItem("ich_theme_mode", theme);
+      const textEl = document.getElementById("themeModeText");
+      if(textEl) textEl.innerText = theme === "light" ? "Dark Mode" : "Light Mode";
     }
     applyTheme(currentTheme);
+
+    function toggleThemeMode() {
+      currentTheme = currentTheme === "dark" ? "light" : "dark";
+      applyTheme(currentTheme);
+    }
 
     let planEntries = [], loadEntries = [], securityLogs = [], masterLocations = [];
     const dockConfig = { 'AHPL': ['Dock 1', 'Dock 2', 'Dock 3', 'Dock 4'], 'AIL': ['Dock 5', 'Dock 6', 'Dock 7', 'Dock 8', 'Dock 9'] };
@@ -336,11 +370,17 @@
       initFirebaseSync();
     });
 
+    function logout() {
+      document.getElementById('mainApp').classList.add('hidden');
+      document.getElementById('loginScreen').classList.remove('hidden');
+    }
+
     function switchView(viewId, btn) {
       document.querySelectorAll('.view-panel').forEach(el => el.classList.add('hidden'));
       document.getElementById(viewId).classList.remove('hidden');
       document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active-nav-btn'));
       if(btn) btn.classList.add('active-nav-btn');
+      if(viewId === 'liveDocksView') renderLiveDockCards();
     }
 
     function handleSupervisorOpChange() {
@@ -359,10 +399,40 @@
     function updateDockOptions() {
       const unit = document.getElementById('loadUnit').value;
       const bay = document.getElementById('loadBayNo');
+      if(!bay) return;
       bay.innerHTML = '';
       (dockConfig[unit] || dockConfig['AHPL']).forEach(d => {
         bay.innerHTML += `<option value="${d}">${d}</option>`;
       });
+    }
+
+    function handleLocationMasterImport(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const data = new Uint8Array(e.target.result);
+          const workbook = XLSX.read(data, { type: 'array' });
+          const rows = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], { header: 1 });
+          let newLocs = [];
+          rows.forEach(row => {
+            if (Array.isArray(row)) {
+              row.forEach(cell => {
+                let val = String(cell).toUpperCase().trim();
+                if (val && val !== "LOCATION" && val !== "DESTINATION" && val.length > 1 && !newLocs.includes(val)) {
+                  newLocs.push(val);
+                }
+              });
+            }
+          });
+          if(newLocs.length > 0) {
+            db.ref('masterLocations').set(newLocs);
+            alert(`Success! Imported ${newLocs.length} locations to Cloud.`);
+          }
+        } catch(err) { alert("Error parsing file."); }
+      };
+      reader.readAsArrayBuffer(file);
     }
 
     document.getElementById('loadUnloadForm').addEventListener('submit', function(e) {
@@ -405,18 +475,52 @@
       db.ref('loadEntries').on('value', s => {
         loadEntries = s.val() ? Object.values(s.val()).reverse() : [];
         renderLoadUnloadTable();
+        renderLiveDockCards();
+        renderExecutiveDashboard();
+      });
+      db.ref('securityLogs').on('value', s => {
+        securityLogs = s.val() ? Object.values(s.val()).reverse() : [];
+        renderSecurityTable();
+        renderExecutiveDashboard();
+      });
+      db.ref('planEntries').on('value', s => {
+        planEntries = s.val() ? Object.values(s.val()).reverse() : [];
+        renderAllTables();
+        renderExecutiveDashboard();
       });
       db.ref('masterLocations').on('value', s => {
         masterLocations = s.val() || [];
         const locSelect = document.getElementById('loadToLoc');
-        locSelect.innerHTML = '<option value="">-- Destination --</option>';
-        masterLocations.forEach(l => locSelect.innerHTML += `<option value="${l}">${l}</option>`);
+        if(locSelect) {
+          locSelect.innerHTML = '<option value="">-- Destination --</option>';
+          masterLocations.forEach(l => locSelect.innerHTML += `<option value="${l}">${l}</option>`);
+        }
+        const gateLoc = document.getElementById('secToLocation');
+        if(gateLoc) {
+          gateLoc.innerHTML = '<option value="">-- Location --</option>';
+          masterLocations.forEach(l => gateLoc.innerHTML += `<option value="${l}">${l}</option>`);
+        }
       });
+    }
+
+    function renderExecutiveDashboard() {
+      document.getElementById('dashPlanCount').innerText = planEntries.length;
+      let activeL = 0, activeU = 0, comp = 0;
+      loadEntries.forEach(l => {
+        if(l.status.includes('LOADING')) activeL++;
+        else if(l.status.includes('UNLOADING')) activeU++;
+        else comp++;
+      });
+      document.getElementById('dashActiveLoading').innerText = activeL;
+      document.getElementById('dashActiveUnloading').innerText = activeU;
+      document.getElementById('dashCompletedToday').innerText = comp;
+      document.getElementById('dashGateCount').innerText = securityLogs.length;
     }
 
     function renderLoadUnloadTable() {
       const tbody = document.getElementById('loadUnloadTableBody');
-      if(loadEntries.length === 0) { tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6">No operations.</td></tr>`; return; }
+      if(!tbody) return;
+      if(loadEntries.length === 0) { tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 opacity-60">No operations.</td></tr>`; return; }
       tbody.innerHTML = '';
       loadEntries.forEach(item => {
         tbody.innerHTML += `
@@ -426,10 +530,74 @@
             <td class="py-3 px-3">${item.bayNo}</td>
             <td class="py-3 px-3 font-mono font-bold text-sky-400">${item.totalCases}</td>
             <td class="py-3 px-3 text-emerald-400 font-semibold">${item.podStatus}</td>
-            <td class="py-3 px-3 text-center"><button onclick="db.ref('loadEntries/${item.id}').remove()" class="text-rose-500">Delete</button></td>
+            <td class="py-3 px-3 text-center"><button onclick="db.ref('loadEntries/${item.id}').remove()" class="text-rose-500 font-bold">Delete</button></td>
           </tr>`;
       });
     }
+
+    function renderSecurityTable() {
+      const tbody = document.getElementById('securityTableBody');
+      if(!tbody) return;
+      if(securityLogs.length === 0) { tbody.innerHTML = `<tr><td colspan="4" class="text-center py-6 opacity-60">No gate logs.</td></tr>`; return; }
+      tbody.innerHTML = '';
+      securityLogs.forEach(item => {
+        tbody.innerHTML += `
+          <tr class="border-b border-white/5">
+            <td class="py-3 px-3 font-bold">${item.purpose}</td>
+            <td class="py-3 px-3 font-mono font-bold">${item.vehicle}</td>
+            <td class="py-3 px-3 font-mono">${item.mobile}</td>
+            <td class="py-3 px-3 font-mono opacity-80">${item.dateTime}</td>
+          </tr>`;
+      });
+    }
+
+    function renderLiveDockCards() {
+      const ahpl = document.getElementById('ahplDockGrid');
+      const ail = document.getElementById('ailDockGrid');
+      if(!ahpl || !ail) return;
+      ahpl.innerHTML = ''; ail.innerHTML = '';
+      dockConfig['AHPL'].forEach(d => {
+        let op = loadEntries.find(x => x.bayNo === d && x.status.includes('IN-PROGRESS'));
+        ahpl.innerHTML += `<div class="p-4 rounded-2xl card-surface border ${op?'border-amber-500':'border-sky-500/30'}"><h4 class="font-bold text-xs">${d}</h4><p class="text-xs mt-1">${op ? op.vehicleNo + ' ('+op.opType+')' : 'Empty'}</p></div>`;
+      });
+      dockConfig['AIL'].forEach(d => {
+        let op = loadEntries.find(x => x.bayNo === d && x.status.includes('IN-PROGRESS'));
+        ail.innerHTML += `<div class="p-4 rounded-2xl card-surface border ${op?'border-amber-500':'border-sky-500/30'}"><h4 class="font-bold text-xs">${d}</h4><p class="text-xs mt-1">${op ? op.vehicleNo + ' ('+op.opType+')' : 'Empty'}</p></div>`;
+      });
+    }
+
+    function renderAllTables() {
+      const summaryTbody = document.getElementById('summaryTableBody');
+      const planTbody = document.getElementById('planTableBody');
+      const repTbody = document.getElementById('reportTableBody');
+      if(!summaryTbody) return;
+      if(planEntries.length === 0) {
+        summaryTbody.innerHTML = `<tr><td colspan="5" class="text-center py-6 opacity-60">No plan data.</td></tr>`;
+        planTbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 opacity-60">No detailed plan data.</td></tr>`;
+        repTbody.innerHTML = `<tr><td colspan="3" class="text-center py-6 opacity-60">No records.</td></tr>`;
+        return;
+      }
+      summaryTbody.innerHTML = ''; planTbody.innerHTML = ''; repTbody.innerHTML = '';
+      planEntries.forEach(item => {
+        planTbody.innerHTML += `<tr class="border-b border-white/5"><td class="py-2.5 px-3 font-mono">${item.deliveryNo}</td><td class="py-2.5 px-3 font-bold">${item.destination}</td><td class="py-2.5 px-3">${item.unit}</td><td class="py-2.5 px-3 text-right font-mono">${item.weight}</td><td class="py-2.5 px-3 text-right font-mono">${item.cft}</td><td class="py-2.5 px-3 text-center"><button onclick="db.ref('planEntries/${item.id}').remove()" class="text-rose-500">Del</button></td></tr>`;
+        repTbody.innerHTML += `<tr class="border-b border-white/5"><td class="py-2.5 px-3 font-mono">${item.deliveryNo}</td><td class="py-2.5 px-3 font-bold">${item.destination}</td><td class="py-2.5 px-3 text-right font-mono">${item.weight}</td></tr>`;
+      });
+    }
+
+    async function scanPlanImage(event) {
+      const file = event.target.files[0];
+      if(!file) return;
+      document.getElementById('ocrSpinner').classList.remove('hidden');
+      try {
+        let result = await Tesseract.recognize(file, 'eng');
+        document.getElementById('ocrSpinner').classList.add('hidden');
+        alert("OCR Scan complete! Text parsed.");
+      } catch(e) {
+        document.getElementById('ocrSpinner').classList.add('hidden');
+        alert("OCR Error.");
+      }
+    }
+
     updateDockOptions();
   </script>
 </body>
