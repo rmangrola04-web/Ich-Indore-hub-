@@ -185,12 +185,12 @@
       <div class="space-y-3.5 text-xs">
         <div class="p-3.5 rounded-2xl card-surface border border-sky-500/30 space-y-1">
           <div class="flex justify-between items-center font-bold">
-            <span class="text-sky-500">v8.2.0 (Firebase Realtime Cloud Sync & Light Mode)</span>
+            <span class="text-sky-500">v8.3.0 (Cloud Location Master Sync)</span>
             <span class="text-[10px]">Stable</span>
           </div>
           <ul class="list-disc list-inside space-y-0.5 text-[11px]">
-            <li>Real-time synchronization via Firebase between Mobile and PC.</li>
-            <li>Sky Blue light background, Milk White cards, and Black text words.</li>
+            <li>Master locations synced instantly across mobile and PC via Firebase.</li>
+            <li>Sky Blue light theme with Milk White surface and Black words.</li>
           </ul>
         </div>
       </div>
@@ -1038,7 +1038,7 @@
     </button>
   </div>
 
-  <!-- JAVASCRIPT LOGIC (WITH FIREBASE SYNC) -->
+  <!-- JAVASCRIPT LOGIC -->
   <script>
     lucide.createIcons();
 
@@ -1101,7 +1101,7 @@
     let currentLoggedInRole = null;
     let currentLoggedInUser = null;
 
-    let masterLocations = JSON.parse(localStorage.getItem("ich_master_locations")) || [];
+    let masterLocations = [];
 
     let planEntries = [];
     let loadEntries = [];
@@ -1185,7 +1185,6 @@
         switchView('dashboardView', document.querySelectorAll('.sidebar-item')[0]);
       }
 
-      populateAllLocationDropdowns();
       updateDockOptions();
       handleSecurityRouteChange();
       handleSupervisorOpChange();
@@ -1270,7 +1269,7 @@
           masterLocations = newLocs;
           db.ref('masterLocations').set(masterLocations);
           populateAllLocationDropdowns();
-          alert(`Success! Master Location sheet imported with ${masterLocations.length} locations.`);
+          alert(`Success! Master Location sheet imported and synced to Cloud with ${masterLocations.length} locations.`);
         } catch (err) {
           alert("Error parsing location file.");
         }
@@ -1499,7 +1498,6 @@
         const data = snapshot.val();
         if (data) {
           masterLocations = data;
-          localStorage.setItem("ich_master_locations", JSON.stringify(masterLocations));
           populateAllLocationDropdowns();
         }
       });
@@ -2145,7 +2143,7 @@
             const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
             const d = imgData.data;
             for (let i = 0; i < d.length; i += 4) {
-              const avg = (d[i] * 0.299 + d[i + 1] * 0.587 + d[i + 2] * 0.114);
+              const avg = (d[i] * 0.299 + d[i + 1] * 0.587 + d[i + 2] + 0.114);
               d[i] = avg > 140 ? 255 : 0;
               d[i + 1] = avg > 140 ? 255 : 0;
               d[i + 2] = avg > 140 ? 255 : 0;
@@ -2228,7 +2226,7 @@
       });
 
       if (extractedRows.length === 0) return alert("No valid rows recognized from image.");
-      alert(`Success! Scanned and synced ${extractedRows.link} delivery rows to Cloud.`);
+      alert(`Success! Scanned and synced ${extractedRows.length} delivery rows to Cloud.`);
     }
   </script>
 </body>
