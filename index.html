@@ -23,16 +23,20 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
   
+  <!-- Firebase App & Realtime Database SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
     
     :root {
-      --blue-light-bg: #F0F6FC;
-      --blue-light-surface: #E2ECF8;
-      --blue-card: #FFFFFF;
-      --blue-border: #CBD5E1;
-      --blue-text-main: #0F172A;
-      --blue-text-muted: #475569;
+      --sky-light-bg: #E0F2FE;
+      --sky-light-surface: #BAE6FD;
+      --milk-white-card: #FFFFFF;
+      --sky-border: #7DD3FC;
+      --text-black: #090D16;
+      --text-muted: #334155;
     }
     
     body {
@@ -54,9 +58,9 @@
     }
 
     .light .glass-panel {
-      background: rgba(226, 236, 248, 0.92);
-      border: 1px solid var(--blue-border);
-      box-shadow: 0 4px 20px -2px rgba(2, 132, 199, 0.08);
+      background: rgba(224, 242, 254, 0.92);
+      border: 1px solid var(--sky-border);
+      box-shadow: 0 4px 20px -2px rgba(2, 132, 199, 0.15);
     }
 
     .card-surface {
@@ -67,9 +71,10 @@
       border: 1px solid rgba(255, 255, 255, 0.06);
     }
     .light .card-surface {
-      background: var(--blue-card);
-      border: 1px solid var(--blue-border);
-      color: var(--blue-text-main);
+      background: var(--milk-white-card);
+      border: 1px solid var(--sky-border);
+      color: var(--text-black);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
     }
 
     .app-input {
@@ -91,16 +96,16 @@
 
     .light .app-input {
       background: #FFFFFF;
-      border: 1px solid #94A3B8;
-      color: #0F172A;
+      border: 1px solid #7DD3FC;
+      color: var(--text-black);
     }
     .light .app-input:focus {
       border-color: #0284C7;
-      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.2);
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.25);
     }
     .light .app-input option {
       background-color: #FFFFFF;
-      color: #0F172A;
+      color: var(--text-black);
     }
 
     .active-nav-btn {
@@ -110,15 +115,15 @@
       box-shadow: 0 4px 12px rgba(2, 132, 199, 0.35) !important;
     }
 
-    .light .text-slate-100, .light .text-white { color: #0F172A !important; }
-    .light .text-slate-300, .light .text-slate-200 { color: #1E293B !important; }
-    .light .text-slate-400 { color: #475569 !important; }
+    .light .text-slate-100, .light .text-white { color: var(--text-black) !important; }
+    .light .text-slate-300, .light .text-slate-200 { color: var(--text-black) !important; }
+    .light .text-slate-400 { color: var(--text-muted) !important; }
   </style>
 </head>
 <body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col selection:bg-sky-500 selection:text-white pb-20 md:pb-0">
 
   <!-- 1. AUTHENTICATION SCREEN -->
-  <div id="loginScreen" class="fixed inset-0 bg-slate-950/75 backdrop-blur-xl z-50 flex items-center justify-center p-4">
+  <div id="loginScreen" class="fixed inset-0 bg-slate-950/85 backdrop-blur-2xl z-50 flex items-center justify-center p-4">
     <div class="glass-panel rounded-[2.5rem] max-w-md w-full p-8 shadow-2xl space-y-5 border border-white/10">
       
       <div class="text-center space-y-2">
@@ -142,12 +147,12 @@
 
         <div>
           <label class="block text-[11px] font-bold uppercase tracking-wider mb-1.5 ml-1">Username</label>
-          <input type="text" id="loginUser" placeholder="e.g. admin or supervisor" required class="w-full app-input rounded-2xl p-3 text-xs font-semibold focus:outline-none">
+          <input type="text" id="loginUser" placeholder="Enter username (e.g. admin)" required class="w-full app-input rounded-2xl p-3 text-xs font-semibold focus:outline-none">
         </div>
 
         <div>
           <label class="block text-[11px] font-bold uppercase tracking-wider mb-1.5 ml-1">Password</label>
-          <input type="password" id="loginPass" placeholder="••••••••" required class="w-full app-input rounded-2xl p-3 text-xs focus:outline-none">
+          <input type="password" id="loginPass" placeholder="Enter password" required class="w-full app-input rounded-2xl p-3 text-xs focus:outline-none">
         </div>
 
         <div id="loginError" class="text-xs text-rose-500 font-semibold hidden bg-rose-950/40 p-3 rounded-2xl border border-rose-500/30">
@@ -180,13 +185,12 @@
       <div class="space-y-3.5 text-xs">
         <div class="p-3.5 rounded-2xl card-surface border border-sky-500/30 space-y-1">
           <div class="flex justify-between items-center font-bold">
-            <span class="text-sky-500">v7.0.0 (Production Release)</span>
+            <span class="text-sky-500">v8.2.0 (Firebase Realtime Cloud Sync & Light Mode)</span>
             <span class="text-[10px]">Stable</span>
           </div>
           <ul class="list-disc list-inside space-y-0.5 text-[11px]">
-            <li>Executive Dashboard integrated with Plan metrics and Live Operations.</li>
-            <li>Supervisor dropdown and Indore Hub default routing enabled.</li>
-            <li>Light Blue / Dark Blue eye-comfort professional theme.</li>
+            <li>Real-time synchronization via Firebase between Mobile and PC.</li>
+            <li>Sky Blue light background, Milk White cards, and Black text words.</li>
           </ul>
         </div>
       </div>
@@ -244,7 +248,7 @@
     <aside class="hidden md:flex w-64 glass-panel border-r border-white/10 flex-col justify-between p-4 min-h-screen sticky top-0 shrink-0">
       <div class="space-y-5">
         
-        <div class="card-surface p-3.5 rounded-2xl flex items-center gap-3 border border-sky-500/20">
+        <div class="card-surface p-3.5 rounded-2xl flex items-center gap-3 border border-sky-500/20 shadow-sm">
           <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-sky-500 to-blue-600 text-white flex items-center justify-center font-black text-xs shadow-md shadow-sky-500/20" id="userAvatar">
             RM
           </div>
@@ -302,11 +306,10 @@
 
       <!-- SIDEBAR FOOTER -->
       <div class="space-y-2 pt-4 border-t border-black/10 dark:border-white/10">
-        <div class="flex items-center justify-between px-1">
-          <span class="text-[10px] font-mono font-bold text-sky-500">v7.0.0</span>
-          <button onclick="toggleVersionModal(true)" class="text-[10px] underline opacity-70 hover:opacity-100">Changelog</button>
-        </div>
-        <button onclick="logout()" class="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-2xl text-xs font-bold text-rose-500 hover:bg-rose-500/10 transition">
+        <button onclick="toggleVersionModal(true)" class="w-full px-3 py-1.5 card-surface hover:border-sky-500/40 rounded-xl text-[10px] text-sky-500 font-mono text-center font-bold flex items-center justify-center gap-1.5 transition shadow-xs">
+          <i data-lucide="history" class="w-3 h-3"></i> VERSION HISTORY
+        </button>
+        <button onclick="logout()" class="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-2xl text-xs font-bold text-rose-500 hover:bg-rose-500/10 transition shadow-xs">
           <i data-lucide="log-out" class="w-4 h-4"></i>
           <span>Logout</span>
         </button>
@@ -319,7 +322,7 @@
     <!-- Main Workspace -->
     <div class="flex-1 flex flex-col min-w-0">
 
-      <!-- Top Header (Integrated Central Hub - Indore & Small Subtitle) -->
+      <!-- Top Header -->
       <header class="glass-panel border-b border-black/10 dark:border-white/10 px-4 md:px-8 py-4 flex justify-between items-center sticky top-0 z-30">
         <div>
           <h1 class="text-lg font-black tracking-tight">Integrated Central Hub - Indore</h1>
@@ -327,14 +330,13 @@
         </div>
 
         <div class="flex items-center gap-3">
-          <!-- Light / Dark Blue Theme Toggle Button -->
           <button onclick="toggleThemeMode()" id="themeToggleBtn" class="card-surface px-3.5 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 hover:opacity-90 transition shadow-sm">
             <i data-lucide="sun" class="w-3.5 h-3.5 text-amber-500"></i>
             <span class="text-[11px]" id="themeModeText">Light Mode</span>
           </button>
 
           <div class="bg-slate-800/90 dark:bg-slate-800/90 bg-emerald-50 text-emerald-700 dark:text-sky-400 border border-emerald-500/20 px-3 py-1 rounded-full text-[11px] font-bold flex items-center gap-1.5 shadow-sm">
-            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Sheet Live
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Cloud Live
           </div>
           <span id="liveClock" class="font-mono text-xs opacity-70 font-bold hidden sm:inline-block"></span>
         </div>
@@ -343,7 +345,7 @@
       <!-- Dynamic Views -->
       <main class="p-4 md:p-8 space-y-6 flex-1">
 
-        <!-- MODULE 0: EXECUTIVE DASHBOARD (NOW INCLUDES PLAN METRICS) -->
+        <!-- MODULE 0: EXECUTIVE DASHBOARD -->
         <section id="dashboardView" class="view-panel space-y-6">
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
             <div class="glass-panel p-5 rounded-3xl space-y-2 border border-sky-500/30 shadow-md">
@@ -518,7 +520,7 @@
           </div>
         </section>
 
-        <!-- MODULE 2: LOADING / UNLOADING OPS (WITH SUPERVISOR DROPDOWN & INDORE HUB DEFAULT) -->
+        <!-- MODULE 2: LOADING / UNLOADING OPS -->
         <section id="loadUnloadView" class="view-panel hidden space-y-6">
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             
@@ -608,7 +610,7 @@
                   </div>
                 </div>
 
-                <!-- SUPERVISOR DROPDOWN SELECTION -->
+                <!-- SUPERVISOR DROPDOWN -->
                 <div>
                   <label class="block text-[11px] font-bold opacity-70 mb-1 ml-1">Supervisor Incharge *</label>
                   <select id="loadOperator" class="w-full app-input rounded-2xl p-2.5 text-xs font-bold text-sky-500">
@@ -1036,12 +1038,22 @@
     </button>
   </div>
 
-  <!-- JAVASCRIPT LOGIC -->
+  <!-- JAVASCRIPT LOGIC (WITH FIREBASE SYNC) -->
   <script>
     lucide.createIcons();
 
-    const HARDCODED_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbwoq5qyOeJda-fUdnz9JkmRiJrPNU6ogq4A0d9yj_lAZmKG0eY3qyYVIYnj0Xh2Mw2w/exec";
-    let googleWebhookUrl = HARDCODED_WEBHOOK_URL;
+    const firebaseConfig = {
+      apiKey: "AIzaSyC_yD3zSa3k8LBttJGGaEx62RoCnAXFiW4",
+      authDomain: "ich-indore-wms.firebaseapp.com",
+      projectId: "ich-indore-wms",
+      storageBucket: "ich-indore-wms.firebasestorage.app",
+      messagingSenderId: "978028043908",
+      appId: "1:978028043908:web:6e887d1e04a4d1b7dd2cd1",
+      databaseURL: "https://ich-indore-wms-default-rtdb.firebaseio.com"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
 
     let currentTheme = localStorage.getItem("ich_theme_mode") || "dark";
     function applyTheme(theme) {
@@ -1086,15 +1098,15 @@
     ];
 
     let registeredUsers = JSON.parse(localStorage.getItem("ich_registered_users_list")) || defaultCredentials;
-    let currentLoggedInRole = localStorage.getItem("ich_active_role") || null;
-    let currentLoggedInUser = localStorage.getItem("ich_active_user") || "Rahul Mangrola";
+    let currentLoggedInRole = null;
+    let currentLoggedInUser = null;
 
     let masterLocations = JSON.parse(localStorage.getItem("ich_master_locations")) || [];
 
-    let planEntries = JSON.parse(localStorage.getItem("ich_plan_v70")) || [];
-    let loadEntries = JSON.parse(localStorage.getItem("ich_load_v70")) || [];
-    let securityLogs = JSON.parse(localStorage.getItem("ich_sec_v70")) || [];
-    let trackingRecords = JSON.parse(localStorage.getItem("ich_tracking_v70")) || [];
+    let planEntries = [];
+    let loadEntries = [];
+    let securityLogs = [];
+    let trackingRecords = [];
 
     let currentPeriod = 'daily';
     let chartTrend = null, chartFleet = null, chartTransporter = null, chartTransitTrend = null;
@@ -1134,8 +1146,6 @@
 
         currentLoggedInRole = assignedRole;
         currentLoggedInUser = assignedName;
-        localStorage.setItem("ich_active_role", assignedRole);
-        localStorage.setItem("ich_active_user", assignedName);
         applyRolePermissions(assignedRole, assignedName);
       } else {
         err.classList.remove('hidden');
@@ -1153,12 +1163,8 @@
       registeredUsers.push(newUserObj);
       localStorage.setItem("ich_registered_users_list", JSON.stringify(registeredUsers));
 
-      if (googleWebhookUrl) {
-        fetch(googleWebhookUrl, {
-          method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' },
-          body: JSON.stringify({ action: "SYNC_NEW_USER", userRecord: newUserObj })
-        });
-      }
+      db.ref('users/' + user).set(newUserObj);
+
       alert(`Account created successfully! Username: ${user}`);
       toggleRegisterModal(false);
       this.reset();
@@ -1183,30 +1189,19 @@
       updateDockOptions();
       handleSecurityRouteChange();
       handleSupervisorOpChange();
-      updateLinkedGateVehicleDropdown();
       autoPickCurrentDateTime();
-      renderExecutiveDashboard();
-      renderAllTables();
-      renderLoadUnloadTable();
-      renderSecurityTable();
-      renderTrackingTable();
-      renderLiveDockCards();
-      renderGraphicAnalytics();
-      fetchCloudUpdates();
+      
+      initFirebaseRealtimeSync();
       lucide.createIcons();
     }
 
     function logout() {
-      localStorage.removeItem("ich_active_role");
-      localStorage.removeItem("ich_active_user");
       currentLoggedInRole = null;
+      currentLoggedInUser = null;
       document.getElementById('loginPass').value = '';
+      document.getElementById('loginUser').value = '';
       document.getElementById('mainApp').classList.add('hidden');
       document.getElementById('loginScreen').classList.remove('hidden');
-    }
-
-    if (currentLoggedInRole) {
-      applyRolePermissions(currentLoggedInRole, currentLoggedInUser);
     }
 
     function updateClock() {
@@ -1273,7 +1268,7 @@
           if (newLocs.length === 0) return alert("No valid locations found in file.");
 
           masterLocations = newLocs;
-          localStorage.setItem("ich_master_locations", JSON.stringify(masterLocations));
+          db.ref('masterLocations').set(masterLocations);
           populateAllLocationDropdowns();
           alert(`Success! Master Location sheet imported with ${masterLocations.length} locations.`);
         } catch (err) {
@@ -1379,7 +1374,6 @@
       document.getElementById('secDateTime').value = now.toLocaleDateString('en-GB') + ', ' + now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
     }
 
-    // FORM HANDLER: SUPERVISOR STARTS OPERATION
     document.getElementById('loadUnloadForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const op = document.getElementById('opType').value;
@@ -1404,13 +1398,7 @@
         podStatus: podVal
       };
 
-      loadEntries.unshift(newOp);
-      localStorage.setItem("ich_load_v70", JSON.stringify(loadEntries));
-      renderLoadUnloadTable();
-      renderLiveDockCards();
-      renderExecutiveDashboard();
-      pushLoadUnloadToCloud(newOp);
-
+      db.ref('loadEntries/' + newOp.id).set(newOp);
       this.reset();
       updateDockOptions();
       handleSupervisorOpChange();
@@ -1441,16 +1429,10 @@
       item.duration = durText;
       item.status = item.opType === 'LOADING' ? 'LOADED' : 'UNLOADED';
 
-      localStorage.setItem("ich_load_v70", JSON.stringify(loadEntries));
-      renderLoadUnloadTable();
-      renderLiveDockCards();
-      renderExecutiveDashboard();
-      pushLoadUnloadToCloud(item);
-
+      db.ref('loadEntries/' + item.id).set(item);
       alert(`Success! Vehicle ${item.vehicleNo} marked as ${item.status}`);
     }
 
-    // FORM HANDLER: SECURITY GATE MOVEMENT
     document.getElementById('securityGateForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const purpose = document.getElementById('secPurpose').value;
@@ -1468,7 +1450,9 @@
         dest = "INDORE HUB";
       }
 
+      const gateId = "GATE-" + Date.now();
       const newSec = {
+        id: gateId,
         purpose: purpose,
         vehicle: document.getElementById('secVehicleNo').value.toUpperCase().trim(),
         vType: document.getElementById('secVehicleType').value,
@@ -1480,19 +1464,59 @@
         remarks: document.getElementById('secRemarks').value.trim() || '-'
       };
 
-      securityLogs.unshift(newSec);
-      localStorage.setItem("ich_sec_v70", JSON.stringify(securityLogs));
-      renderSecurityTable();
-      renderExecutiveDashboard();
-      updateLinkedGateVehicleDropdown();
-      pushGateEntryToCloud(newSec);
+      db.ref('securityLogs/' + gateId).set(newSec);
       this.reset();
       handleSecurityRouteChange();
       autoPickCurrentDateTime();
       alert("Security Gate Entry Saved Successfully!");
     });
 
-    // RENDER EXECUTIVE DASHBOARD (WITH PLAN METRICS)
+    function initFirebaseRealtimeSync() {
+      db.ref('loadEntries').on('value', (snapshot) => {
+        const data = snapshot.val();
+        loadEntries = data ? Object.values(data).reverse() : [];
+        renderLoadUnloadTable();
+        renderLiveDockCards();
+        renderExecutiveDashboard();
+      });
+
+      db.ref('securityLogs').on('value', (snapshot) => {
+        const data = snapshot.val();
+        securityLogs = data ? Object.values(data).reverse() : [];
+        renderSecurityTable();
+        updateLinkedGateVehicleDropdown();
+        renderExecutiveDashboard();
+      });
+
+      db.ref('planEntries').on('value', (snapshot) => {
+        const data = snapshot.val();
+        planEntries = data ? Object.values(data).reverse() : [];
+        renderAllTables();
+        renderExecutiveDashboard();
+      });
+
+      db.ref('masterLocations').on('value', (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          masterLocations = data;
+          localStorage.setItem("ich_master_locations", JSON.stringify(masterLocations));
+          populateAllLocationDropdowns();
+        }
+      });
+
+      db.ref('users').on('value', (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          Object.values(data).forEach(u => {
+            if (!registeredUsers.some(existing => existing.user === u.user)) {
+              registeredUsers.push(u);
+            }
+          });
+          localStorage.setItem("ich_registered_users_list", JSON.stringify(registeredUsers));
+        }
+      });
+    }
+
     function renderExecutiveDashboard() {
       let activeLoad = 0, activeUnload = 0, completedToday = 0;
       loadEntries.forEach(l => {
@@ -1610,7 +1634,7 @@
             ` : `
               <span class="text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold">Done</span>
             `}
-            <button onclick="deleteLoadEntry('${item.vehicleNo}', ${idx})" class="text-rose-500 hover:text-rose-600 p-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+            <button onclick="deleteLoadEntryFromFirebase('${item.id}')" class="text-rose-500 hover:text-rose-600 p-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
           </td>
         `;
         tbody.appendChild(tr);
@@ -1719,7 +1743,7 @@
 
       planTbody.innerHTML = '';
       repTbody.innerHTML = '';
-      planEntries.forEach((item, idx) => {
+      planEntries.forEach((item) => {
         const planRow = document.createElement('tr');
         planRow.className = 'hover:bg-black/5 dark:hover:bg-white/5 font-medium transition';
         planRow.innerHTML = `
@@ -1732,7 +1756,7 @@
           <td class="py-3 px-3.5 font-bold">${item.vType}</td>
           <td class="py-3 px-3.5 font-bold">${item.transporter}</td>
           <td class="py-3 px-3.5 text-center">
-            <button onclick="deletePlanEntry('${item.deliveryNo}', ${idx})" class="text-rose-500 hover:text-rose-600 p-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+            <button onclick="deletePlanEntryFromFirebase('${item.id}')" class="text-rose-500 hover:text-rose-600 p-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
           </td>
         `;
         planTbody.appendChild(planRow);
@@ -1765,7 +1789,7 @@
         return;
       }
       tbody.innerHTML = '';
-      securityLogs.forEach((item, idx) => {
+      securityLogs.forEach((item) => {
         const tr = document.createElement('tr');
         tr.className = 'hover:bg-black/5 dark:hover:bg-white/5';
         tr.innerHTML = `
@@ -1781,7 +1805,7 @@
           <td class="py-3 px-3 font-mono text-[11px]">${item.dateTime || '-'}</td>
           <td class="py-3 px-3 text-xs opacity-80">${item.remarks || '-'}</td>
           <td class="py-3 px-3 text-center">
-            <button onclick="deleteGateEntry('${item.vehicle}', ${idx})" class="text-xs font-bold text-rose-500 hover:underline">Delete</button>
+            <button onclick="deleteGateEntryFromFirebase('${item.id}')" class="text-xs font-bold text-rose-500 hover:underline">Delete</button>
           </td>
         `;
         tbody.appendChild(tr);
@@ -1838,40 +1862,27 @@
       lucide.createIcons();
     }
 
-    function deletePlanEntry(delNo, idx) {
+    function deletePlanEntryFromFirebase(id) {
       if (confirm("Are you sure you want to delete this record?")) {
-        planEntries.splice(idx, 1);
-        localStorage.setItem("ich_plan_v70", JSON.stringify(planEntries));
-        renderAllTables();
-        renderLiveDockCards();
-        deleteRowFromCloud("Plan_Received", delNo);
+        db.ref('planEntries/' + id).remove();
       }
     }
 
-    function deleteLoadEntry(vehNo, idx) {
+    function deleteLoadEntryFromFirebase(id) {
       if (confirm("Are you sure you want to delete this operation record?")) {
-        loadEntries.splice(idx, 1);
-        localStorage.setItem("ich_load_v70", JSON.stringify(loadEntries));
-        renderLoadUnloadTable();
-        renderLiveDockCards();
-        deleteRowFromCloud("Loading_Unloading_Log", vehNo);
+        db.ref('loadEntries/' + id).remove();
       }
     }
 
-    function deleteGateEntry(vehNo, idx) {
+    function deleteGateEntryFromFirebase(id) {
       if (confirm("Are you sure you want to delete this gate record?")) {
-        securityLogs.splice(idx, 1);
-        localStorage.setItem("ich_sec_v70", JSON.stringify(securityLogs));
-        renderSecurityTable();
-        updateLinkedGateVehicleDropdown();
-        deleteRowFromCloud("Gate_Security_Log", vehNo);
+        db.ref('securityLogs/' + id).remove();
       }
     }
 
     function deleteTrackingEntry(idx) {
       if (confirm("Are you sure you want to delete this tracking record?")) {
         trackingRecords.splice(idx, 1);
-        localStorage.setItem("ich_tracking_v70", JSON.stringify(trackingRecords));
         renderTrackingTable();
         renderGraphicAnalytics();
       }
@@ -2056,45 +2067,12 @@
           });
 
           trackingRecords = parsedList;
-          localStorage.setItem("ich_tracking_v70", JSON.stringify(trackingRecords));
           renderTrackingTable();
           renderGraphicAnalytics();
           alert(`Success! Loaded ${trackingRecords.length} tracking records.`);
         } catch (err) {
           alert("Error importing tracking sheet.");
         }
-      };
-      reader.readAsArrayBuffer(file);
-    }
-
-    function handleCSVImport(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const data = new Uint8Array(e.target.result);
-        const workbook = XLSX.read(data, { type: 'array' });
-        const rows = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], { defval: "" });
-        rows.forEach(r => {
-          const newRec = {
-            deliveryNo: String(r["Delivery No."] || r.deliveryNo || "2302" + Math.floor(1000 + Math.random()*9000)),
-            code: String(r["Code"] || "1407"),
-            destination: String(r["Destination"] || "DESTINATION").toUpperCase(),
-            unit: String(r["Unit"] || "AHPL"),
-            weight: parseFloat(r["Weight"] || 0),
-            cft: parseFloat(r["CFT"] || 0),
-            vType: String(r["Vehicle Type"] || "32SXL"),
-            transporter: String(r["Transporter Name"] || "DHTC"),
-            vehicleNo: "MP-09-PLAN",
-            supervisor: currentLoggedInUser
-          };
-          planEntries.unshift(newRec);
-          pushBatchToCloud([newRec]);
-        });
-        localStorage.setItem("ich_plan_v70", JSON.stringify(planEntries));
-        renderExecutiveDashboard();
-        renderAllTables();
-        alert(`Success! Loaded ${rows.length} plan records.`);
       };
       reader.readAsArrayBuffer(file);
     }
@@ -2124,7 +2102,7 @@
         return alert("Please enter a valid email address.");
       }
 
-      if (!googleWebhookUrl) return alert("Webhook URL not found.");
+      if (!HARDCODED_WEBHOOK_URL) return alert("Webhook URL not found.");
 
       const emailPayload = {
         action: "SEND_EMAIL_REPORT",
@@ -2136,7 +2114,7 @@
         records: planEntries.slice(0, 50)
       };
 
-      fetch(googleWebhookUrl, {
+      fetch(HARDCODED_WEBHOOK_URL, {
         method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify(emailPayload)
       }).then(() => {
@@ -2146,77 +2124,6 @@
       });
     }
 
-    // 2-WAY REALTIME SYNC ENGINE
-    function pushBatchToCloud(records) {
-      if (!googleWebhookUrl) return;
-      fetch(googleWebhookUrl, {
-        method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' },
-        body: JSON.stringify({ action: "SYNC_BATCH_PLAN", records: records })
-      }).then(() => setTimeout(fetchCloudUpdates, 500));
-    }
-
-    function pushLoadUnloadToCloud(record) {
-      if (!googleWebhookUrl) return;
-      fetch(googleWebhookUrl, {
-        method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' },
-        body: JSON.stringify({ action: "SYNC_LOAD_UNLOAD", record: record })
-      }).then(() => setTimeout(fetchCloudUpdates, 500));
-    }
-
-    function pushGateEntryToCloud(gateRecord) {
-      if (!googleWebhookUrl) return;
-      fetch(googleWebhookUrl, {
-        method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' },
-        body: JSON.stringify({ action: "SYNC_GATE_ENTRY", record: gateRecord })
-      });
-    }
-
-    function deleteRowFromCloud(sheetName, identifier) {
-      if (!googleWebhookUrl) return;
-      fetch(googleWebhookUrl, {
-        method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' },
-        body: JSON.stringify({ action: "DELETE_ROW", sheetName: sheetName, identifier: identifier })
-      }).then(() => setTimeout(fetchCloudUpdates, 500));
-    }
-
-    window.handleCloudSyncResponse = function(data) {
-      if (data && typeof data === 'object') {
-        if (Array.isArray(data.planEntries)) {
-          planEntries = data.planEntries;
-          localStorage.setItem("ich_plan_v70", JSON.stringify(planEntries));
-        }
-        if (Array.isArray(data.loadEntries)) {
-          loadEntries = data.loadEntries;
-          localStorage.setItem("ich_load_v70", JSON.stringify(loadEntries));
-        }
-        if (Array.isArray(data.gateEntries)) {
-          securityLogs = data.gateEntries;
-          localStorage.setItem("ich_sec_v70", JSON.stringify(securityLogs));
-        }
-        renderExecutiveDashboard();
-        renderAllTables();
-        renderLoadUnloadTable();
-        renderSecurityTable();
-        renderLiveDockCards();
-        renderGraphicAnalytics();
-        updateLinkedGateVehicleDropdown();
-      }
-    };
-
-    function fetchCloudUpdates() {
-      if (!googleWebhookUrl) return;
-      const scriptId = 'jsonp_sync_script';
-      const existingScript = document.getElementById(scriptId);
-      if (existingScript) existingScript.remove();
-
-      const script = document.createElement('script');
-      script.id = scriptId;
-      script.src = googleWebhookUrl + (googleWebhookUrl.includes('?') ? '&' : '?') + 'callback=handleCloudSyncResponse&nocache=' + new Date().getTime();
-      document.body.appendChild(script);
-    }
-    setInterval(fetchCloudUpdates, 3500);
-
-    // OCR PARSING
     async function scanPlanImage(event) {
       const file = event.target.files[0];
       if (!file) return;
@@ -2300,7 +2207,9 @@
               cft = parseFloat((wt * 0.08).toFixed(2));
             }
 
-            extractedRows.push({
+            const planId = "PLAN-" + Date.now() + "-" + Math.floor(Math.random()*1000);
+            const rowObj = {
+              id: planId,
               deliveryNo: delNo,
               code: codeNo,
               destination: blockDest,
@@ -2311,30 +2220,16 @@
               transporter: blockTransp,
               vehicleNo: "MP-09-PLAN",
               supervisor: currentLoggedInUser || "Rahul Mangrola"
-            });
+            };
+            extractedRows.push(rowObj);
+            db.ref('planEntries/' + planId).set(rowObj);
           });
         }
       });
 
       if (extractedRows.length === 0) return alert("No valid rows recognized from image.");
-
-      extractedRows.forEach(r => planEntries.unshift(r));
-      localStorage.setItem("ich_plan_v70", JSON.stringify(planEntries));
-      renderExecutiveDashboard();
-      renderAllTables();
-      renderLiveDockCards();
-      pushBatchToCloud(extractedRows);
-      alert(`Success! Loaded ${extractedRows.length} scanned delivery rows.`);
+      alert(`Success! Scanned and synced ${extractedRows.link} delivery rows to Cloud.`);
     }
-
-    // INITIAL LOAD
-    populateAllLocationDropdowns();
-    renderExecutiveDashboard();
-    renderAllTables();
-    renderLoadUnloadTable();
-    renderSecurityTable();
-    renderTrackingTable();
-    renderLiveDockCards();
   </script>
 </body>
 </html>
