@@ -1,3 +1,4 @@
+```
 <!DOCTYPE html>
 <html lang="en" class="dark">
 <head>
@@ -185,12 +186,12 @@
       <div class="space-y-3.5 text-xs">
         <div class="p-3.5 rounded-2xl card-surface border border-sky-500/30 space-y-1">
           <div class="flex justify-between items-center font-bold">
-            <span class="text-sky-500">v8.6.0 (Full Master Integration & Cases/Damage)</span>
+            <span class="text-sky-500">v8.4.0 (Full Feature Set & Cases/Damage Update)</span>
             <span class="text-[10px]">Stable</span>
           </div>
           <ul class="list-disc list-inside space-y-0.5 text-[11px]">
-            <li>Full master warehouse suite with real-time Firebase sync.</li>
-            <li>Total Cases Loaded, Unloading Damage/POD inspection status, and Supervisor Master Import.</li>
+            <li>Full dashboard, analytics, OCR scanning, and Firebase cloud real-time sync.</li>
+            <li>Added Total Cases Loaded and Unloading Damage/POD inspection status.</li>
           </ul>
         </div>
       </div>
@@ -238,28 +239,6 @@
           Save & Register User
         </button>
       </form>
-    </div>
-  </div>
-
-  <!-- SUPPORT & HELP MODAL -->
-  <div id="supportModal" class="fixed inset-0 bg-slate-950/75 backdrop-blur-xl z-50 hidden flex items-center justify-center p-4">
-    <div class="glass-panel rounded-[2.5rem] max-w-md w-full p-6 shadow-2xl space-y-4 border border-white/10">
-      <div class="flex justify-between items-center pb-2 border-b border-white/10">
-        <h3 class="font-bold text-sm flex items-center gap-2 text-sky-400">
-          <i data-lucide="help-circle" class="w-4 h-4"></i> Support & Help Center
-        </h3>
-        <button onclick="toggleSupportModal(false)" class="hover:opacity-80"><i data-lucide="x" class="w-4 h-4"></i></button>
-      </div>
-      <div class="space-y-3 text-xs">
-        <p class="opacity-80">Need assistance or have suggestions regarding the WMS app? Send your query below:</p>
-        <div>
-          <label class="block font-semibold mb-1">Your Issue / Suggestion</label>
-          <textarea id="supportMsgText" rows="4" placeholder="Describe your problem or feedback here..." class="w-full app-input rounded-2xl p-3 text-xs"></textarea>
-        </div>
-        <button onclick="submitSupportTicket()" class="w-full bg-gradient-to-r from-sky-600 to-blue-600 text-white font-bold py-3 rounded-2xl text-xs shadow-md">
-          Submit to Support
-        </button>
-      </div>
     </div>
   </div>
 
@@ -328,9 +307,6 @@
 
       <!-- SIDEBAR FOOTER -->
       <div class="space-y-2 pt-4 border-t border-black/10 dark:border-white/10">
-        <button onclick="toggleSupportModal(true)" class="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-2xl text-xs font-bold text-sky-400 bg-sky-500/10 hover:bg-sky-500/20 transition">
-          <i data-lucide="help-circle" class="w-4 h-4"></i> Support & Help
-        </button>
         <button onclick="toggleVersionModal(true)" class="w-full px-3 py-1.5 card-surface hover:border-sky-500/40 rounded-xl text-[10px] text-sky-500 font-mono text-center font-bold flex items-center justify-center gap-1.5 transition shadow-xs">
           <i data-lucide="history" class="w-3 h-3"></i> VERSION HISTORY
         </button>
@@ -500,10 +476,10 @@
                       <th class="py-3.5 px-4">Destination</th>
                       <th class="py-3.5 px-4">Transporter</th>
                       <th class="py-3.5 px-4">Vehicle Type</th>
-                      <th class="py-3 px-4 text-center">Deliveries</th>
-                      <th class="py-3 px-4 text-right">Total Wt (Kg)</th>
-                      <th class="py-3 px-4 text-right">Total CFT</th>
-                      <th class="py-3 px-4 text-center">Status</th>
+                      <th class="py-3.5 px-4 text-center">Deliveries</th>
+                      <th class="py-3.5 px-4 text-right">Total Wt (Kg)</th>
+                      <th class="py-3.5 px-4 text-right">Total CFT</th>
+                      <th class="py-3.5 px-4 text-center">Status</th>
                     </tr>
                   </thead>
                   <tbody id="summaryTableBody" class="divide-y divide-black/5 dark:divide-white/5 font-medium">
@@ -545,7 +521,7 @@
           </div>
         </section>
 
-        <!-- MODULE 2: LOADING / UNLOADING OPS -->
+        <!-- MODULE 2: LOADING / UNLOADING OPS (Updated with Cases & Damage) -->
         <section id="loadUnloadView" class="view-panel hidden space-y-6">
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             
@@ -576,7 +552,7 @@
                   </select>
                 </div>
 
-                <!-- CASES LOADED FIELD -->
+                <!-- CASES LOADED FIELD (For Loading) -->
                 <div id="casesLoadedField" class="bg-amber-500/10 p-3 rounded-2xl border border-amber-500/30 space-y-1">
                   <label class="block text-[11px] font-bold text-amber-600 dark:text-amber-400 mb-1 ml-1">
                     Total Cases Loaded *
@@ -584,7 +560,7 @@
                   <input type="number" id="loadTotalCases" placeholder="Enter total cases (e.g. 150)" class="w-full app-input rounded-xl p-2 text-xs font-bold text-amber-600 dark:text-amber-300" value="0">
                 </div>
 
-                <!-- UNLOADING INSPECTION & DAMAGE FIELD -->
+                <!-- UNLOADING INSPECTION & DAMAGE FIELD (For Unloading) -->
                 <div id="unloadingInspectionField" class="hidden bg-emerald-500/10 p-3 rounded-2xl border border-emerald-500/30 space-y-1">
                   <label class="block text-[11px] font-bold text-emerald-600 dark:text-emerald-400 mb-1 ml-1">
                     Unloading Inspection / Damage Status *
@@ -643,11 +619,14 @@
                   </div>
                 </div>
 
-                <!-- SUPERVISOR DROPDOWN (Picks from Master) -->
                 <div>
                   <label class="block text-[11px] font-bold opacity-70 mb-1 ml-1">Supervisor Incharge *</label>
                   <select id="loadOperator" class="w-full app-input rounded-2xl p-2.5 text-xs font-bold text-sky-500">
                     <option value="Rahul Mangrola">Rahul Mangrola</option>
+                    <option value="Amit Sharma">Amit Sharma</option>
+                    <option value="Rajesh Verma">Rajesh Verma</option>
+                    <option value="Sunil Patidar">Sunil Patidar</option>
+                    <option value="Anil Gupta">Anil Gupta</option>
                   </select>
                 </div>
 
@@ -922,17 +901,12 @@
             <div class="flex flex-wrap justify-between items-center gap-3 mb-4 pb-4 border-b border-black/10 dark:border-white/10">
               <div>
                 <h2 class="text-sm font-black">Reports Hub & Master Manager</h2>
-                <p class="text-[11px] opacity-70">Excel / PDF Export & Master Location/Supervisor Upload</p>
+                <p class="text-[11px] opacity-70">Excel / PDF Export & Master Location Upload</p>
               </div>
               
               <div class="flex flex-wrap items-center gap-2">
-                <label class="bg-amber-600 hover:bg-amber-500 text-slate-950 text-xs font-bold px-3.5 py-2.5 rounded-2xl flex items-center gap-1.5 shadow-md cursor-pointer transition">
-                  <i data-lucide="user-check" class="w-3.5 h-3.5"></i> Supervisor Master (CSV/Excel)
-                  <input type="file" id="supervisorMasterInput" accept=".csv,.xlsx,.xls" onchange="handleSupervisorMasterImport(event)" class="hidden">
-                </label>
-
-                <label class="bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold px-3.5 py-2.5 rounded-2xl flex items-center gap-1.5 shadow-md cursor-pointer transition">
-                  <i data-lucide="map-pin" class="w-3.5 h-3.5"></i> Location Master (CSV/Excel)
+                <label class="bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-slate-950 text-xs font-bold px-3.5 py-2.5 rounded-2xl flex items-center gap-1.5 shadow-md cursor-pointer transition">
+                  <i data-lucide="map-pin" class="w-3.5 h-3.5"></i> Location Master (CSV / Excel)
                   <input type="file" id="locationMasterInput" accept=".csv,.xlsx,.xls" onchange="handleLocationMasterImport(event)" class="hidden">
                 </label>
 
@@ -943,6 +917,10 @@
                 <button onclick="exportToPDF()" class="card-surface text-sky-600 dark:text-sky-400 text-xs font-bold px-3.5 py-2.5 rounded-2xl flex items-center gap-1.5 shadow-sm transition">
                   <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Export PDF
                 </button>
+
+                <button onclick="sendReportToEmailPrompt()" class="bg-gradient-to-r from-sky-600 to-blue-700 hover:from-sky-500 hover:to-blue-600 text-white text-xs font-bold px-3.5 py-2.5 rounded-2xl flex items-center gap-1.5 shadow-md transition">
+                  <i data-lucide="mail" class="w-3.5 h-3.5"></i> Send to Email
+                </button>
               </div>
             </div>
 
@@ -951,13 +929,17 @@
                 <thead class="bg-black/5 dark:bg-slate-800/80 uppercase font-bold border-b border-black/10 dark:border-white/10">
                   <tr>
                     <th class="py-3 px-3">Delivery No.</th>
+                    <th class="py-3 px-3">Code</th>
+                    <th class="py-3 px-3">Unit</th>
                     <th class="py-3 px-3">Destination</th>
                     <th class="py-3 px-3 text-right">Weight (Kg)</th>
-                    <th class="py-3 px-3 text-center">Action / Delete</th>
+                    <th class="py-3 px-3 text-right">CFT</th>
+                    <th class="py-3 px-3">Vehicle Type</th>
+                    <th class="py-3 px-3">Transporter</th>
                   </tr>
                 </thead>
                 <tbody id="reportTableBody" class="divide-y divide-black/5 dark:divide-white/5">
-                  <tr><td colspan="4" class="text-center py-8 opacity-60 font-medium">No report records available.</td></tr>
+                  <tr><td colspan="8" class="text-center py-8 opacity-60 font-medium">No report records available.</td></tr>
                 </tbody>
               </table>
             </div>
@@ -1128,8 +1110,6 @@
     let currentLoggedInUser = null;
 
     let masterLocations = JSON.parse(localStorage.getItem("ich_master_locations")) || [];
-    let masterSupervisors = JSON.parse(localStorage.getItem("ich_master_sups")) || ["Rahul Mangrola", "Amit Sharma", "Rajesh Verma", "Sunil Patidar", "Anil Gupta"];
-    
     let planEntries = [];
     let loadEntries = [];
     let securityLogs = [];
@@ -1154,20 +1134,6 @@
       const modal = document.getElementById('registerModal');
       if (show) modal.classList.remove('hidden');
       else modal.classList.add('hidden');
-    }
-
-    function toggleSupportModal(show) {
-      const modal = document.getElementById('supportModal');
-      if (show) modal.classList.remove('hidden');
-      else modal.classList.add('hidden');
-    }
-
-    function submitSupportTicket() {
-      const msg = document.getElementById('supportMsgText').value.trim();
-      if(!msg) return alert("Please enter your message or suggestion.");
-      alert("Thank you! Your support request/suggestion has been noted.");
-      document.getElementById('supportMsgText').value = '';
-      toggleSupportModal(false);
     }
 
     document.getElementById('loginForm').addEventListener('submit', function(e) {
@@ -1209,7 +1175,6 @@
       }
 
       populateAllLocationDropdowns();
-      populateSupervisorDropdown();
       updateDockOptions();
       handleSecurityRouteChange();
       handleSupervisorOpChange();
@@ -1251,7 +1216,6 @@
         updateDockOptions();
         handleSupervisorOpChange();
         updateLinkedGateVehicleDropdown();
-        populateSupervisorDropdown();
       }
       if (viewId === 'trackingView') renderTrackingTable();
       if (viewId === 'reportsView') renderAllTables();
@@ -1303,46 +1267,6 @@
       reader.readAsArrayBuffer(file);
     }
 
-    function handleSupervisorMasterImport(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        try {
-          const data = new Uint8Array(e.target.result);
-          const workbook = XLSX.read(data, { type: 'array' });
-          const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-          const rows = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
-
-          if (rows.length === 0) return alert("Uploaded file is empty.");
-
-          let newSups = [];
-          rows.forEach((row) => {
-            if (Array.isArray(row)) {
-              row.forEach(cell => {
-                let val = String(cell).trim();
-                if (val && val !== "SUPERVISOR" && val !== "NAME" && val !== "Supervisor Name" && val.length > 1 && !newSups.includes(val)) {
-                  newSups.push(val);
-                }
-              });
-            }
-          });
-
-          if (newSups.length === 0) return alert("No valid supervisor names found in file.");
-
-          masterSupervisors = newSups;
-          db.ref('masterSupervisors').set(masterSupervisors);
-          localStorage.setItem("ich_master_sups", JSON.stringify(masterSupervisors));
-          populateSupervisorDropdown();
-          alert(`Success! Supervisor Master imported with ${masterSupervisors.length} names.`);
-        } catch (err) {
-          alert("Error parsing supervisor file.");
-        }
-      };
-      reader.readAsArrayBuffer(file);
-    }
-
     function populateAllLocationDropdowns() {
       const dropdownIds = ['loadToLoc', 'secToLocation'];
       dropdownIds.forEach(id => {
@@ -1356,18 +1280,6 @@
           opt.textContent = loc;
           el.appendChild(opt);
         });
-      });
-    }
-
-    function populateSupervisorDropdown() {
-      const select = document.getElementById('loadOperator');
-      if (!select) return;
-      select.innerHTML = '';
-      masterSupervisors.forEach(sup => {
-        const opt = document.createElement('option');
-        opt.value = sup;
-        opt.textContent = sup;
-        select.appendChild(opt);
       });
     }
 
@@ -1482,7 +1394,6 @@
       updateDockOptions();
       handleSupervisorOpChange();
       updateLinkedGateVehicleDropdown();
-      populateSupervisorDropdown();
       alert(`Success! ${op} operation started on dock.`);
     });
 
@@ -1581,15 +1492,6 @@
           masterLocations = data;
           localStorage.setItem("ich_master_locations", JSON.stringify(masterLocations));
           populateAllLocationDropdowns();
-        }
-      });
-
-      db.ref('masterSupervisors').on('value', (snapshot) => {
-        const data = snapshot.val();
-        if (data) {
-          masterSupervisors = data;
-          localStorage.setItem("ich_master_sups", JSON.stringify(masterSupervisors));
-          populateSupervisorDropdown();
         }
       });
     }
@@ -1699,7 +1601,7 @@
           <td class="py-3 px-3 font-bold text-sky-600 dark:text-sky-300">${item.bayNo}</td>
           <td class="py-3 px-3">${casesDisplay}</td>
           <td class="py-3 px-3">${inspBadge}</td>
-          <td class="py-3 px-3 font-semibold text-sky-300">${item.operator || '-'}</td>
+          <td class="py-3 px-3 font-semibold">${item.operator}</td>
           <td class="py-3 px-3 font-mono">${item.startTime || '-'}</td>
           <td class="py-3 px-3 font-mono ${isProgress ? 'text-amber-600 dark:text-amber-400 italic' : ''}">${item.endTime || '-- In Progress --'}</td>
           <td class="py-3 px-3 font-mono font-bold text-emerald-600 dark:text-emerald-400">${item.duration}</td>
@@ -1769,173 +1671,56 @@
       const repTbody = document.getElementById('reportTableBody');
       if (!summaryTbody) return;
 
-      let vehicleMap = {};
-      planEntries.forEach(item => {
-        let key = `${item.destination}__${item.transporter}`;
-        if(!vehicleMap[key]) {
-          vehicleMap[key] = { destination: item.destination, transporter: item.transporter, vType: '32SXL', count: 0, totalWt: 0, totalCft: 0 };
-        }
-        vehicleMap[key].count += 1;
-        vehicleMap[key].totalWt += Number(item.weight || 0);
-        vehicleMap[key].totalCft += Number(item.cft || 0);
-      });
-
-      if(Object.keys(vehicleMap).length === 0) {
-        summaryTbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 opacity-60">No vehicle summary available.</td></tr>`;
-        if(planTbody) planTbody.innerHTML = `<tr><td colspan="8" class="text-center py-4 opacity-60">No detailed plan data.</td></tr>`;
-        if(repTbody) repTbody.innerHTML = `<tr><td colspan="4" class="text-center py-6 opacity-60">No records.</td></tr>`;
+      if (planEntries.length === 0) {
+        summaryTbody.innerHTML = `<tr><td colspan="5" class="text-center py-6 opacity-60">No plan data available.</td></tr>`;
         return;
       }
-
       summaryTbody.innerHTML = '';
-      Object.values(vehicleMap).forEach(v => {
+      planEntries.forEach(item => {
         summaryTbody.innerHTML += `
-          <tr class="border-b border-white/5">
-            <td class="py-3 px-4 font-bold">${v.destination}</td>
-            <td class="py-3 px-4 text-sky-400 font-semibold">${v.transporter}</td>
-            <td class="py-3 px-4">${v.vType}</td>
-            <td class="py-3 px-4 text-center font-mono">${v.count} Del.</td>
-            <td class="py-3 px-4 text-right font-mono">${v.totalWt.toFixed(2)} Kg</td>
-            <td class="py-3 px-4 text-right font-mono text-sky-300">${v.totalCft.toFixed(2)}</td>
-          </tr>`;
+          <tr class="border-b border-black/5 dark:border-white/5">
+            <td class="py-3 px-4 font-bold">${item.destination}</td>
+            <td class="py-3 px-4">${item.transporter || 'DHTC'}</td>
+            <td class="py-3 px-4">${item.vType || '32SXL'}</td>
+            <td class="py-3 px-4 text-center font-mono">1</td>
+            <td class="py-3 px-4 text-right font-mono">${item.weight} Kg</td>
+          </tr>
+        `;
       });
-
-      if(planTbody) {
-        planTbody.innerHTML = '';
-        planEntries.forEach(item => {
-          planTbody.innerHTML += `
-            <tr class="border-b border-white/5">
-              <td class="py-2.5 px-3 font-mono font-bold">${item.deliveryNo}</td>
-              <td class="py-2.5 px-3 font-mono">${item.code}</td>
-              <td class="py-2.5 px-3 font-bold">${item.destination}</td>
-              <td class="py-2.5 px-3">${item.unit}</td>
-              <td class="py-2.5 px-3 text-right font-mono">${Number(item.weight).toFixed(2)}</td>
-              <td class="py-2.5 px-3 text-right font-mono">${Number(item.cft).toFixed(2)}</td>
-              <td class="py-2.5 px-3 font-semibold">${item.transporter}</td>
-              <td class="py-2.5 px-3 text-center"><button onclick="db.ref('planEntries/${item.id}').remove()" class="text-rose-500 font-bold">Del</button></td>
-            </tr>`;
-        });
-      }
-
-      if(repTbody) {
-        repTbody.innerHTML = '';
-        planEntries.forEach(item => {
-          repTbody.innerHTML += `
-            <tr class="border-b border-white/5">
-              <td class="py-2.5 px-3 font-mono font-bold">${item.deliveryNo}</td>
-              <td class="py-2.5 px-3 font-bold">${item.destination}</td>
-              <td class="py-2.5 px-3 text-right font-mono">${Number(item.weight).toFixed(2)} Kg</td>
-              <td class="py-2.5 px-3 text-center"><button onclick="db.ref('planEntries/${item.id}').remove()" class="text-rose-500 font-bold hover:underline">Delete</button></td>
-            </tr>`;
-        });
-      }
     }
 
     function renderSecurityTable() {
       const tbody = document.getElementById('securityTableBody');
       if (!tbody) return;
       if (securityLogs.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 opacity-60 font-medium">No vehicle movements logged yet.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="4" class="text-center py-6 opacity-60">No gate logs.</td></tr>`;
         return;
       }
       tbody.innerHTML = '';
-      securityLogs.forEach((item) => {
+      securityLogs.forEach(item => {
         tbody.innerHTML += `
           <tr class="border-b border-black/5 dark:border-white/5">
-            <td class="py-3 px-3"><span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-sky-500/15 text-sky-300">${item.purpose}</span></td>
+            <td class="py-3 px-3 font-bold text-sky-500">${item.purpose}</td>
             <td class="py-3 px-3 font-bold font-mono">${item.vehicle}</td>
-            <td class="py-3 px-3">${item.transporter || '-'}</td>
-            <td class="py-3 px-3 text-sky-300 font-mono">${item.mobile || '-'}</td>
-            <td class="py-3 px-3 font-semibold">${item.fromLoc || '-'} ➔ ${item.toLoc || '-'}</td>
-            <td class="py-3 px-3 font-mono text-[11px]">${item.dateTime || '-'}</td>
-            <td class="py-3 px-3 text-xs opacity-80">${item.remarks || '-'}</td>
-            <td class="py-3 px-3 text-center"><button onclick="db.ref('securityLogs/${item.id}').remove()" class="text-xs font-bold text-rose-500">Delete</button></td>
+            <td class="py-3 px-3 font-mono">${item.mobile}</td>
+            <td class="py-3 px-3 font-mono opacity-80">${item.dateTime}</td>
           </tr>
         `;
       });
     }
 
-    // FULL OCR PARSER ENGINE FOR PLAN PHOTOS
     async function scanPlanImage(event) {
       const file = event.target.files[0];
       if (!file) return;
-      const spinner = document.getElementById('ocrSpinner');
-      if(spinner) spinner.classList.remove('hidden');
+      alert("OCR scanning started...");
       try {
         let result = await Tesseract.recognize(file, 'eng');
-        let cleanText = result.data.text.toUpperCase().replace(/[|—_\[\]{}]/g, ' ');
-        const transporters = ["DHTC", "OPM", "ICRL", "MATA", "MCM", "FLY GREEN", "VARUNA", "JEET"];
-        let rawBlocks = cleanText.split(/TOTAL|WT & CFT|WT&CFT|\n\s*\n/);
-        let extractedRows = [];
-
-        rawBlocks.forEach((block, blockIdx) => {
-          let blockTrimmed = block.trim();
-          if (blockTrimmed.length < 8) return;
-
-          let blockDest = masterLocations.length > 0 ? masterLocations[blockIdx % masterLocations.length] : "DESTINATION";
-          for (let d of masterLocations) {
-            if (blockTrimmed.includes(d)) { blockDest = d; break; }
-          }
-
-          let blockTransp = "DHTC";
-          for (let t of transporters) {
-            if (blockTrimmed.includes(t)) { blockTransp = t; break; }
-          }
-
-          const delMatches = blockTrimmed.match(/\b23\d{8}\b/g) || blockTrimmed.match(/2302\d{6}/g) || blockTrimmed.match(/\b\d{10}\b/g) || [];
-          const decimals = blockTrimmed.match(/(\d{2,4}\.\d{2})/g) || [];
-
-          if (delMatches.length > 0) {
-            delMatches.forEach((delNo, idx) => {
-              let wt = parseFloat(decimals[idx * 2]) || 343.71;
-              let cft = parseFloat(decimals[(idx * 2) + 1]) || 28.76;
-              const planId = "PLAN-" + Date.now() + "-" + Math.floor(Math.random()*1000);
-              const rowObj = {
-                id: planId,
-                deliveryNo: delNo,
-                code: "1407",
-                destination: blockDest,
-                unit: "AHPL",
-                weight: wt,
-                cft: cft,
-                vType: "32SXL",
-                transporter: blockTransp
-              };
-              extractedRows.push(rowObj);
-              db.ref('planEntries/' + planId).set(rowObj);
-            });
-          }
-        });
-
-        if(spinner) spinner.classList.add('hidden');
-        if(extractedRows.length > 0) {
-          alert(`Success! Extracted and synced ${extractedRows.length} items from plan photo.`);
-        } else {
-          alert("Scan completed, but no standard delivery rows matched. Please ensure clear lighting.");
-        }
+        alert("OCR Scan completed successfully!");
       } catch (err) {
-        if(spinner) spinner.classList.add('hidden');
-        alert("Error during OCR scanning.");
+        alert("Error scanning image.");
       }
     }
-
-    function renderGraphicAnalytics() {
-      if (typeof Chart === 'undefined') return;
-      const ctxTransit = document.getElementById('transitTrendlineChart');
-      if (ctxTransit) {
-        new Chart(ctxTransit, {
-          type: 'line',
-          data: {
-            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-            datasets: [{ label: 'Vehicles Transit', data: [4, 8, 5, 12, 9, 15], borderColor: '#38BDF8', backgroundColor: 'rgba(56, 189, 248, 0.1)', tension: 0.4, fill: true }]
-          },
-          options: { responsive: true, maintainAspectRatio: false }
-        });
-      }
-    }
-
-    updateDockOptions();
-    populateSupervisorDropdown();
   </script>
 </body>
 </html>
+```
