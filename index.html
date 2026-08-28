@@ -1,4 +1,3 @@
-```
 <!DOCTYPE html>
 <html lang="en" class="dark">
 <head>
@@ -186,18 +185,42 @@
       <div class="space-y-3.5 text-xs">
         <div class="p-3.5 rounded-2xl card-surface border border-sky-500/30 space-y-1">
           <div class="flex justify-between items-center font-bold">
-            <span class="text-sky-500">v8.4.0 (Full Feature Set & Cases/Damage Update)</span>
+            <span class="text-sky-500">v8.5.0 (Custom Update & Help Support)</span>
             <span class="text-[10px]">Stable</span>
           </div>
           <ul class="list-disc list-inside space-y-0.5 text-[11px]">
-            <li>Full dashboard, analytics, OCR scanning, and Firebase cloud real-time sync.</li>
-            <li>Added Total Cases Loaded and Unloading Damage/POD inspection status.</li>
+            <li>Added Plan item delete feature and CSV import option.</li>
+            <li>Removed Cases/Damage header from Operations entry.</li>
+            <li>Added Help & Support option to mobile bottom navigation.</li>
           </ul>
         </div>
       </div>
 
       <div class="pt-3 border-t border-black/10 dark:border-white/10 text-center opacity-60 hover:opacity-100 transition">
         <span class="text-[10px] font-mono tracking-widest uppercase">Designed by Rahul Mangrola</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- HELP & SUPPORT MODAL -->
+  <div id="helpSupportModal" class="fixed inset-0 bg-slate-950/75 backdrop-blur-xl z-50 hidden flex items-center justify-center p-4">
+    <div class="glass-panel rounded-[2.5rem] max-w-md w-full p-6 shadow-2xl space-y-4 border border-white/10">
+      <div class="flex justify-between items-center pb-2 border-b border-white/10">
+        <h3 class="font-bold text-sm flex items-center gap-2 text-sky-500">
+          <i data-lucide="help-circle" class="w-4 h-4"></i> Help & Support Center
+        </h3>
+        <button onclick="toggleHelpSupportModal(false)" class="hover:opacity-80"><i data-lucide="x" class="w-4 h-4"></i></button>
+      </div>
+      <div class="space-y-3 text-xs">
+        <p class="opacity-80">Need assistance with warehouse logistics, dock allocation, or plan uploads at ICH Indore? Contact system administrator or support desk below:</p>
+        <div class="card-surface p-3.5 rounded-2xl space-y-2 border border-sky-500/30">
+          <p class="font-bold flex items-center gap-2"><i data-lucide="user" class="w-3.5 h-3.5 text-sky-400"></i> Lead Developer: Rahul Mangrola</p>
+          <p class="font-bold flex items-center gap-2"><i data-lucide="mail" class="w-3.5 h-3.5 text-sky-400"></i> support@ich-indore-wms.com</p>
+          <p class="font-bold flex items-center gap-2"><i data-lucide="phone" class="w-3.5 h-3.5 text-sky-400"></i> +91 98765 43210</p>
+        </div>
+        <button onclick="toggleHelpSupportModal(false)" class="w-full bg-gradient-to-r from-sky-600 to-blue-600 text-white font-bold py-2.5 rounded-2xl text-xs transition">
+          Close Support
+        </button>
       </div>
     </div>
   </div>
@@ -307,6 +330,9 @@
 
       <!-- SIDEBAR FOOTER -->
       <div class="space-y-2 pt-4 border-t border-black/10 dark:border-white/10">
+        <button onclick="toggleHelpSupportModal(true)" class="w-full px-3 py-1.5 card-surface hover:border-sky-500/40 rounded-xl text-[10px] text-sky-400 font-bold flex items-center justify-center gap-1.5 transition shadow-xs">
+          <i data-lucide="help-circle" class="w-3 h-3"></i> HELP & SUPPORT
+        </button>
         <button onclick="toggleVersionModal(true)" class="w-full px-3 py-1.5 card-surface hover:border-sky-500/40 rounded-xl text-[10px] text-sky-500 font-mono text-center font-bold flex items-center justify-center gap-1.5 transition shadow-xs">
           <i data-lucide="history" class="w-3 h-3"></i> VERSION HISTORY
         </button>
@@ -448,10 +474,19 @@
                 <h2 class="text-sm font-extrabold flex items-center gap-2">
                   <i data-lucide="clipboard-list" class="w-4 h-4 text-sky-500"></i> Plan Received & Single Vehicle Summary
                 </h2>
-                <p class="text-xs opacity-70 mt-0.5">Automated Multi-Block Parser</p>
+                <p class="text-xs opacity-70 mt-0.5">Automated Multi-Block Parser & CSV Importer</p>
               </div>
 
-              <div class="flex items-center gap-2">
+              <div class="flex flex-wrap items-center gap-2">
+                <button onclick="downloadPlanSampleCSV()" class="card-surface hover:border-sky-500/40 text-sky-600 dark:text-sky-400 text-xs font-bold px-3 py-2.5 rounded-2xl flex items-center gap-1.5 shadow-sm transition">
+                  <i data-lucide="download" class="w-3.5 h-3.5"></i> Plan Sample CSV
+                </button>
+
+                <label class="card-surface hover:border-emerald-500/40 text-emerald-600 dark:text-emerald-400 text-xs font-bold px-3.5 py-2.5 rounded-2xl flex items-center gap-1.5 shadow-sm cursor-pointer transition">
+                  <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> Import Plan CSV
+                  <input type="file" id="planCsvFileInput" accept=".csv,.xlsx,.xls" onchange="handlePlanCsvImport(event)" class="hidden">
+                </label>
+
                 <label class="bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white text-xs font-bold px-4 py-3 rounded-2xl flex items-center gap-2 shadow-md cursor-pointer transition">
                   <i data-lucide="camera" class="w-4 h-4 text-white"></i> Scan Plan Photo
                   <input type="file" id="planCameraInput" accept="image/*" capture="environment" onchange="scanPlanImage(event)" class="hidden">
@@ -483,7 +518,7 @@
                     </tr>
                   </thead>
                   <tbody id="summaryTableBody" class="divide-y divide-black/5 dark:divide-white/5 font-medium">
-                    <tr><td colspan="7" class="text-center py-8 opacity-60 font-medium">No vehicle summary available. Scan plan photo above.</td></tr>
+                    <tr><td colspan="7" class="text-center py-8 opacity-60 font-medium">No vehicle summary available. Scan plan photo or import CSV above.</td></tr>
                   </tbody>
                 </table>
               </div>
@@ -521,14 +556,14 @@
           </div>
         </section>
 
-        <!-- MODULE 2: LOADING / UNLOADING OPS (Updated with Cases & Damage) -->
+        <!-- MODULE 2: LOADING / UNLOADING OPS -->
         <section id="loadUnloadView" class="view-panel hidden space-y-6">
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             
             <div class="glass-panel p-6 rounded-[2rem] shadow-xl lg:col-span-1 space-y-4">
               <div class="flex items-center justify-between pb-2 border-b border-black/10 dark:border-white/10">
                 <h2 class="text-sm font-black flex items-center gap-2">
-                  <i data-lucide="arrow-left-right" class="w-4 h-4 text-sky-500"></i> Operation Entry & Cases/Damage
+                  <i data-lucide="arrow-left-right" class="w-4 h-4 text-sky-500"></i> Operation Entry
                 </h2>
                 <span class="text-[10px] bg-sky-500/15 text-sky-500 font-bold px-2 py-0.5 rounded-full border border-sky-500/25">Step 1: Start</span>
               </div>
@@ -560,15 +595,15 @@
                   <input type="number" id="loadTotalCases" placeholder="Enter total cases (e.g. 150)" class="w-full app-input rounded-xl p-2 text-xs font-bold text-amber-600 dark:text-amber-300" value="0">
                 </div>
 
-                <!-- UNLOADING INSPECTION & DAMAGE FIELD (For Unloading) -->
+                <!-- UNLOADING INSPECTION FIELD (For Unloading) -->
                 <div id="unloadingInspectionField" class="hidden bg-emerald-500/10 p-3 rounded-2xl border border-emerald-500/30 space-y-1">
                   <label class="block text-[11px] font-bold text-emerald-600 dark:text-emerald-400 mb-1 ml-1">
-                    Unloading Inspection / Damage Status *
+                    Unloading Inspection Status *
                   </label>
                   <select id="unloadingPodStatus" class="w-full app-input rounded-xl p-2 text-xs font-bold text-emerald-600 dark:text-emerald-300">
-                    <option value="POD Clean">✔ POD Clean (No Damage)</option>
-                    <option value="POD Hold Due to Damage / Leakage">⚠ POD Hold Due to Damage / Leakage</option>
-                    <option value="Reported Damaged Cases">📦 Reported Damaged Cases Included</option>
+                    <option value="POD Clean">✔ POD Clean</option>
+                    <option value="POD Hold Due to Discrepancy">⚠ POD Hold Due to Discrepancy</option>
+                    <option value="Reported Checked Cases">📦 Checked Cases Verified</option>
                   </select>
                 </div>
 
@@ -651,7 +686,7 @@
               <div class="flex flex-wrap justify-between items-center gap-3">
                 <div>
                   <h3 class="text-sm font-black flex items-center gap-2">
-                    <i data-lucide="activity" class="w-4 h-4 text-emerald-500"></i> Active Dock Operations & Damage/Cases Log
+                    <i data-lucide="activity" class="w-4 h-4 text-emerald-500"></i> Active Dock Operations Log
                   </h3>
                   <p class="text-xs opacity-70">Click <b>Mark Completed</b> once operation is completed to release the dock</p>
                 </div>
@@ -670,7 +705,7 @@
                       <th class="py-3 px-3">Vehicle No</th>
                       <th class="py-3 px-3">Dock</th>
                       <th class="py-3 px-3 font-mono text-sky-400">Total Cases</th>
-                      <th class="py-3 px-3">Inspection / Damage</th>
+                      <th class="py-3 px-3">Inspection Status</th>
                       <th class="py-3 px-3">Supervisor</th>
                       <th class="py-3 px-3">Start Time</th>
                       <th class="py-3 px-3">End / Exit</th>
@@ -1018,7 +1053,7 @@
 
   </div>
 
-  <!-- FLOATING IPHONE BOTTOM APP NAVIGATION BAR -->
+  <!-- FLOATING IPHONE BOTTOM APP NAVIGATION BAR WITH HELP & SUPPORT -->
   <div class="md:hidden fixed bottom-3 left-4 right-4 glass-panel rounded-3xl px-2 py-2.5 flex justify-around items-center z-50 shadow-2xl">
     <button onclick="switchView('dashboardView', this)" class="flex flex-col items-center gap-1 text-sky-500">
       <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
@@ -1040,9 +1075,9 @@
       <i data-lucide="shield-check" class="w-5 h-5 text-amber-500"></i>
       <span class="text-[9px] font-bold">Gate</span>
     </button>
-    <button onclick="switchView('reportsView', this)" class="flex flex-col items-center gap-1 opacity-70 hover:opacity-100">
-      <i data-lucide="bar-chart-3" class="w-5 h-5 text-purple-500"></i>
-      <span class="text-[9px] font-bold">Reports</span>
+    <button onclick="toggleHelpSupportModal(true)" class="flex flex-col items-center gap-1 opacity-70 hover:opacity-100 text-sky-400">
+      <i data-lucide="help-circle" class="w-5 h-5"></i>
+      <span class="text-[9px] font-bold">Help</span>
     </button>
   </div>
 
@@ -1132,6 +1167,12 @@
 
     function toggleRegisterModal(show) {
       const modal = document.getElementById('registerModal');
+      if (show) modal.classList.remove('hidden');
+      else modal.classList.add('hidden');
+    }
+
+    function toggleHelpSupportModal(show) {
+      const modal = document.getElementById('helpSupportModal');
       if (show) modal.classList.remove('hidden');
       else modal.classList.add('hidden');
     }
@@ -1267,6 +1308,66 @@
       reader.readAsArrayBuffer(file);
     }
 
+    // PLAN CSV IMPORT & SAMPLE
+    function downloadPlanSampleCSV() {
+      const csvContent = "deliveryNo,code,unit,destination,weight,cft,vType,transporter\nDEL-101,C-01,AHPL,MUMBAI,1250,450,32SXL,DHTC\nDEL-102,C-02,AIL,DELHI,1800,600,32MXL,OPM\nDEL-103,C-03,AHPL,AHMEDABAD,950,320,24-9T,ICRL";
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.setAttribute("download", "plan_master_sample.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    function handlePlanCsvImport(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const data = new Uint8Array(e.target.result);
+          const workbook = XLSX.read(data, { type: 'array' });
+          const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+          const rows = XLSX.utils.sheet_to_json(firstSheet);
+
+          if (rows.length === 0) return alert("Uploaded plan file is empty.");
+
+          let importedCount = 0;
+          rows.forEach((r, idx) => {
+            const planId = "PLAN-" + Date.now() + "-" + idx;
+            const item = {
+              id: planId,
+              deliveryNo: String(r.deliveryNo || r.DeliveryNo || "DEL-" + Math.floor(Math.random()*10000)),
+              code: String(r.code || r.Code || "C-01"),
+              unit: String(r.unit || r.Unit || "AHPL").toUpperCase(),
+              destination: String(r.destination || r.Destination || "MUMBAI").toUpperCase(),
+              weight: Number(r.weight || r.Weight || 1000),
+              cft: Number(r.cft || r.CFT || 400),
+              vType: String(r.vType || r.VType || "32SXL").toUpperCase(),
+              transporter: String(r.transporter || r.Transporter || "DHTC").toUpperCase()
+            };
+            db.ref('planEntries/' + planId).set(item);
+            importedCount++;
+          });
+
+          alert(`Success! Imported ${importedCount} plan records.`);
+        } catch (err) {
+          alert("Error parsing plan CSV/Excel file.");
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
+    function deletePlanItem(planId) {
+      if (confirm("Are you sure you want to delete this plan item?")) {
+        db.ref('planEntries/' + planId).remove().then(() => {
+          alert("Plan item deleted successfully.");
+        });
+      }
+    }
+
     function populateAllLocationDropdowns() {
       const dropdownIds = ['loadToLoc', 'secToLocation'];
       dropdownIds.forEach(id => {
@@ -1362,7 +1463,7 @@
       document.getElementById('secDateTime').value = now.toLocaleDateString('en-GB') + ', ' + now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
     }
 
-    // FORM HANDLERS WITH CASES & DAMAGE SUPPORT
+    // FORM HANDLERS
     document.getElementById('loadUnloadForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const op = document.getElementById('opType').value;
@@ -1584,11 +1685,7 @@
 
         let inspBadge = '<span class="opacity-50">-</span>';
         if (item.podStatus && item.podStatus !== 'N/A') {
-          if (item.podStatus.includes('Clean')) {
-            inspBadge = `<span class="text-emerald-600 dark:text-emerald-400 font-bold text-[10px]">✔ ${item.podStatus}</span>`;
-          } else {
-            inspBadge = `<span class="text-rose-600 dark:text-rose-400 font-bold text-[10px]">⚠ ${item.podStatus}</span>`;
-          }
+          inspBadge = `<span class="text-emerald-600 dark:text-emerald-400 font-bold text-[10px]">✔ ${item.podStatus}</span>`;
         }
 
         const casesDisplay = item.totalCases && item.totalCases !== 'N/A' ? `<span class="font-mono font-bold text-sky-400">${item.totalCases} Cases</span>` : '<span class="opacity-40">-</span>';
@@ -1668,14 +1765,22 @@
     function renderAllTables() {
       const summaryTbody = document.getElementById('summaryTableBody');
       const planTbody = document.getElementById('planTableBody');
-      const repTbody = document.getElementById('reportTableBody');
-      if (!summaryTbody) return;
+      if (!summaryTbody || !planTbody) return;
 
       if (planEntries.length === 0) {
-        summaryTbody.innerHTML = `<tr><td colspan="5" class="text-center py-6 opacity-60">No plan data available.</td></tr>`;
+        summaryTbody.innerHTML = `<tr><td colspan="7" class="text-center py-6 opacity-60">No plan summary available.</td></tr>`;
+        planTbody.innerHTML = `<tr><td colspan="9" class="text-center py-6 opacity-60">No detailed plan data loaded.</td></tr>`;
+        if (document.getElementById('summaryGroupCount')) document.getElementById('summaryGroupCount').innerText = "0 Vehicles";
+        if (document.getElementById('detailedRowCount')) document.getElementById('detailedRowCount').innerText = "0 Items";
         return;
       }
+
+      if (document.getElementById('summaryGroupCount')) document.getElementById('summaryGroupCount').innerText = `${planEntries.length} Items`;
+      if (document.getElementById('detailedRowCount')) document.getElementById('detailedRowCount').innerText = `${planEntries.length} Items`;
+
       summaryTbody.innerHTML = '';
+      planTbody.innerHTML = '';
+
       planEntries.forEach(item => {
         summaryTbody.innerHTML += `
           <tr class="border-b border-black/5 dark:border-white/5">
@@ -1684,16 +1789,37 @@
             <td class="py-3 px-4">${item.vType || '32SXL'}</td>
             <td class="py-3 px-4 text-center font-mono">1</td>
             <td class="py-3 px-4 text-right font-mono">${item.weight} Kg</td>
+            <td class="py-3 px-4 text-right font-mono">${item.cft || 0}</td>
+            <td class="py-3 px-4 text-center"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-sky-500/20 text-sky-400">Pending</span></td>
+          </tr>
+        `;
+
+        planTbody.innerHTML += `
+          <tr class="border-b border-black/5 dark:border-white/5">
+            <td class="py-3 px-3.5 font-bold font-mono">${item.deliveryNo}</td>
+            <td class="py-3 px-3.5">${item.code}</td>
+            <td class="py-3 px-3.5 font-bold text-sky-400">${item.unit}</td>
+            <td class="py-3 px-3.5 font-bold">${item.destination}</td>
+            <td class="py-3 px-3.5 text-right font-mono">${item.weight}</td>
+            <td class="py-3 px-3.5 text-right font-mono">${item.cft || 0}</td>
+            <td class="py-3 px-3.5">${item.vType}</td>
+            <td class="py-3 px-3.5">${item.transporter}</td>
+            <td class="py-3 px-3.5 text-center">
+              <button onclick="deletePlanItem('${item.id}')" class="px-2.5 py-1 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-[10px] font-bold transition shadow-sm flex items-center gap-1 mx-auto">
+                <i data-lucide="trash-2" class="w-3 h-3"></i> Delete
+              </button>
+            </td>
           </tr>
         `;
       });
+      lucide.createIcons();
     }
 
     function renderSecurityTable() {
       const tbody = document.getElementById('securityTableBody');
       if (!tbody) return;
       if (securityLogs.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="4" class="text-center py-6 opacity-60">No gate logs.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center py-6 opacity-60">No gate logs.</td></tr>`;
         return;
       }
       tbody.innerHTML = '';
@@ -1702,25 +1828,33 @@
           <tr class="border-b border-black/5 dark:border-white/5">
             <td class="py-3 px-3 font-bold text-sky-500">${item.purpose}</td>
             <td class="py-3 px-3 font-bold font-mono">${item.vehicle}</td>
+            <td class="py-3 px-3">${item.transporter}</td>
             <td class="py-3 px-3 font-mono">${item.mobile}</td>
+            <td class="py-3 px-3">${item.fromLoc} ➔ ${item.toLoc}</td>
             <td class="py-3 px-3 font-mono opacity-80">${item.dateTime}</td>
+            <td class="py-3 px-3">${item.remarks}</td>
+            <td class="py-3 px-3 text-center">
+              <button onclick="db.ref('securityLogs/${item.id}').remove()" class="text-rose-500 hover:text-rose-600 p-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+            </td>
           </tr>
         `;
       });
+      lucide.createIcons();
     }
 
     async function scanPlanImage(event) {
       const file = event.target.files[0];
       if (!file) return;
-      alert("OCR scanning started...");
+      document.getElementById('ocrSpinner').classList.remove('hidden');
       try {
         let result = await Tesseract.recognize(file, 'eng');
+        document.getElementById('ocrSpinner').classList.add('hidden');
         alert("OCR Scan completed successfully!");
       } catch (err) {
+        document.getElementById('ocrSpinner').classList.add('hidden');
         alert("Error scanning image.");
       }
     }
   </script>
 </body>
 </html>
-```
