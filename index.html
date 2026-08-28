@@ -185,13 +185,12 @@
       <div class="space-y-3.5 text-xs">
         <div class="p-3.5 rounded-2xl card-surface border border-sky-500/30 space-y-1">
           <div class="flex justify-between items-center font-bold">
-            <span class="text-sky-500">v8.5.0 (Custom Update & Help Support)</span>
+            <span class="text-sky-500">v8.7.0 (Support Number & Supervisor Master Update)</span>
             <span class="text-[10px]">Stable</span>
           </div>
           <ul class="list-disc list-inside space-y-0.5 text-[11px]">
-            <li>Added Plan item delete feature and CSV import option.</li>
-            <li>Removed Cases/Damage header from Operations entry.</li>
-            <li>Added Help & Support option to mobile bottom navigation.</li>
+            <li>Updated Help & Support contact mobile number to 9691532690.</li>
+            <li>Added Master Supervisor CSV/Excel import for seamless team updates.</li>
           </ul>
         </div>
       </div>
@@ -212,11 +211,11 @@
         <button onclick="toggleHelpSupportModal(false)" class="hover:opacity-80"><i data-lucide="x" class="w-4 h-4"></i></button>
       </div>
       <div class="space-y-3 text-xs">
-        <p class="opacity-80">Need assistance with warehouse logistics, dock allocation, or plan uploads at ICH Indore? Contact system administrator or support desk below:</p>
+        <p class="opacity-80">Need assistance with warehouse logistics, dock allocation, or supervisor master uploads at ICH Indore? Contact support desk below:</p>
         <div class="card-surface p-3.5 rounded-2xl space-y-2 border border-sky-500/30">
           <p class="font-bold flex items-center gap-2"><i data-lucide="user" class="w-3.5 h-3.5 text-sky-400"></i> Lead Developer: Rahul Mangrola</p>
           <p class="font-bold flex items-center gap-2"><i data-lucide="mail" class="w-3.5 h-3.5 text-sky-400"></i> support@ich-indore-wms.com</p>
-          <p class="font-bold flex items-center gap-2"><i data-lucide="phone" class="w-3.5 h-3.5 text-sky-400"></i> +91 98765 43210</p>
+          <p class="font-bold flex items-center gap-2"><i data-lucide="phone" class="w-3.5 h-3.5 text-sky-400"></i> +91 9691532690</p>
         </div>
         <button onclick="toggleHelpSupportModal(false)" class="w-full bg-gradient-to-r from-sky-600 to-blue-600 text-white font-bold py-2.5 rounded-2xl text-xs transition">
           Close Support
@@ -936,10 +935,15 @@
             <div class="flex flex-wrap justify-between items-center gap-3 mb-4 pb-4 border-b border-black/10 dark:border-white/10">
               <div>
                 <h2 class="text-sm font-black">Reports Hub & Master Manager</h2>
-                <p class="text-[11px] opacity-70">Excel / PDF Export & Master Location Upload</p>
+                <p class="text-[11px] opacity-70">Excel / PDF Export & Master Location / Supervisor Upload</p>
               </div>
               
               <div class="flex flex-wrap items-center gap-2">
+                <label class="bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-500 hover:to-indigo-500 text-white text-xs font-bold px-3.5 py-2.5 rounded-2xl flex items-center gap-1.5 shadow-md cursor-pointer transition">
+                  <i data-lucide="user-check" class="w-3.5 h-3.5"></i> Supervisor Master (CSV / Excel)
+                  <input type="file" id="supervisorMasterInput" accept=".csv,.xlsx,.xls" onchange="handleSupervisorMasterImport(event)" class="hidden">
+                </label>
+
                 <label class="bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-slate-950 text-xs font-bold px-3.5 py-2.5 rounded-2xl flex items-center gap-1.5 shadow-md cursor-pointer transition">
                   <i data-lucide="map-pin" class="w-3.5 h-3.5"></i> Location Master (CSV / Excel)
                   <input type="file" id="locationMasterInput" accept=".csv,.xlsx,.xls" onchange="handleLocationMasterImport(event)" class="hidden">
@@ -1145,6 +1149,7 @@
     let currentLoggedInUser = null;
 
     let masterLocations = JSON.parse(localStorage.getItem("ich_master_locations")) || [];
+    let masterSupervisors = JSON.parse(localStorage.getItem("ich_master_supervisors")) || ["Rahul Mangrola", "Amit Sharma", "Rajesh Verma", "Sunil Patidar", "Anil Gupta"];
     let planEntries = [];
     let loadEntries = [];
     let securityLogs = [];
@@ -1216,6 +1221,7 @@
       }
 
       populateAllLocationDropdowns();
+      populateSupervisorDropdown();
       updateDockOptions();
       handleSecurityRouteChange();
       handleSupervisorOpChange();
@@ -1255,6 +1261,7 @@
       if (viewId === 'gateSecView') autoPickCurrentDateTime();
       if (viewId === 'loadUnloadView') {
         updateDockOptions();
+        populateSupervisorDropdown();
         handleSupervisorOpChange();
         updateLinkedGateVehicleDropdown();
       }
@@ -1306,6 +1313,64 @@
         }
       };
       reader.readAsArrayBuffer(file);
+    }
+
+    // SUPERVISOR MASTER CSV IMPORT
+    function handleSupervisorMasterImport(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const data = new Uint8Array(e.target.result);
+          const workbook = XLSX.read(data, { type: 'array' });
+          const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+          const rows = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+
+          if (rows.length === 0) return alert("Uploaded supervisor file is empty.");
+
+          let newSups = [];
+          rows.forEach((row) => {
+            if (Array.isArray(row)) {
+              row.forEach(cell => {
+                let val = String(cell).trim();
+                if (val && val.toLowerCase() !== "supervisor" && val.toLowerCase() !== "name" && val.toLowerCase() !== "supervisor name" && val.length > 1 && !newSups.includes(val)) {
+                  newSups.push(val);
+                }
+              });
+            }
+          });
+
+          if (newSups.length === 0) return alert("No valid supervisor names found in file.");
+
+          masterSupervisors = newSups;
+          db.ref('masterSupervisors').set(masterSupervisors);
+          populateSupervisorDropdown();
+          alert(`Success! Supervisor Master imported with ${masterSupervisors.length} supervisors.`);
+        } catch (err) {
+          alert("Error parsing supervisor CSV/Excel file.");
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
+    function populateSupervisorDropdown() {
+      const el = document.getElementById('loadOperator');
+      if (!el) return;
+      const currentSelected = el.value;
+      el.innerHTML = '';
+
+      masterSupervisors.forEach(sup => {
+        const opt = document.createElement('option');
+        opt.value = sup;
+        opt.textContent = sup;
+        el.appendChild(opt);
+      });
+
+      if (currentSelected && masterSupervisors.includes(currentSelected)) {
+        el.value = currentSelected;
+      }
     }
 
     // PLAN CSV IMPORT & SAMPLE
@@ -1493,6 +1558,7 @@
       db.ref('loadEntries/' + newOp.id).set(newOp);
       this.reset();
       updateDockOptions();
+      populateSupervisorDropdown();
       handleSupervisorOpChange();
       updateLinkedGateVehicleDropdown();
       alert(`Success! ${op} operation started on dock.`);
@@ -1593,6 +1659,15 @@
           masterLocations = data;
           localStorage.setItem("ich_master_locations", JSON.stringify(masterLocations));
           populateAllLocationDropdowns();
+        }
+      });
+
+      db.ref('masterSupervisors').on('value', (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          masterSupervisors = data;
+          localStorage.setItem("ich_master_supervisors", JSON.stringify(masterSupervisors));
+          populateSupervisorDropdown();
         }
       });
     }
