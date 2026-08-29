@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Integrated Central Hub Indore - WMS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { darkMode: 'class' }</script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    :root { --sky-light-bg: #E0F2FE; --milk-white-card: #FFFFFF; --sky-border: #7DD3FC; --text-black: #090D16; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Plus Jakarta Sans", sans-serif; transition: background-color 0.3s, color 0.3s; }
+    .glass-panel { backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); transition: all 0.3s; }
+    .dark .glass-panel { background: rgba(30, 41, 59, 0.75); border: 1px solid rgba(255, 255, 255, 0.08); }
+    .light .glass-panel { background: rgba(224, 242, 254, 0.92); border: 1px solid var(--sky-border); }
+    .card-surface { transition: all 0.3s; }
+    .dark .card-surface { background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(255, 255, 255, 0.06); }
+    .light .card-surface { background: var(--milk-white-card); border: 1px solid var(--sky-border); color: var(--text-black); }
+    .app-input { transition: all 0.2s; }
+    .dark .app-input { background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255, 255, 255, 0.12); color: #F8FAFC; }
+    .dark .app-input:disabled { opacity: 0.6; cursor: not-allowed; background: rgba(0, 0, 0, 0.3); color: #94a3b8; }
+    .light .app-input { background: #FFFFFF; border: 1px solid #7DD3FC; color: var(--text-black); }
+    .light .app-input:disabled { opacity: 0.7; cursor: not-allowed; background: #e2e8f0; color: #475569; }
+    .active-nav-btn { background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%) !important; color: #FFFFFF !important; font-weight: 700 !important; }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col">
+
+  <!-- AUTH SCREEN -->
+  <div id="loginScreen" class="fixed inset-0 bg-slate-950/85 backdrop-blur-2xl z-50 flex items-center justify-center p-4">
+    <div class="glass-panel rounded-[2.5rem] max-w-md w-full p-8 shadow-2xl space-y-5">
+      <div class="text-center space-y-2">
+        <div class="inline-flex p-3.5 bg-gradient-to-tr from-sky-500 to-blue-600 rounded-2xl text-white"><i data-lucide="warehouse" class="w-8 h-8"></i></div>
+        <h1 class="text-xl font-black tracking-tight">ICH - Indore WMS</h1>
+      </div>
+      <form id="loginForm" class="space-y-3.5">
+        <select id="loginRole" class="w-full app-input rounded-2xl p-3 text-xs font-bold">
+          <option value="ADMIN">Admin</option>
+          <option value="SUPERVISOR">Supervisor</option>
+          <option value="SECURITY">Security Guard</option>
+        </select>
+        <input type="text" id="loginUser" placeholder="Username (e.g. admin)" required class="w-full app-input rounded-2xl p-3 text-xs font-semibold">
+        <input type="password" id="loginPass" placeholder="Password" required class="w-full app-input rounded-2xl p-3 text-xs">
+        <button type="submit" class="w-full bg-sky-600 text-white font-bold py-3.5 rounded-2xl text-xs">Login</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ALL MODALS -->
+  <div id="finishLoadModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="glass-panel rounded-3xl max-w-sm w-full p-6 shadow-2xl space-y-4">
+      <h3 class="font-bold text-sm text-emerald-500">Step 2: Complete Loading</h3>
+      <input type="hidden" id="finishLoadIdx">
+      <div><label class="block text-xs font-bold mb-1 text-amber-500">Total Cases *</label><input type="number" id="finishCases" class="w-full app-input rounded-xl p-2 text-xs" required></div>
+      <div><label class="block text-xs font-bold mb-1 text-sky-500">Seal Number *</label><input type="text" id="finishSeal" class="w-full app-input rounded-xl p-2 text-xs uppercase" required></div>
+      <div class="flex gap-2"><button onclick="submitFinishLoad()" class="w-full bg-emerald-600 text-white font-bold py-2 rounded-xl text-xs">Complete</button><button onclick="closeModal('finishLoadModal')" class="w-full bg-slate-700 text-white font-bold py-2 rounded-xl text-xs">Cancel</button></div>
+    </div>
+  </div>
+
+  <div id="editOpsModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4">
+    <div class="glass-panel rounded-3xl max-w-sm w-full p-6 space-y-4">
+      <h3 class="font-bold text-sm text-sky-500">Edit Operation</h3>
+      <input type="hidden" id="editOpId">
+      <div><label class="block text-xs font-bold mb-1">Vehicle No</label><input type="text" id="editOpVeh" class="w-full app-input rounded-xl p-2 text-xs uppercase"></div>
+      <div><label class="block text-xs font-bold mb-1">Dock No</label><input type="text" id="editOpDock" class="w-full app-input rounded-xl p-2 text-xs uppercase"></div>
+      <div class="flex gap-2"><button onclick="saveEditOps()" class="w-full bg-emerald-600 text-white font-bold py-2 rounded-xl text-xs">Save</button><button onclick="closeModal('editOpsModal')" class="w-full bg-slate-700 text-white font-bold py-2 rounded-xl text-xs">Cancel</button></div>
+    </div>
+  </div>
+
+  <div id="editSecModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4">
+    <div class="glass-panel rounded-3xl max-w-sm w-full p-6 space-y-4">
+      <h3 class="font-bold text-sm text-sky-500">Edit Security Log</h3>
+      <input type="hidden" id="editSecId">
+      <div><label class="block text-xs font-bold mb-1">Vehicle No</label><input type="text" id="editSecVeh" class="w-full app-input rounded-xl p-2 text-xs uppercase"></div>
+      <div><label class="block text-xs font-bold mb-1">Mobile</label><input type="tel" id="editSecMob" pattern="\\d{10}" maxlength="10" class="w-full app-input rounded-xl p-2 text-xs"></div>
+      <div class="flex gap-2"><button onclick="saveEditSec()" class="w-full bg-emerald-600 text-white font-bold py-2 rounded-xl text-xs">Save</button><button onclick="closeModal('editSecModal')" class="w-full bg-slate-700 text-white font-bold py-2 rounded-xl text-xs">Cancel</button></div>
+    </div>
+  </div><div id="mainApp" class="hidden flex-1 flex">
+    <!-- SIDEBAR -->
+    <aside class="hidden md:flex w-64 glass-panel border-r border-white/10 flex-col justify-between p-4 min-h-screen sticky top-0">
+      <div class="space-y-5">
+        <div class="card-surface p-3.5 rounded-2xl flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-sky-500 to-blue-600 text-white flex justify-center items-center font-black">RM</div>
+          <div><h2 class="text-xs font-bold truncate" id="userBadgeName">USER</h2><p class="text-[10px] text-sky-500 font-bold" id="userBadgeRole">ROLE</p></div>
+        </div>
+        <div class="space-y-1">
+          <button onclick="switchView('dashboardView', this)" class="sidebar-item active-nav-btn w-full flex items-center gap-3 px-3 py-3 rounded-2xl text-xs font-semibold"><i data-lucide="layout-dashboard" class="w-4 h-4"></i><span>Dashboard</span></button>
+          <button onclick="switchView('planView', this)" class="sidebar-item w-full flex items-center gap-3 px-3 py-3 rounded-2xl text-xs font-semibold"><i data-lucide="clipboard-list" class="w-4 h-4"></i><span>Plan & Summary</span></button>
+          <button onclick="switchView('loadUnloadView', this)" class="sidebar-item w-full flex items-center gap-3 px-3 py-3 rounded-2xl text-xs font-semibold"><i data-lucide="arrow-left-right" class="w-4 h-4"></i><span>Load / Unload Ops</span></button>
+          <button onclick="switchView('liveDocksView', this)" class="sidebar-item w-full flex items-center gap-3 px-3 py-3 rounded-2xl text-xs font-semibold"><i data-lucide="layers" class="w-4 h-4"></i><span>Live Docks</span></button>
+          <button id="navSecBtn" onclick="switchView('gateSecView', this)" class="sidebar-item w-full flex items-center gap-3 px-3 py-3 rounded-2xl text-xs font-semibold"><i data-lucide="shield-check" class="w-4 h-4"></i><span>Security Gate</span></button>
+          <button onclick="switchView('reportsView', this)" class="sidebar-item w-full flex items-center gap-3 px-3 py-3 rounded-2xl text-xs font-semibold"><i data-lucide="file-spreadsheet" class="w-4 h-4"></i><span>Reports & Masters</span></button>
+        </div>
+      </div>
+      <button onclick="logout()" class="w-full flex justify-center gap-2 px-3 py-2.5 rounded-2xl text-xs font-bold text-rose-500 hover:bg-rose-500/10"><i data-lucide="log-out" class="w-4 h-4"></i>Logout</button>
+    </aside>
+
+    <div class="flex-1 flex flex-col min-w-0">
+      <header class="glass-panel border-b border-white/10 px-4 md:px-8 py-4 flex justify-between items-center sticky top-0 z-30">
+        <div><h1 class="text-lg font-black">ICH - Indore</h1><p class="text-[11px] opacity-70">Warehouse Management System</p></div>
+        <button onclick="toggleThemeMode()" class="card-surface px-3.5 py-1.5 rounded-full text-xs font-bold"><i data-lucide="sun" class="w-3.5 h-3.5 inline"></i> Theme</button>
+      </header>
+
+      <main class="p-4 md:p-8 space-y-6 flex-1">
+        <!-- DASHBOARD -->
+        <section id="dashboardView" class="view-panel space-y-6">
+          <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+            <div class="glass-panel p-5 rounded-3xl border border-sky-500/30"><p class="text-xs font-bold text-sky-500">Plan</p><p class="text-3xl font-black font-mono" id="dashPlanCount">0</p></div>
+            <div class="glass-panel p-5 rounded-3xl border border-amber-500/30"><p class="text-xs font-bold text-amber-500">Loading</p><p class="text-3xl font-black font-mono" id="dashActiveLoading">0</p></div>
+            <div class="glass-panel p-5 rounded-3xl border border-indigo-500/30"><p class="text-xs font-bold text-indigo-500">Unloading</p><p class="text-3xl font-black font-mono" id="dashActiveUnloading">0</p></div>
+            <div class="glass-panel p-5 rounded-3xl border border-purple-500/30"><p class="text-xs font-bold text-purple-500">Gate Entries</p><p class="text-3xl font-black font-mono" id="dashGateCount">0</p></div>
+          </div>
+        </section>
+
+        <!-- PLAN VIEW -->
+        <section id="planView" class="view-panel hidden space-y-6">
+          <div class="glass-panel p-5 rounded-[2rem]">
+            <div class="flex justify-between items-center mb-4"><h2 class="text-sm font-extrabold">Plan Summary</h2><label class="bg-emerald-600 text-white text-xs px-3 py-2 rounded-xl cursor-pointer">Import CSV<input type="file" accept=".csv,.xlsx" onchange="handlePlanCsvImport(event)" class="hidden"></label></div>
+            <div class="overflow-x-auto card-surface rounded-2xl mb-4">
+              <table class="w-full text-left text-xs"><thead class="bg-black/5 dark:bg-white/5"><tr><th class="p-3">Dest</th><th class="p-3">Transporter</th><th class="p-3">V.Type</th><th class="p-3 text-center">Count</th><th class="p-3 text-right">Weight</th></tr></thead><tbody id="summaryTableBody"><tr><td colspan="5" class="text-center p-4">No plan data</td></tr></tbody></table>
+            </div>
+          </div>
+        </section><!-- OPS VIEW -->
+        <section id="loadUnloadView" class="view-panel hidden space-y-6">
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="glass-panel p-6 rounded-[2rem] lg:col-span-1">
+              <h2 class="text-sm font-black mb-4">Operation Entry</h2>
+              <form id="loadUnloadForm" class="space-y-3">
+                <div class="p-2 border border-sky-500/30 rounded-xl bg-sky-500/10">
+                  <label class="text-[10px] font-bold text-sky-500">Auto-Fill from Gate</label>
+                  <select id="linkedGateSelect" onchange="autoFillFromGateLog(this.value)" class="w-full app-input rounded-xl p-2 text-xs font-bold"><option value="">-- Select Arrived Vehicle --</option></select>
+                </div>
+                <select id="opType" onchange="handleSupervisorOpChange()" class="w-full app-input rounded-xl p-2 text-xs font-bold text-sky-500"><option value="LOADING">? START LOADING</option><option value="UNLOADING">? START UNLOADING</option></select>
+                <div class="grid grid-cols-2 gap-2">
+                  <div><label class="text-[10px] font-bold">From</label><select id="loadFromLoc" class="w-full app-input rounded-xl p-2 text-xs" disabled><option value="INDORE HUB">INDORE HUB</option></select></div>
+                  <div><label class="text-[10px] font-bold">To</label><select id="loadToLoc" class="w-full app-input rounded-xl p-2 text-xs"><option value="">-- Select --</option></select></div>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                  <div><label class="text-[10px] font-bold">Unit</label><select id="loadUnit" onchange="updateDockOptions()" class="w-full app-input rounded-xl p-2 text-xs"><option value="AHPL">AHPL</option><option value="AIL">AIL</option></select></div>
+                  <div><label class="text-[10px] font-bold">Dock</label><select id="loadBayNo" class="w-full app-input rounded-xl p-2 text-xs"></select></div>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                  <div><label class="text-[10px] font-bold">Vehicle *</label><input type="text" id="loadVehicleNo" required class="w-full app-input rounded-xl p-2 text-xs uppercase"></div>
+                  <div><label class="text-[10px] font-bold">Transporter</label><select id="loadTransporter" class="w-full app-input rounded-xl p-2 text-xs"><option value="DHTC">DHTC</option><option value="OPM">OPM</option></select></div>
+                </div>
+                <select id="loadOperator" class="w-full app-input rounded-xl p-2 text-xs"></select>
+                <input type="time" id="loadStartTime" required class="w-full app-input rounded-xl p-2 text-xs">
+                <button type="submit" class="w-full bg-sky-600 text-white font-bold py-2 rounded-xl text-xs">Start Operation</button>
+              </form>
+            </div>
+            <div class="glass-panel p-6 rounded-[2rem] lg:col-span-2">
+              <h3 class="text-sm font-black mb-4">Active Operations</h3>
+              <div class="overflow-x-auto card-surface rounded-2xl"><table class="w-full text-left text-xs"><thead class="bg-black/5 dark:bg-white/5"><tr><th class="p-3">Status</th><th class="p-3">Vehicle</th><th class="p-3">Dock</th><th class="p-3">Cases/Seal</th><th class="p-3">Action</th></tr></thead><tbody id="loadUnloadTableBody"><tr><td colspan="5" class="text-center p-4">No operations</td></tr></tbody></table></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- DOCKS -->
+        <section id="liveDocksView" class="view-panel hidden space-y-6"><div class="glass-panel p-6 rounded-[2rem]"><h2 class="text-sm font-black mb-4">Live Docks</h2><div class="grid grid-cols-2 md:grid-cols-5 gap-4" id="allDockGrid"></div></div></section>
+
+        <!-- SECURITY GATE -->
+        <section id="gateSecView" class="view-panel hidden space-y-6">
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="glass-panel p-6 rounded-[2rem] lg:col-span-1">
+              <h3 class="text-sm font-black mb-4">Gate Movement</h3>
+              <form id="securityGateForm" class="space-y-3">
+                <select id="secPurpose" onchange="handleSecurityRouteChange()" class="w-full app-input rounded-xl p-2 text-xs font-bold text-sky-500"><option value="Loading">?? Loading</option><option value="Unloading">?? Unloading</option></select>
+                <div class="grid grid-cols-2 gap-2">
+                  <input type="text" id="secVehicleNo" placeholder="Vehicle No *" required class="w-full app-input rounded-xl p-2 text-xs uppercase">
+                  <select id="secVehicleType" class="w-full app-input rounded-xl p-2 text-xs"><option>32SXL</option><option>24-9T</option></select>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                  <input type="tel" id="secDriverMobile" pattern="\d{10}" maxlength="10" placeholder="Mobile (10 Digits)" required class="w-full app-input rounded-xl p-2 text-xs">
+                  <select id="secTransporter" class="w-full app-input rounded-xl p-2 text-xs"><option>DHTC</option><option>OPM</option></select>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                  <div><label class="text-[10px] font-bold">From *</label><select id="secFromLocation" class="w-full app-input rounded-xl p-2 text-xs" disabled><option value="INDORE HUB">INDORE HUB</option></select></div>
+                  <div><label class="text-[10px] font-bold">To *</label><select id="secToLocation" class="w-full app-input rounded-xl p-2 text-xs"><option value="">-- Select --</option></select></div>
+                </div>
+                <button type="submit" class="w-full bg-sky-600 text-white font-bold py-2 rounded-xl text-xs">Save Entry</button>
+              </form>
+            </div>
+            <div class="glass-panel p-6 rounded-[2rem] lg:col-span-2">
+              <h3 class="text-sm font-black mb-4">Gate Log</h3>
+              <div class="overflow-x-auto card-surface rounded-2xl"><table class="w-full text-left text-xs"><thead class="bg-black/5 dark:bg-white/5"><tr><th class="p-3">Purpose</th><th class="p-3">Vehicle</th><th class="p-3">Mobile</th><th class="p-3">Route</th><th class="p-3">Action</th></tr></thead><tbody id="securityTableBody"><tr><td colspan="5" class="text-center p-4">No logs</td></tr></tbody></table></div>
+            </div>
+          </div>
+        </section><!-- REPORTS & MASTERS -->
+        <section id="reportsView" class="view-panel hidden space-y-6">
+          <div class="glass-panel p-6 rounded-[2rem]">
+            <h2 class="text-sm font-black mb-4 border-b border-white/10 pb-2">Master Manager</h2>
+            <div class="flex flex-wrap gap-3">
+              <label class="bg-indigo-600 text-white text-xs font-bold px-3 py-2 rounded-xl cursor-pointer">Load Loc CSV<input type="file" accept=".csv,.xlsx" onchange="handleLocImport(event, 'LOADING')" class="hidden"></label>
+              <label class="bg-amber-600 text-white text-xs font-bold px-3 py-2 rounded-xl cursor-pointer">Unload Loc CSV<input type="file" accept=".csv,.xlsx" onchange="handleLocImport(event, 'UNLOADING')" class="hidden"></label>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    // In-memory Database
+    const dbMock = {
+      planEntries: [], loadEntries: [], securityLogs: [],
+      masterLoadLocations: ["MUMBAI", "DELHI", "PUNE", "AHMEDABAD"],
+      masterUnloadLocations: ["PITHAMPUR", "DEWAS", "INDORE LOCAL"],
+      masterSupervisors: ["Rahul Mangrola", "Amit Sharma", "Sunil Patidar"]
+    };
+
+    function toggleThemeMode() { document.documentElement.classList.toggle("dark"); document.documentElement.classList.toggle("light"); }
+    function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      document.getElementById('loginScreen').classList.add('hidden');
+      document.getElementById('mainApp').classList.remove('hidden');
+      const role = document.getElementById('loginRole').value;
+      document.getElementById('userBadgeRole').innerText = role;
+      document.getElementById('userBadgeName').innerText = document.getElementById('loginUser').value.toUpperCase();
+      if(role === 'SECURITY') switchView('gateSecView', document.getElementById('navSecBtn'));
+      else switchView('dashboardView', document.querySelectorAll('.sidebar-item')[0]);
+      populateLocationDropdowns();
+      populateSupervisorDropdown();
+      updateDockOptions();
+      handleSecurityRouteChange();
+      handleSupervisorOpChange();
+    });
+
+    function logout() { document.getElementById('mainApp').classList.add('hidden'); document.getElementById('loginScreen').classList.remove('hidden'); }
+
+    function switchView(viewId, btn) {
+      document.querySelectorAll('.view-panel').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active-nav-btn'));
+      document.getElementById(viewId).classList.remove('hidden');
+      if (btn && btn.classList.contains('sidebar-item')) btn.classList.add('active-nav-btn');
+      if(viewId === 'loadUnloadView') updateLinkedGateVehicleDropdown();
+    }
+
+    function populateSupervisorDropdown() {
+      const el = document.getElementById('loadOperator');
+      el.innerHTML = '';
+      dbMock.masterSupervisors.forEach(sup => el.innerHTML += `<option value="${sup}">${sup}</option>`);
+    }function handleLocImport(event, type) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const data = new Uint8Array(e.target.result);
+          const workbook = XLSX.read(data, { type: 'array' });
+          const rows = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], { header: 1 });
+          let newLocs = [];
+          rows.forEach((row) => {
+            if (Array.isArray(row)) row.forEach(cell => { let val = String(cell).toUpperCase().trim(); if (val && val.length > 1 && !newLocs.includes(val)) newLocs.push(val); });
+          });
+          if (type === 'LOADING') dbMock.masterLoadLocations = newLocs;
+          else dbMock.masterUnloadLocations = newLocs;
+          populateLocationDropdowns();
+          alert(`Success! ${type} Location Master imported.`);
+        } catch (err) { alert("Error parsing CSV."); }
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
+    function populateLocationDropdowns() { handleSupervisorOpChange(); handleSecurityRouteChange(); }
+
+    function handleSecurityRouteChange() {
+      const purpose = document.getElementById('secPurpose').value;
+      const fromSel = document.getElementById('secFromLocation');
+      const toSel = document.getElementById('secToLocation');
+      if (purpose === 'Loading') {
+        fromSel.innerHTML = '<option value="INDORE HUB">INDORE HUB</option>'; fromSel.value = "INDORE HUB"; fromSel.disabled = true;
+        toSel.disabled = false; toSel.innerHTML = '<option value="">-- Select Destination --</option>';
+        dbMock.masterLoadLocations.forEach(loc => toSel.innerHTML += `<option value="${loc}">${loc}</option>`);
+      } else {
+        toSel.innerHTML = '<option value="INDORE HUB">INDORE HUB</option>'; toSel.value = "INDORE HUB"; toSel.disabled = true;
+        fromSel.disabled = false; fromSel.innerHTML = '<option value="">-- Select Origin --</option>';
+        dbMock.masterUnloadLocations.forEach(loc => fromSel.innerHTML += `<option value="${loc}">${loc}</option>`);
+      }
+    }
+
+    const dockConfig = { 'AHPL': ['Dock 1', 'Dock 2', 'Dock 3', 'Dock 4'], 'AIL': ['Dock 5', 'Dock 6', 'Dock 7', 'Dock 8', 'Dock 9'] };
+    function updateDockOptions() {
+      const selectedUnit = document.getElementById('loadUnit').value;
+      const baySelect = document.getElementById('loadBayNo');
+      baySelect.innerHTML = '';
+      (dockConfig[selectedUnit] || []).forEach(dock => baySelect.innerHTML += `<option value="${dock}">${dock}</option>`);
+    }
+
+    function updateLinkedGateVehicleDropdown() {
+      const select = document.getElementById('linkedGateSelect');
+      select.innerHTML = '<option value="">-- Select Arrived Vehicle --</option>';
+      dbMock.securityLogs.forEach((veh) => select.innerHTML += `<option value="${veh.id}">?? ${veh.vehicle} | ${veh.purpose}</option>`);
+    }
+
+    function autoFillFromGateLog(gateId) {
+      const fromSel = document.getElementById('loadFromLoc'); const toSel = document.getElementById('loadToLoc');
+      if (!gateId) { handleSupervisorOpChange(); document.getElementById('loadVehicleNo').value = ''; return; }
+      const item = dbMock.securityLogs.find(s => s.id === gateId);
+      if (!item) return;
+      document.getElementById('loadVehicleNo').value = item.vehicle;
+      if (item.purpose === 'Loading') {
+        document.getElementById('opType').value = 'LOADING'; handleSupervisorOpChange();
+        fromSel.innerHTML = `<option value="INDORE HUB">INDORE HUB</option>`; fromSel.value = "INDORE HUB"; fromSel.disabled = true; 
+        toSel.innerHTML = `<option value="${item.toLoc}">${item.toLoc}</option>`; toSel.value = item.toLoc; toSel.disabled = true; 
+      } else {
+        document.getElementById('opType').value = 'UNLOADING'; handleSupervisorOpChange();
+        fromSel.innerHTML = `<option value="${item.fromLoc}">${item.fromLoc}</option>`; fromSel.value = item.fromLoc; fromSel.disabled = true;
+        toSel.innerHTML = `<option value="INDORE HUB">INDORE HUB</option>`; toSel.value = "INDORE HUB"; toSel.disabled = true; 
+      }
+      document.getElementById('loadStartTime').value = new Date().toTimeString().substring(0,5);
+    }
+
+    // OPS LOGIC
+    document.getElementById('loadUnloadForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const op = document.getElementById('opType').value;
+      const newOp = {
+        id: "OP-" + Date.now(), opType: op, unit: document.getElementById('loadUnit').value, bayNo: document.getElementById('loadBayNo').value,
+        vehicleNo: document.getElementById('loadVehicleNo').value.toUpperCase(),
+        fromLoc: document.getElementById('loadFromLoc').value, toLoc: document.getElementById('loadToLoc').value,
+        transporter: document.getElementById('loadTransporter').value, operator: document.getElementById('loadOperator').value,
+        startTime: document.getElementById('loadStartTime').value, endTime: "", status: op === 'LOADING' ? 'LOADING IN-PROGRESS' : 'UNLOADING IN-PROGRESS',
+        totalCases: '-', sealNo: '-'
+      };
+      dbMock.loadEntries.unshift(newOp);
+      this.reset(); document.getElementById('linkedGateSelect').value = ''; handleSupervisorOpChange();
+      renderLoadUnloadTable(); renderLiveDockCards(); renderDash();
+    });
+
+    function finishOperation(id) {
+      const item = dbMock.loadEntries.find(l => l.id === id);
+      if(!item) return;
+      if(item.opType === 'LOADING') {
+        document.getElementById('finishLoadIdx').value = id;
+        document.getElementById('finishCases').value = ''; document.getElementById('finishSeal').value = '';
+        document.getElementById('finishLoadModal').classList.remove('hidden');
+      } else {
+        item.endTime = new Date().toTimeString().substring(0,5); item.status = "UNLOADED";
+        renderLoadUnloadTable(); renderLiveDockCards(); renderDash();
+      }
+    }
+
+    function submitFinishLoad() {
+      const id = document.getElementById('finishLoadIdx').value;
+      const cases = document.getElementById('finishCases').value; const seal = document.getElementById('finishSeal').value;
+      if(!cases || !seal) return alert("Required!");
+      const item = dbMock.loadEntries.find(l => l.id === id);
+      if(item) { item.totalCases = cases; item.sealNo = seal; item.endTime = new Date().toTimeString().substring(0,5); item.status = "LOADED"; }
+      closeModal('finishLoadModal'); renderLoadUnloadTable(); renderLiveDockCards(); renderDash();
+    }
+
+    function editOp(id) {
+      const item = dbMock.loadEntries.find(l => l.id === id);
+      document.getElementById('editOpId').value = id; document.getElementById('editOpVeh').value = item.vehicleNo; document.getElementById('editOpDock').value = item.bayNo;
+      document.getElementById('editOpsModal').classList.remove('hidden');
+    }
+    function saveEditOps() {
+      const id = document.getElementById('editOpId').value; const item = dbMock.loadEntries.find(l => l.id === id);
+      if(item) { item.vehicleNo = document.getElementById('editOpVeh').value.toUpperCase(); item.bayNo = document.getElementById('editOpDock').value.toUpperCase(); }
+      closeModal('editOpsModal'); renderLoadUnloadTable(); renderLiveDockCards();
+    }
+
+    function renderLoadUnloadTable() {
+      const tbody = document.getElementById('loadUnloadTableBody'); tbody.innerHTML = '';
+      if(dbMock.loadEntries.length === 0) return tbody.innerHTML = `<tr><td colspan="5" class="text-center p-4">No operations</td></tr>`;
+      dbMock.loadEntries.forEach(item => {
+        let isProg = item.status.includes('IN-PROGRESS');
+        let det = item.opType === 'LOADING' && !isProg ? `<span class="text-sky-400 font-mono">${item.totalCases} Cs / ${item.sealNo}</span>` : '-';
+        tbody.innerHTML += `<tr class="border-b border-white/5"><td class="p-3 font-bold text-[10px]">${item.status}</td><td class="p-3 font-mono">${item.vehicleNo}</td><td class="p-3 text-sky-400">${item.bayNo}</td><td class="p-3">${det}</td><td class="p-3 flex gap-2">${isProg ? `<button onclick="finishOperation('${item.id}')" class="bg-emerald-600 text-white px-2 py-1 rounded text-xs">Finish</button>`:''}<button onclick="editOp('${item.id}')" class="text-sky-500"><i data-lucide="edit" class="w-4 h-4"></i></button></td></tr>`;
+      });
+      lucide.createIcons();
+    }
+
+    function renderLiveDockCards() {
+      const grid = document.getElementById('allDockGrid'); grid.innerHTML = '';
+      [...dockConfig['AHPL'], ...dockConfig['AIL']].forEach(d => {
+        let rec = dbMock.loadEntries.find(x => x.bayNo === d && x.status.includes('IN-PROGRESS'));
+        if(rec) grid.innerHTML += `<div class="p-4 rounded-xl card-surface border border-sky-500/40"><div class="flex justify-between"><span class="font-bold text-sky-400">${d}</span><span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span></div><p class="font-bold text-sm pt-2">${rec.vehicleNo}</p><p class="text-[10px]">${rec.status}</p></div>`;
+        else grid.innerHTML += `<div class="p-4 rounded-xl card-surface opacity-60"><span class="font-bold">${d}</span><p class="text-[10px] pt-2">Empty</p></div>`;
+      });
+    }
+
+    // SECURITY LOGIC
+    document.getElementById('securityGateForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const fromVal = document.getElementById('secFromLocation').value; const toVal = document.getElementById('secToLocation').value;
+      const newSec = { id: "GATE-" + Date.now(), purpose: document.getElementById('secPurpose').value, vehicle: document.getElementById('secVehicleNo').value.toUpperCase(), mobile: document.getElementById('secDriverMobile').value, fromLoc: fromVal, toLoc: toVal, route: fromVal + ' ? ' + toVal };
+      dbMock.securityLogs.unshift(newSec);
+      this.reset(); handleSecurityRouteChange(); renderSecurityTable(); updateLinkedGateVehicleDropdown(); renderDash();
+    });
+
+    function editSec(id) {
+      const item = dbMock.securityLogs.find(l => l.id === id);
+      document.getElementById('editSecId').value = id; document.getElementById('editSecVeh').value = item.vehicle; document.getElementById('editSecMob').value = item.mobile;
+      document.getElementById('editSecModal').classList.remove('hidden');
+    }
+    function saveEditSec() {
+      const id = document.getElementById('editSecId').value; const item = dbMock.securityLogs.find(l => l.id === id);
+      if(item) { item.vehicle = document.getElementById('editSecVeh').value.toUpperCase(); item.mobile = document.getElementById('editSecMob').value; }
+      closeModal('editSecModal'); renderSecurityTable(); updateLinkedGateVehicleDropdown();
+    }
+
+    function renderSecurityTable() {
+      const tbody = document.getElementById('securityTableBody'); tbody.innerHTML = '';
+      if(dbMock.securityLogs.length === 0) return tbody.innerHTML = `<tr><td colspan="5" class="text-center p-4">No logs</td></tr>`;
+      dbMock.securityLogs.forEach(item => {
+        tbody.innerHTML += `<tr class="border-b border-white/5"><td class="p-3 text-sky-400">${item.purpose}</td><td class="p-3 font-mono">${item.vehicle}</td><td class="p-3">${item.mobile}</td><td class="p-3">${item.route}</td><td class="p-3"><button onclick="editSec('${item.id}')" class="text-sky-500"><i data-lucide="edit" class="w-4 h-4"></i></button></td></tr>`;
+      });
+      lucide.createIcons();
+    }
+
+    // PLAN SUMMARY LOGIC
+    function handlePlanCsvImport(event) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const rows = XLSX.utils.sheet_to_json(XLSX.read(new Uint8Array(e.target.result), { type: 'array' }).Sheets[XLSX.read(new Uint8Array(e.target.result), { type: 'array' }).SheetNames[0]]);
+        rows.forEach((r, idx) => dbMock.planEntries.push({ id: "P-"+idx, deliveryNo: r.deliveryNo||"DEL", code: r.code||"C1", destination: String(r.destination||"MUMBAI").toUpperCase(), weight: Number(r.weight||100), cft: Number(r.cft||0), vType: String(r.vType||"32SXL").toUpperCase(), transporter: String(r.transporter||"DHTC").toUpperCase() }));
+        renderPlanTables(); renderDash(); alert("Imported!");
+      };
+      reader.readAsArrayBuffer(event.target.files[0]);
+    }
+
+    function renderPlanTables() {
+      const sBody = document.getElementById('summaryTableBody'); sBody.innerHTML = '';
+      const pBody = document.getElementById('planTableBody'); pBody.innerHTML = '';
+      if (dbMock.planEntries.length === 0) return;
+      
+      let sumMap = {};
+      dbMock.planEntries.forEach(item => {
+        let key = item.destination + "_" + item.transporter + "_" + item.vType;
+        if(!sumMap[key]) sumMap[key] = { dest: item.destination, trans: item.transporter, type: item.vType, count: 0, wt: 0 };
+        sumMap[key].count++; sumMap[key].wt += item.weight;
+        pBody.innerHTML += `<tr class="border-b border-white/5"><td class="p-3 font-mono">${item.deliveryNo}</td><td class="p-3">${item.destination}</td><td class="p-3">${item.weight} kg</td><td class="p-3">${item.transporter}</td><td class="p-3"><button class="text-rose-500"><i data-lucide="trash" class="w-4 h-4"></i></button></td></tr>`;
+      });
+      Object.values(sumMap).forEach(g => {
+        sBody.innerHTML += `<tr class="border-b border-white/5"><td class="p-3 text-sky-400 font-bold">${g.dest}</td><td class="p-3">${g.trans}</td><td class="p-3">${g.type}</td><td class="p-3 text-center font-bold">${g.count}</td><td class="p-3 text-right font-mono">${g.wt} kg</td></tr>`;
+      });
+      lucide.createIcons();
+    }
+
+    function renderDash() {
+      document.getElementById('dashPlanCount').innerText = dbMock.planEntries.length;
+      document.getElementById('dashActiveLoading').innerText = dbMock.loadEntries.filter(l=>l.status==='LOADING IN-PROGRESS').length;
+      document.getElementById('dashActiveUnloading').innerText = dbMock.loadEntries.filter(l=>l.status==='UNLOADING IN-PROGRESS').length;
+      document.getElementById('dashGateCount').innerText = dbMock.securityLogs.length;
+    }
+  </script>
+</body>
+</html>
