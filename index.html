@@ -1,0 +1,2096 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Integrated Central Hub Indore - Warehouse Management System</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class'
+    }
+  </script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Chart.js (Graphic Engine) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Tesseract.js (OCR Engine) -->
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+  <!-- SheetJS (XLSX & CSV) -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <!-- jsPDF & AutoTable -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+  
+  <!-- Firebase App & Realtime Database SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    
+    :root {
+      --sky-light-bg: #E0F2FE;
+      --sky-light-surface: #BAE6FD;
+      --milk-white-card: #FFFFFF;
+      --sky-border: #7DD3FC;
+      --text-black: #090D16;
+      --text-muted: #334155;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Plus Jakarta Sans", sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .glass-panel {
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      transition: all 0.3s ease;
+    }
+
+    .dark .glass-panel {
+      background: rgba(30, 41, 59, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.25);
+    }
+
+    .light .glass-panel {
+      background: rgba(224, 242, 254, 0.92);
+      border: 1px solid var(--sky-border);
+      box-shadow: 0 4px 20px -2px rgba(2, 132, 199, 0.15);
+    }
+
+    .card-surface {
+      transition: all 0.3s ease;
+    }
+    .dark .card-surface {
+      background: rgba(15, 23, 42, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .light .card-surface {
+      background: var(--milk-white-card);
+      border: 1px solid var(--sky-border);
+      color: var(--text-black);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    }
+
+    .app-input {
+      transition: all 0.2s ease-in-out;
+    }
+    .dark .app-input {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #F8FAFC;
+    }
+    .dark .app-input:focus {
+      border-color: #38BDF8;
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+    }
+    .dark .app-input option {
+      background-color: #0F172A;
+      color: #FFFFFF;
+    }
+
+    .light .app-input {
+      background: #FFFFFF;
+      border: 1px solid #7DD3FC;
+      color: var(--text-black);
+    }
+    .light .app-input:focus {
+      border-color: #0284C7;
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.25);
+    }
+    .light .app-input option {
+      background-color: #FFFFFF;
+      color: var(--text-black);
+    }
+
+    .active-nav-btn {
+      background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%) !important;
+      color: #FFFFFF !important;
+      font-weight: 700 !important;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.35) !important;
+    }
+
+    .light .text-slate-100, .light .text-white { color: var(--text-black) !important; }
+    .light .text-slate-300, .light .text-slate-200 { color: var(--text-black) !important; }
+    .light .text-slate-400 { color: var(--text-muted) !important; }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col selection:bg-sky-500 selection:text-white pb-20 md:pb-0">
+
+  <!-- 1. AUTHENTICATION SCREEN -->
+  <div id="loginScreen" class="fixed inset-0 bg-slate-950/85 backdrop-blur-2xl z-50 flex items-center justify-center p-4">
+    <div class="glass-panel rounded-[2.5rem] max-w-md w-full p-8 shadow-2xl space-y-5 border border-white/10">
+      
+      <div class="text-center space-y-2">
+        <div class="inline-flex p-3.5 bg-gradient-to-tr from-sky-500 to-blue-600 rounded-2xl text-white shadow-md shadow-sky-500/20">
+          <i data-lucide="warehouse" class="w-8 h-8 stroke-[2.2]"></i>
+        </div>
+        <h1 class="text-xl font-black tracking-tight">Integrated Central Hub - Indore</h1>
+        <p class="text-xs font-semibold opacity-70">Warehouse Management System</p>
+      </div>
+
+      <form id="loginForm" class="space-y-3.5 pt-1">
+        <div>
+          <label class="block text-[11px] font-bold uppercase tracking-wider mb-1.5 ml-1">Select Role</label>
+          <select id="loginRole" class="w-full app-input rounded-2xl p-3 text-xs font-semibold outline-none">
+            <option value="ADMIN">Admin (Full Control)</option>
+            <option value="SUPERVISOR">Supervisor (Plan & Loading Ops)</option>
+            <option value="SECURITY">Security Guard (Gate In / Out)</option>
+            <option value="OPERATOR">Operator (Live View)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-bold uppercase tracking-wider mb-1.5 ml-1">Username</label>
+          <input type="text" id="loginUser" placeholder="Enter username (e.g. admin)" required class="w-full app-input rounded-2xl p-3 text-xs font-semibold focus:outline-none">
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-bold uppercase tracking-wider mb-1.5 ml-1">Password</label>
+          <input type="password" id="loginPass" placeholder="Enter password" required class="w-full app-input rounded-2xl p-3 text-xs focus:outline-none">
+        </div>
+
+        <div id="loginError" class="text-xs text-rose-500 font-semibold hidden bg-rose-950/40 p-3 rounded-2xl border border-rose-500/30">
+          Invalid username or password. Default: admin / admin123
+        </div>
+
+        <button type="submit" class="w-full bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white font-bold py-3.5 rounded-2xl text-xs transition shadow-md flex items-center justify-center gap-2">
+          <i data-lucide="lock" class="w-4 h-4"></i> Secure Login
+        </button>
+
+        <div class="text-center pt-1">
+          <button type="button" onclick="toggleRegisterModal(true)" class="text-xs text-sky-500 hover:text-sky-600 font-semibold">
+            + Create New User Account
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- VERSION HISTORY MODAL -->
+  <div id="versionModal" class="fixed inset-0 bg-slate-950/75 backdrop-blur-xl z-50 hidden flex items-center justify-center p-4">
+    <div class="glass-panel rounded-[2.5rem] max-w-lg w-full p-6 shadow-2xl space-y-4 border border-white/10 max-h-[85vh] overflow-y-auto">
+      <div class="flex justify-between items-center pb-3 border-b border-white/10">
+        <h3 class="font-bold text-sm flex items-center gap-2">
+          <i data-lucide="git-commit" class="w-4 h-4 text-sky-400"></i> Version History & Changelog
+        </h3>
+        <button onclick="toggleVersionModal(false)" class="p-1 hover:opacity-80"><i data-lucide="x" class="w-4 h-4"></i></button>
+      </div>
+
+      <div class="space-y-3.5 text-xs">
+        <div class="p-3.5 rounded-2xl card-surface border border-sky-500/30 space-y-1">
+          <div class="flex justify-between items-center font-bold">
+            <span class="text-sky-500">v8.7.0 (Support Number & Supervisor Master Update)</span>
+            <span class="text-[10px]">Stable</span>
+          </div>
+          <ul class="list-disc list-inside space-y-0.5 text-[11px]">
+            <li>Updated Help & Support contact mobile number to 9691532690.</li>
+            <li>Added Master Supervisor CSV/Excel import for seamless team updates.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="pt-3 border-t border-black/10 dark:border-white/10 text-center opacity-60 hover:opacity-100 transition">
+        <span class="text-[10px] font-mono tracking-widest uppercase">Designed by Rahul Mangrola</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- HELP & SUPPORT MODAL -->
+  <div id="helpSupportModal" class="fixed inset-0 bg-slate-950/75 backdrop-blur-xl z-50 hidden flex items-center justify-center p-4">
+    <div class="glass-panel rounded-[2.5rem] max-w-md w-full p-6 shadow-2xl space-y-4 border border-white/10">
+      <div class="flex justify-between items-center pb-2 border-b border-white/10">
+        <h3 class="font-bold text-sm flex items-center gap-2 text-sky-500">
+          <i data-lucide="help-circle" class="w-4 h-4"></i> Help & Support Center
+        </h3>
+        <button onclick="toggleHelpSupportModal(false)" class="hover:opacity-80"><i data-lucide="x" class="w-4 h-4"></i></button>
+      </div>
+      <div class="space-y-3 text-xs">
+        <p class="opacity-80">Need assistance with warehouse logistics, dock allocation, or supervisor master uploads at ICH Indore? Contact support desk below:</p>
+        <div class="card-surface p-3.5 rounded-2xl space-y-2 border border-sky-500/30">
+          <p class="font-bold flex items-center gap-2"><i data-lucide="user" class="w-3.5 h-3.5 text-sky-400"></i> Lead Developer: Rahul Mangrola</p>
+          <p class="font-bold flex items-center gap-2"><i data-lucide="mail" class="w-3.5 h-3.5 text-sky-400"></i> support@ich-indore-wms.com</p>
+          <p class="font-bold flex items-center gap-2"><i data-lucide="phone" class="w-3.5 h-3.5 text-sky-400"></i> +91 9691532690</p>
+        </div>
+        <button onclick="toggleHelpSupportModal(false)" class="w-full bg-gradient-to-r from-sky-600 to-blue-600 text-white font-bold py-2.5 rounded-2xl text-xs transition">
+          Close Support
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- REGISTRATION MODAL -->
+  <div id="registerModal" class="fixed inset-0 bg-slate-950/75 backdrop-blur-xl z-50 hidden flex items-center justify-center p-4">
+    <div class="glass-panel rounded-[2.5rem] max-w-md w-full p-6 shadow-2xl space-y-4 border border-white/10">
+      <div class="flex justify-between items-center pb-2 border-b border-white/10">
+        <h3 class="font-bold text-sm flex items-center gap-2">
+          <i data-lucide="user-plus" class="w-4 h-4 text-sky-400"></i> Register New User Account
+        </h3>
+        <button onclick="toggleRegisterModal(false)" class="hover:opacity-80"><i data-lucide="x" class="w-4 h-4"></i></button>
+      </div>
+
+      <form id="registerForm" class="space-y-3 text-xs">
+        <div>
+          <label class="block font-semibold mb-1 ml-1">Display Name</label>
+          <input type="text" id="regFullName" placeholder="e.g. Duty Officer" required class="w-full app-input rounded-2xl p-2.5">
+        </div>
+        <div>
+          <label class="block font-semibold mb-1 ml-1">Select Role</label>
+          <select id="regRole" class="w-full app-input rounded-2xl p-2.5 font-medium">
+            <option value="SUPERVISOR">Supervisor</option>
+            <option value="SECURITY">Security Guard</option>
+            <option value="OPERATOR">Operator</option>
+            <option value="ADMIN">Admin</option>
+          </select>
+        </div>
+        <div>
+          <label class="block font-semibold mb-1 ml-1">Username</label>
+          <input type="text" id="regUser" placeholder="Choose username" required class="w-full app-input rounded-2xl p-2.5">
+        </div>
+        <div>
+          <label class="block font-semibold mb-1 ml-1">Password</label>
+          <input type="password" id="regPass" placeholder="Set password" required class="w-full app-input rounded-2xl p-2.5">
+        </div>
+
+        <button type="submit" class="w-full bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white font-bold py-3 rounded-2xl text-xs transition mt-2">
+          Save & Register User
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2. MAIN APPLICATION -->
+  <div id="mainApp" class="hidden flex-1 flex">
+
+    <!-- Left Sidebar -->
+    <aside class="hidden md:flex w-64 glass-panel border-r border-white/10 flex-col justify-between p-4 min-h-screen sticky top-0 shrink-0">
+      <div class="space-y-5">
+        
+        <div class="card-surface p-3.5 rounded-2xl flex items-center gap-3 border border-sky-500/20 shadow-sm">
+          <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-sky-500 to-blue-600 text-white flex items-center justify-center font-black text-xs shadow-md shadow-sky-500/20" id="userAvatar">
+            RM
+          </div>
+          <div class="overflow-hidden">
+            <h2 class="text-xs font-bold truncate" id="userBadgeName">Rahul Mangrola</h2>
+            <p class="text-[10px] text-sky-500 font-bold uppercase tracking-wider" id="userBadgeRole">SUPERVISOR</p>
+          </div>
+        </div>
+
+        <div class="space-y-1">
+          <p class="text-[10px] font-bold uppercase tracking-widest px-3 mb-2 opacity-60">Modules</p>
+          
+          <button onclick="switchView('dashboardView', this)" class="sidebar-item active-nav-btn w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs font-semibold hover:bg-black/5 transition">
+            <i data-lucide="layout-dashboard" class="w-4 h-4 text-sky-500"></i>
+            <span>Executive Dashboard</span>
+          </button>
+
+          <button onclick="switchView('planView', this)" class="sidebar-item w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs font-semibold hover:bg-black/5 transition">
+            <i data-lucide="clipboard-list" class="w-4 h-4 text-sky-400"></i>
+            <span>Plan (Vehicle Summary)</span>
+          </button>
+
+          <button onclick="switchView('loadUnloadView', this)" class="sidebar-item w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs font-semibold hover:bg-black/5 transition">
+            <i data-lucide="arrow-left-right" class="w-4 h-4 text-emerald-500"></i>
+            <span>Loading / Unloading Ops</span>
+          </button>
+
+          <button onclick="switchView('liveDocksView', this)" class="sidebar-item w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs font-semibold hover:bg-black/5 transition">
+            <i data-lucide="layers" class="w-4 h-4 text-indigo-500"></i>
+            <span>Live Docks (1–9)</span>
+          </button>
+
+          <button id="navSecBtn" onclick="switchView('gateSecView', this)" class="sidebar-item w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs font-semibold hover:bg-black/5 transition">
+            <i data-lucide="shield-check" class="w-4 h-4 text-amber-500"></i>
+            <span>Security Gate Movement</span>
+          </button>
+
+          <button onclick="switchView('trackingView', this)" class="sidebar-item w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs font-semibold hover:bg-black/5 transition">
+            <i data-lucide="navigation" class="w-4 h-4 text-rose-500"></i>
+            <span>Vehicle Tracking Record</span>
+          </button>
+
+          <button onclick="switchView('reportsView', this)" class="sidebar-item w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs font-semibold hover:bg-black/5 transition">
+            <i data-lucide="file-spreadsheet" class="w-4 h-4 text-purple-500"></i>
+            <span>Reports Hub</span>
+          </button>
+
+          <button onclick="switchView('analyticsView', this)" class="sidebar-item w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs font-semibold hover:bg-black/5 transition">
+            <i data-lucide="bar-chart-3" class="w-4 h-4 text-blue-500"></i>
+            <span>Graphic Analysis</span>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- SIDEBAR FOOTER -->
+      <div class="space-y-2 pt-4 border-t border-black/10 dark:border-white/10">
+        <button onclick="toggleHelpSupportModal(true)" class="w-full px-3 py-1.5 card-surface hover:border-sky-500/40 rounded-xl text-[10px] text-sky-400 font-bold flex items-center justify-center gap-1.5 transition shadow-xs">
+          <i data-lucide="help-circle" class="w-3 h-3"></i> HELP & SUPPORT
+        </button>
+        <button onclick="toggleVersionModal(true)" class="w-full px-3 py-1.5 card-surface hover:border-sky-500/40 rounded-xl text-[10px] text-sky-500 font-mono text-center font-bold flex items-center justify-center gap-1.5 transition shadow-xs">
+          <i data-lucide="history" class="w-3 h-3"></i> VERSION HISTORY
+        </button>
+        <button onclick="logout()" class="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-2xl text-xs font-bold text-rose-500 hover:bg-rose-500/10 transition shadow-xs">
+          <i data-lucide="log-out" class="w-4 h-4"></i>
+          <span>Logout</span>
+        </button>
+        <div class="text-center pt-1 pb-0.5">
+          <span class="text-[9px] font-mono tracking-wider opacity-50 block uppercase">Designed by Rahul Mangrola</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Workspace -->
+    <div class="flex-1 flex flex-col min-w-0">
+
+      <!-- Top Header -->
+      <header class="glass-panel border-b border-black/10 dark:border-white/10 px-4 md:px-8 py-4 flex justify-between items-center sticky top-0 z-30">
+        <div>
+          <h1 class="text-lg font-black tracking-tight">Integrated Central Hub - Indore</h1>
+          <p class="text-[11px] opacity-70 font-semibold tracking-wide">Warehouse Management System</p>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <button onclick="toggleThemeMode()" id="themeToggleBtn" class="card-surface px-3.5 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 hover:opacity-90 transition shadow-sm">
+            <i data-lucide="sun" class="w-3.5 h-3.5 text-amber-500"></i>
+            <span class="text-[11px]" id="themeModeText">Light Mode</span>
+          </button>
+
+          <div class="bg-emerald-50 text-emerald-700 dark:text-sky-400 border border-emerald-500/20 px-3 py-1 rounded-full text-[11px] font-bold flex items-center gap-1.5 shadow-sm">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Cloud Live
+          </div>
+          <span id="liveClock" class="font-mono text-xs opacity-70 font-bold hidden sm:inline-block"></span>
+        </div>
+      </header>
+
+      <!-- Dynamic Views -->
+      <main class="p-4 md:p-8 space-y-6 flex-1">
+
+        <!-- MODULE 0: EXECUTIVE DASHBOARD -->
+        <section id="dashboardView" class="view-panel space-y-6">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            <div class="glass-panel p-5 rounded-3xl space-y-2 border border-sky-500/30 shadow-md">
+              <div class="flex justify-between items-center text-sky-500">
+                <span class="text-xs font-bold uppercase tracking-wider">Plan Deliveries</span>
+                <i data-lucide="clipboard-list" class="w-5 h-5"></i>
+              </div>
+              <p class="text-3xl font-black font-mono" id="dashPlanCount">0</p>
+              <p class="text-[11px] opacity-70">Total scanned items in plan</p>
+            </div>
+
+            <div class="glass-panel p-5 rounded-3xl space-y-2 border border-amber-500/30 shadow-md">
+              <div class="flex justify-between items-center text-amber-500">
+                <span class="text-xs font-bold uppercase tracking-wider">Active Loading</span>
+                <i data-lucide="upload-cloud" class="w-5 h-5"></i>
+              </div>
+              <p class="text-3xl font-black font-mono" id="dashActiveLoading">0</p>
+              <p class="text-[11px] opacity-70">Vehicles loading on docks</p>
+            </div>
+
+            <div class="glass-panel p-5 rounded-3xl space-y-2 border border-indigo-500/30 shadow-md">
+              <div class="flex justify-between items-center text-indigo-500">
+                <span class="text-xs font-bold uppercase tracking-wider">Active Unloading</span>
+                <i data-lucide="download-cloud" class="w-5 h-5"></i>
+              </div>
+              <p class="text-3xl font-black font-mono" id="dashActiveUnloading">0</p>
+              <p class="text-[11px] opacity-70">Vehicles unloading</p>
+            </div>
+
+            <div class="glass-panel p-5 rounded-3xl space-y-2 border border-emerald-500/30 shadow-md">
+              <div class="flex justify-between items-center text-emerald-500">
+                <span class="text-xs font-bold uppercase tracking-wider">Completed Today</span>
+                <i data-lucide="check-circle-2" class="w-5 h-5"></i>
+              </div>
+              <p class="text-3xl font-black font-mono" id="dashCompletedToday">0</p>
+              <p class="text-[11px] opacity-70">Loaded / Unloaded & Exited</p>
+            </div>
+
+            <div class="glass-panel p-5 rounded-3xl space-y-2 border border-purple-500/30 shadow-md">
+              <div class="flex justify-between items-center text-purple-500">
+                <span class="text-xs font-bold uppercase tracking-wider">Gate Entries</span>
+                <i data-lucide="shield" class="w-5 h-5"></i>
+              </div>
+              <p class="text-3xl font-black font-mono" id="dashGateCount">0</p>
+              <p class="text-[11px] opacity-70">Total security gate arrivals</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="glass-panel p-6 rounded-[2rem] space-y-4">
+              <h3 class="text-sm font-black flex items-center gap-2">
+                <i data-lucide="activity" class="w-4 h-4 text-sky-500"></i> Real-Time Operations Stream
+              </h3>
+              <div class="overflow-x-auto rounded-2xl card-surface">
+                <table class="w-full text-left text-xs whitespace-nowrap">
+                  <thead class="bg-black/5 dark:bg-slate-800/80 uppercase font-bold border-b border-black/10 dark:border-white/10">
+                    <tr>
+                      <th class="py-2.5 px-3">Vehicle</th>
+                      <th class="py-2.5 px-3">Type</th>
+                      <th class="py-2.5 px-3">Dock</th>
+                      <th class="py-2.5 px-3">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="dashActivityStream" class="divide-y divide-black/5 dark:divide-white/5">
+                    <tr><td colspan="4" class="text-center py-6 opacity-60">No active operations.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="glass-panel p-6 rounded-[2rem] space-y-4">
+              <h3 class="text-sm font-black flex items-center gap-2">
+                <i data-lucide="truck" class="w-4 h-4 text-amber-500"></i> Recent Gate Arrivals
+              </h3>
+              <div class="overflow-x-auto rounded-2xl card-surface">
+                <table class="w-full text-left text-xs whitespace-nowrap">
+                  <thead class="bg-black/5 dark:bg-slate-800/80 uppercase font-bold border-b border-black/10 dark:border-white/10">
+                    <tr>
+                      <th class="py-2.5 px-3">Purpose</th>
+                      <th class="py-2.5 px-3">Vehicle</th>
+                      <th class="py-2.5 px-3">Route</th>
+                      <th class="py-2.5 px-3">Time</th>
+                    </tr>
+                  </thead>
+                  <tbody id="dashGateStream" class="divide-y divide-black/5 dark:divide-white/5">
+                    <tr><td colspan="4" class="text-center py-6 opacity-60">No gate arrivals recorded.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- MODULE 1: PLAN RECEIVED -->
+        <section id="planView" class="view-panel hidden space-y-6">
+          <div class="glass-panel p-5 md:p-7 rounded-[2rem] space-y-6 shadow-xl">
+            <div class="flex flex-wrap justify-between items-center gap-4 pb-4 border-b border-black/10 dark:border-white/10">
+              <div>
+                <h2 class="text-sm font-extrabold flex items-center gap-2">
+                  <i data-lucide="clipboard-list" class="w-4 h-4 text-sky-500"></i> Plan Received & Single Vehicle Summary
+                </h2>
+                <p class="text-xs opacity-70 mt-0.5">Automated Multi-Block Parser & CSV Importer</p>
+              </div>
+
+              <div class="flex flex-wrap items-center gap-2">
+                <button onclick="downloadPlanSampleCSV()" class="card-surface hover:border-sky-500/40 text-sky-600 dark:text-sky-400 text-xs font-bold px-3 py-2.5 rounded-2xl flex items-center gap-1.5 shadow-sm transition">
+                  <i data-lucide="download" class="w-3.5 h-3.5"></i> Plan Sample CSV
+                </button>
+
+                <label class="card-surface hover:border-emerald-500/40 text-emerald-600 dark:text-emerald-400 text-xs font-bold px-3.5 py-2.5 rounded-2xl flex items-center gap-1.5 shadow-sm cursor-pointer transition">
+                  <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> Import Plan CSV
+                  <input type="file" id="planCsvFileInput" accept=".csv,.xlsx,.xls" onchange="handlePlanCsvImport(event)" class="hidden">
+                </label>
+
+                <label class="bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white text-xs font-bold px-4 py-3 rounded-2xl flex items-center gap-2 shadow-md cursor-pointer transition">
+                  <i data-lucide="camera" class="w-4 h-4 text-white"></i> Scan Plan Photo
+                  <input type="file" id="planCameraInput" accept="image/*" capture="environment" onchange="scanPlanImage(event)" class="hidden">
+                </label>
+                <div id="ocrSpinner" class="hidden text-xs text-sky-500 font-bold flex items-center gap-1.5 animate-pulse card-surface px-4 py-2.5 rounded-2xl border border-sky-400/40">
+                  <i data-lucide="loader-2" class="w-4 h-4 animate-spin text-sky-500"></i> Scanning Plan Rows...
+                </div>
+              </div>
+            </div>
+
+            <div class="space-y-2.5">
+              <div class="flex justify-between items-center px-1">
+                <h3 class="text-xs font-extrabold text-sky-500 uppercase tracking-wider flex items-center gap-1.5">
+                  <i data-lucide="layers" class="w-3.5 h-3.5"></i> Consolidated Vehicle Load Summary
+                </h3>
+                <span class="text-[11px] text-sky-600 bg-sky-500/15 font-bold px-2.5 py-0.5 rounded-full border border-sky-500/25" id="summaryGroupCount">0 Vehicles</span>
+              </div>
+              <div class="overflow-x-auto rounded-3xl card-surface">
+                <table class="w-full text-left text-xs whitespace-nowrap">
+                  <thead class="bg-black/5 dark:bg-slate-800/80 uppercase font-bold border-b border-black/10 dark:border-white/10">
+                    <tr>
+                      <th class="py-3.5 px-4">Destination</th>
+                      <th class="py-3.5 px-4">Transporter</th>
+                      <th class="py-3.5 px-4">Vehicle Type</th>
+                      <th class="py-3.5 px-4 text-center">Deliveries</th>
+                      <th class="py-3.5 px-4 text-right">Total Wt (Kg)</th>
+                      <th class="py-3.5 px-4 text-right">Total CFT</th>
+                      <th class="py-3.5 px-4 text-center">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="summaryTableBody" class="divide-y divide-black/5 dark:divide-white/5 font-medium">
+                    <tr><td colspan="7" class="text-center py-8 opacity-60 font-medium">No vehicle summary available. Scan plan photo or import CSV above.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="space-y-2.5 pt-2">
+              <div class="flex justify-between items-center px-1">
+                <h3 class="text-xs font-extrabold uppercase tracking-wider flex items-center gap-1.5 opacity-80">
+                  <i data-lucide="list" class="w-3.5 h-3.5"></i> Detailed Scanned Breakup
+                </h3>
+                <span class="text-[11px] font-bold opacity-70" id="detailedRowCount">0 Items</span>
+              </div>
+              <div class="overflow-x-auto rounded-3xl card-surface">
+                <table class="w-full text-left text-xs whitespace-nowrap">
+                  <thead class="bg-black/5 dark:bg-slate-800/70 uppercase font-bold border-b border-black/10 dark:border-white/10">
+                    <tr>
+                      <th class="py-3 px-3.5">Delivery No.</th>
+                      <th class="py-3 px-3.5">Code</th>
+                      <th class="py-3 px-3.5">Unit</th>
+                      <th class="py-3 px-3.5">Destination</th>
+                      <th class="py-3 px-3.5 text-right">Weight (Kg)</th>
+                      <th class="py-3 px-3.5 text-right">CFT</th>
+                      <th class="py-3 px-3.5">Vehicle Type</th>
+                      <th class="py-3 px-3.5">Transporter</th>
+                      <th class="py-3 px-3.5 text-center">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="planTableBody" class="divide-y divide-black/5 dark:divide-white/5">
+                    <tr><td colspan="9" class="text-center py-8 opacity-60 font-medium">No detailed plan data loaded.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- MODULE 2: LOADING / UNLOADING OPS -->
+        <section id="loadUnloadView" class="view-panel hidden space-y-6">
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <div class="glass-panel p-6 rounded-[2rem] shadow-xl lg:col-span-1 space-y-4">
+              <div class="flex items-center justify-between pb-2 border-b border-black/10 dark:border-white/10">
+                <h2 class="text-sm font-black flex items-center gap-2">
+                  <i data-lucide="arrow-left-right" class="w-4 h-4 text-sky-500"></i> Operation Entry
+                </h2>
+                <span class="text-[10px] bg-sky-500/15 text-sky-500 font-bold px-2 py-0.5 rounded-full border border-sky-500/25">Step 1: Start</span>
+              </div>
+              
+              <form id="loadUnloadForm" class="space-y-3">
+                
+                <div class="bg-sky-500/10 p-3 rounded-2xl border border-sky-500/20 space-y-1">
+                  <label class="block text-[11px] font-extrabold text-sky-600 dark:text-sky-300 uppercase tracking-wider flex items-center gap-1.5">
+                    <i data-lucide="link" class="w-3.5 h-3.5"></i> Select Vehicle from Security Gate Log
+                  </label>
+                  <select id="linkedGateSelect" onchange="autoFillFromGateLog(this.value)" class="w-full app-input rounded-xl p-2 text-xs font-bold border-sky-500/30">
+                    <option value="">-- Choose Arrived Vehicle (Auto-Fill) --</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="block text-[11px] font-bold opacity-70 mb-1 ml-1">Operation Activity *</label>
+                  <select id="opType" onchange="handleSupervisorOpChange()" class="w-full app-input rounded-2xl p-2.5 text-xs font-bold text-sky-500">
+                    <option value="LOADING">⬆ START LOADING (Status: LOADING IN-PROGRESS)</option>
+                    <option value="UNLOADING">⬇ START UNLOADING (Status: UNLOADING IN-PROGRESS)</option>
+                  </select>
+                </div>
+
+                <!-- CASES LOADED FIELD (For Loading) -->
+                <div id="casesLoadedField" class="bg-amber-500/10 p-3 rounded-2xl border border-amber-500/30 space-y-1">
+                  <label class="block text-[11px] font-bold text-amber-600 dark:text-amber-400 mb-1 ml-1">
+                    Total Cases Loaded *
+                  </label>
+                  <input type="number" id="loadTotalCases" placeholder="Enter total cases (e.g. 150)" class="w-full app-input rounded-xl p-2 text-xs font-bold text-amber-600 dark:text-amber-300" value="0">
+                </div>
+
+                <!-- UNLOADING INSPECTION FIELD (For Unloading) -->
+                <div id="unloadingInspectionField" class="hidden bg-emerald-500/10 p-3 rounded-2xl border border-emerald-500/30 space-y-1">
+                  <label class="block text-[11px] font-bold text-emerald-600 dark:text-emerald-400 mb-1 ml-1">
+                    Unloading Inspection Status *
+                  </label>
+                  <select id="unloadingPodStatus" class="w-full app-input rounded-xl p-2 text-xs font-bold text-emerald-600 dark:text-emerald-300">
+                    <option value="POD Clean">✔ POD Clean</option>
+                    <option value="POD Hold Due to Discrepancy">⚠ POD Hold Due to Discrepancy</option>
+                    <option value="Reported Checked Cases">📦 Checked Cases Verified</option>
+                  </select>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2.5">
+                  <div>
+                    <label class="block text-[11px] font-bold opacity-70 mb-1 ml-1">From (Origin)</label>
+                    <input type="text" id="loadFromLoc" value="INDORE HUB" readonly class="w-full app-input rounded-2xl p-2.5 text-xs uppercase font-semibold text-sky-500 bg-black/20">
+                  </div>
+                  <div>
+                    <label class="block text-[11px] font-bold opacity-70 mb-1 ml-1">To (Destination)</label>
+                    <select id="loadToLoc" class="w-full app-input rounded-2xl p-2.5 text-xs uppercase font-semibold">
+                      <option value="">-- Select Destination --</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2.5">
+                  <div>
+                    <label class="block text-[11px] font-bold opacity-70 mb-1 ml-1">Company / Unit</label>
+                    <select id="loadUnit" onchange="updateDockOptions()" class="w-full app-input rounded-2xl p-2.5 text-xs font-bold text-sky-500">
+                      <option value="AHPL">AHPL (Dock 1 to 4)</option>
+                      <option value="AIL">AIL (Dock 5 to 9)</option>
+                      <option value="THERMOCOL">THERMOCOL (All Docks)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block text-[11px] font-bold opacity-70 mb-1 ml-1">Assigned Dock No.</label>
+                    <select id="loadBayNo" class="w-full app-input rounded-2xl p-2.5 text-xs font-bold text-emerald-500"></select>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2.5">
+                  <div>
+                    <label class="block text-[11px] font-bold opacity-70 mb-1 ml-1">Vehicle Number *</label>
+                    <input type="text" id="loadVehicleNo" placeholder="MP-09-AB-1234" required class="w-full app-input rounded-2xl p-2.5 text-xs uppercase font-bold text-sky-500">
+                  </div>
+                  <div>
+                    <label class="block text-[11px] font-bold opacity-70 mb-1 ml-1">Transporter</label>
+                    <select id="loadTransporter" class="w-full app-input rounded-2xl p-2.5 text-xs font-semibold">
+                      <option value="DHTC">DHTC</option>
+                      <option value="OPM">OPM</option>
+                      <option value="ICRL">ICRL</option>
+                      <option value="MATA">MATA</option>
+                      <option value="MCM">MCM</option>
+                      <option value="FLY GREEN">FLY GREEN</option>
+                      <option value="VARUNA">VARUNA</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block text-[11px] font-bold opacity-70 mb-1 ml-1">Supervisor Incharge *</label>
+                  <select id="loadOperator" class="w-full app-input rounded-2xl p-2.5 text-xs font-bold text-sky-500">
+                    <option value="Rahul Mangrola">Rahul Mangrola</option>
+                    <option value="Amit Sharma">Amit Sharma</option>
+                    <option value="Rajesh Verma">Rajesh Verma</option>
+                    <option value="Sunil Patidar">Sunil Patidar</option>
+                    <option value="Anil Gupta">Anil Gupta</option>
+                  </select>
+                </div>
+
+                <div>
+                  <div class="flex justify-between items-center mb-1">
+                    <label class="block text-[11px] font-bold opacity-70 ml-1">Operation Start Time *</label>
+                    <button type="button" onclick="autoPickStartTime()" class="text-[10px] text-sky-500 hover:underline font-bold">
+                      ⚡ Pick Current Time
+                    </button>
+                  </div>
+                  <input type="time" id="loadStartTime" required class="w-full app-input rounded-2xl p-2.5 text-xs">
+                </div>
+
+                <button type="submit" class="w-full bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white font-bold py-3.5 rounded-2xl text-xs transition shadow-md mt-2 flex items-center justify-center gap-2">
+                  <i data-lucide="play" class="w-4 h-4"></i> Start Operation (Submit to Dock)
+                </button>
+              </form>
+            </div>
+
+            <!-- LIVE DOCK OPERATIONS TABLE -->
+            <div class="glass-panel p-6 rounded-[2rem] shadow-xl lg:col-span-2 space-y-4">
+              <div class="flex flex-wrap justify-between items-center gap-3">
+                <div>
+                  <h3 class="text-sm font-black flex items-center gap-2">
+                    <i data-lucide="activity" class="w-4 h-4 text-emerald-500"></i> Active Dock Operations Log
+                  </h3>
+                  <p class="text-xs opacity-70">Click <b>Mark Completed</b> once operation is completed to release the dock</p>
+                </div>
+
+                <div class="flex items-center gap-2">
+                  <span class="px-2.5 py-1 rounded-xl text-[10px] font-bold bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-500/30" id="kpiActiveLoading">0 Loading</span>
+                  <span class="px-2.5 py-1 rounded-xl text-[10px] font-bold bg-sky-500/20 text-sky-700 dark:text-sky-300 border border-sky-500/30" id="kpiActiveUnloading">0 Unloading</span>
+                </div>
+              </div>
+
+              <div class="overflow-x-auto rounded-3xl card-surface">
+                <table class="w-full text-left text-xs whitespace-nowrap">
+                  <thead class="bg-black/5 dark:bg-slate-800/80 uppercase font-bold border-b border-black/10 dark:border-white/10">
+                    <tr>
+                      <th class="py-3 px-3">Status</th>
+                      <th class="py-3 px-3">Vehicle No</th>
+                      <th class="py-3 px-3">Dock</th>
+                      <th class="py-3 px-3 font-mono text-sky-400">Total Cases</th>
+                      <th class="py-3 px-3">Inspection Status</th>
+                      <th class="py-3 px-3">Supervisor</th>
+                      <th class="py-3 px-3">Start Time</th>
+                      <th class="py-3 px-3">End / Exit</th>
+                      <th class="py-3 px-3">TAT</th>
+                      <th class="py-3 px-3 text-center">Complete / Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="loadUnloadTableBody" class="divide-y divide-black/5 dark:divide-white/5">
+                    <tr><td colspan="10" class="text-center py-10 opacity-60 font-medium">No operations recorded yet.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- MODULE 3: LIVE DOCKS (1 TO 9) -->
+        <section id="liveDocksView" class="view-panel hidden space-y-6">
+          <div class="glass-panel p-6 rounded-[2rem] shadow-xl">
+            <h2 class="text-sm font-black mb-4 flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-sky-500"></span> AHPL Dedicated Docks (Dock 1 to 4)
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4" id="ahplDockGrid"></div>
+          </div>
+
+          <div class="glass-panel p-6 rounded-[2rem] shadow-xl">
+            <h2 class="text-sm font-black mb-4 flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span> AIL Dedicated Docks (Dock 5 to 9)
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4" id="ailDockGrid"></div>
+          </div>
+        </section>
+
+        <!-- MODULE 4: SECURITY GATE – VEHICLE MOVEMENT FORM -->
+        <section id="gateSecView" class="view-panel hidden space-y-6">
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <div class="glass-panel p-6 rounded-[2rem] shadow-xl lg:col-span-1 space-y-4">
+              <div class="flex items-center justify-between pb-2 border-b border-black/10 dark:border-white/10">
+                <h3 class="text-sm font-black flex items-center gap-2">
+                  <i data-lucide="truck" class="w-4 h-4 text-sky-500"></i> Security Gate Movement
+                </h3>
+                <span class="text-[10px] bg-sky-500/15 text-sky-500 font-bold px-2.5 py-0.5 rounded-full border border-sky-500/25">Gate Entry</span>
+              </div>
+
+              <form id="securityGateForm" class="space-y-3">
+                <div>
+                  <label class="block text-[11px] font-extrabold text-sky-600 dark:text-sky-300 uppercase tracking-wider mb-1 ml-1">
+                    Purpose *
+                  </label>
+                  <select id="secPurpose" onchange="handleSecurityRouteChange()" class="w-full app-input rounded-2xl p-2.5 text-xs font-bold text-sky-600 dark:text-sky-300 border-sky-500/30">
+                    <option value="Loading">📦 Loading</option>
+                    <option value="Unloading">📥 Unloading</option>
+                    <option value="Parking / Transit">🅿 Parking / Transit</option>
+                  </select>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2.5">
+                  <div>
+                    <label class="block text-[11px] font-bold opacity-70 mb-1 ml-1">Vehicle No. *</label>
+                    <input type="text" id="secVehicleNo" placeholder="MP-09-AB-1234" required class="w-full app-input rounded-2xl p-2.5 text-xs uppercase font-bold text-sky-500">
+                  </div>
+                  <div>
+                    <label class="block text-[11px] font-bold opacity-70 mb-1 ml-1">Vehicle Type (Short)</label>
+                    <select id="secVehicleType" class="w-full app-input rounded-2xl p-2.5 text-xs font-semibold">
+                      <option value="32SXL">32SXL</option>
+                      <option value="32MXL">32MXL</option>
+                      <option value="32-15T">32-15T</option>
+                      <option value="32-18T">32-18T</option>
+                      <option value="24-9T">24-9T</option>
+                      <option value="PTL">PTL</option>
+                      <option value="LCL">LCL</option>
+                      <option value="OTH">OTH</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2.5">
+                  <div>
+                    <label class="block text-[11px] font-bold opacity-70 mb-1 ml-1">Driver Mobile *</label>
+                    <input type="tel" id="secDriverMobile" placeholder="9876543210" required class="w-full app-input rounded-2xl p-2.5 text-xs font-mono">
+                  </div>
+                  <div>
+                    <label class="block text-[11px] font-bold opacity-70 mb-1 ml-1">Transporter</label>
+                    <select id="secTransporter" class="w-full app-input rounded-2xl p-2.5 text-xs font-semibold">
+                      <option value="DHTC">DHTC</option>
+                      <option value="OPM">OPM</option>
+                      <option value="ICRL">ICRL</option>
+                      <option value="MATA">MATA</option>
+                      <option value="MCM">MCM</option>
+                      <option value="FLY GREEN">FLY GREEN</option>
+                      <option value="VARUNA">VARUNA</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block text-[11px] font-bold opacity-70 mb-1 ml-1">Location (Destination / Origin) *</label>
+                  <select id="secToLocation" class="w-full app-input rounded-2xl p-2.5 text-xs uppercase font-semibold text-sky-500">
+                    <option value="">-- Select Location --</option>
+                  </select>
+                  <input type="hidden" id="secFromLocation" value="INDORE HUB">
+                </div>
+
+                <div>
+                  <div class="flex justify-between items-center mb-1">
+                    <label class="block text-[11px] font-bold opacity-70 ml-1">Date & Time</label>
+                    <button type="button" onclick="autoPickCurrentDateTime()" class="text-[10px] text-sky-500 hover:underline font-bold">
+                      ⚡ Auto Pick Current Time
+                    </button>
+                  </div>
+                  <input type="text" id="secDateTime" placeholder="28/08/2026, 12:30:00 AM" required class="w-full app-input rounded-2xl p-2.5 text-xs font-mono">
+                </div>
+
+                <div>
+                  <label class="block text-[11px] font-bold opacity-70 mb-1 ml-1">Remarks</label>
+                  <input type="text" id="secRemarks" placeholder="Gate Remarks" class="w-full app-input rounded-2xl p-2.5 text-xs">
+                </div>
+
+                <button type="submit" class="w-full bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white font-bold py-3 rounded-2xl text-xs transition mt-2 flex items-center justify-center gap-2 shadow-md">
+                  <i data-lucide="check-circle" class="w-4 h-4"></i> Save Gate Entry & Sync
+                </button>
+              </form>
+            </div>
+
+            <div class="glass-panel p-6 rounded-[2rem] lg:col-span-2">
+              <div class="flex flex-wrap justify-between items-center mb-4 gap-2">
+                <h3 class="text-sm font-black flex items-center gap-2">
+                  <i data-lucide="shield-check" class="w-4 h-4 text-sky-500"></i> Security Gate Log
+                </h3>
+                <span class="text-xs card-surface px-3 py-1 rounded-full font-mono font-bold" id="gateRowCount">0 Records</span>
+              </div>
+
+              <div class="overflow-x-auto rounded-3xl card-surface">
+                <table class="w-full text-left text-xs whitespace-nowrap">
+                  <thead class="bg-black/5 dark:bg-slate-800/80 uppercase font-bold border-b border-black/10 dark:border-white/10">
+                    <tr>
+                      <th class="py-3 px-3">Purpose</th>
+                      <th class="py-3 px-3">Vehicle No</th>
+                      <th class="py-3 px-3">Transporter</th>
+                      <th class="py-3 px-3">Driver Contact</th>
+                      <th class="py-3 px-3">Route</th>
+                      <th class="py-3 px-3">Date & Time</th>
+                      <th class="py-3 px-3">Remarks</th>
+                      <th class="py-3 px-3 text-center">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="securityTableBody" class="divide-y divide-black/5 dark:divide-white/5">
+                    <tr><td colspan="8" class="text-center py-8 opacity-60 font-medium">No vehicle movements logged yet.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- MODULE 5: VEHICLE TRACKING RECORD & SLA HUB -->
+        <section id="trackingView" class="view-panel hidden space-y-6">
+          <div class="glass-panel p-5 md:p-7 rounded-[2rem] space-y-6 shadow-xl">
+            <div class="flex flex-wrap justify-between items-center gap-4 pb-4 border-b border-black/10 dark:border-white/10">
+              <div>
+                <h2 class="text-sm font-extrabold flex items-center gap-2">
+                  <i data-lucide="navigation" class="w-4 h-4 text-rose-500"></i> Vehicle Tracking & Transit SLA Hub
+                </h2>
+                <p class="text-xs opacity-70 mt-0.5">Upload master sheet to automatically track fleets</p>
+              </div>
+
+              <div class="flex flex-wrap items-center gap-2">
+                <button onclick="downloadTrackingSampleCSV()" class="card-surface hover:border-sky-500/40 text-sky-600 dark:text-sky-400 text-xs font-bold px-3.5 py-2.5 rounded-2xl flex items-center gap-1.5 shadow-sm transition">
+                  <i data-lucide="download" class="w-3.5 h-3.5"></i> Download Master Sample CSV
+                </button>
+
+                <label class="bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 text-white text-xs font-bold px-4 py-2.5 rounded-2xl flex items-center gap-2 shadow-md cursor-pointer transition">
+                  <i data-lucide="file-spreadsheet" class="w-4 h-4 text-white"></i> Import Tracking Sheet (CSV / Excel)
+                  <input type="file" id="trackingFileInput" accept=".csv,.xlsx,.xls" onchange="handleTrackingFileImport(event)" class="hidden">
+                </label>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
+              <div class="card-surface p-4 rounded-3xl space-y-1">
+                <span class="text-[10px] opacity-70 font-bold uppercase tracking-wider block">Total Tracked</span>
+                <p class="text-xl font-black font-mono" id="kpiTrackTotal">0</p>
+              </div>
+
+              <div class="card-surface p-4 rounded-3xl border border-sky-500/20 space-y-1">
+                <span class="text-[10px] text-sky-500 font-bold uppercase tracking-wider block">In-Transit</span>
+                <p class="text-xl font-black text-sky-500 font-mono" id="kpiTrackInTransit">0</p>
+              </div>
+
+              <div class="card-surface p-4 rounded-3xl border border-emerald-500/20 space-y-1">
+                <span class="text-[10px] text-emerald-500 font-bold uppercase tracking-wider block">Delivered On-Time</span>
+                <p class="text-xl font-black text-emerald-500 font-mono" id="kpiTrackOnTime">0</p>
+              </div>
+
+              <div class="card-surface p-4 rounded-3xl border border-rose-500/20 space-y-1">
+                <span class="text-[10px] text-rose-500 font-bold uppercase tracking-wider block">Delayed / Overdue</span>
+                <p class="text-xl font-black text-rose-500 font-mono" id="kpiTrackDelayed">0</p>
+              </div>
+            </div>
+
+            <div class="overflow-x-auto rounded-3xl card-surface">
+              <table class="w-full text-left text-xs whitespace-nowrap">
+                <thead class="bg-black/5 dark:bg-slate-800/80 uppercase font-bold border-b border-black/10 dark:border-white/10">
+                  <tr>
+                    <th class="py-3.5 px-4">Vehicle No</th>
+                    <th class="py-3.5 px-4">Transporter</th>
+                    <th class="py-3.5 px-4">Route</th>
+                    <th class="py-3.5 px-4">Dispatch Date</th>
+                    <th class="py-3.5 px-4">Expected Date</th>
+                    <th class="py-3.5 px-4">Actual Delivery</th>
+                    <th class="py-3.5 px-4 text-center">Transit Status</th>
+                    <th class="py-3.5 px-4 text-center">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="trackingTableBody" class="divide-y divide-black/5 dark:divide-white/5 font-medium">
+                  <tr><td colspan="8" class="text-center py-10 opacity-60">No vehicle tracking data loaded. Upload CSV/Excel master sheet above.</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- MODULE 6: INDEPENDENT REPORTS HUB -->
+        <section id="reportsView" class="view-panel hidden space-y-6">
+          <div class="glass-panel p-6 rounded-[2rem]">
+            <div class="flex flex-wrap justify-between items-center gap-3 mb-4 pb-4 border-b border-black/10 dark:border-white/10">
+              <div>
+                <h2 class="text-sm font-black">Reports Hub & Master Manager</h2>
+                <p class="text-[11px] opacity-70">Excel / PDF Export & Master Location / Supervisor Upload</p>
+              </div>
+              
+              <div class="flex flex-wrap items-center gap-2">
+                <label class="bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-500 hover:to-indigo-500 text-white text-xs font-bold px-3.5 py-2.5 rounded-2xl flex items-center gap-1.5 shadow-md cursor-pointer transition">
+                  <i data-lucide="user-check" class="w-3.5 h-3.5"></i> Supervisor Master (CSV / Excel)
+                  <input type="file" id="supervisorMasterInput" accept=".csv,.xlsx,.xls" onchange="handleSupervisorMasterImport(event)" class="hidden">
+                </label>
+
+                <label class="bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white text-xs font-bold px-4 py-2.5 rounded-xl cursor-pointer shadow-md transition">
+                  <i data-lucide="upload" class="w-4 h-4 inline mr-1"></i> Upload Location Master (Col A: Load, Col B: Unload)
+                  <input type="file" accept=".csv,.xlsx,.xls" onchange="handleDualLocImport(event)" class="hidden">
+                </label>
+
+                <button onclick="exportToExcel()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-3.5 py-2.5 rounded-2xl flex items-center gap-1.5 shadow-sm transition">
+                  <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> Export Excel
+                </button>
+
+                <button onclick="exportToPDF()" class="card-surface text-sky-600 dark:text-sky-400 text-xs font-bold px-3.5 py-2.5 rounded-2xl flex items-center gap-1.5 shadow-sm transition">
+                  <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Export PDF
+                </button>
+
+                <button onclick="sendReportToEmailPrompt()" class="bg-gradient-to-r from-sky-600 to-blue-700 hover:from-sky-500 hover:to-blue-600 text-white text-xs font-bold px-3.5 py-2.5 rounded-2xl flex items-center gap-1.5 shadow-md transition">
+                  <i data-lucide="mail" class="w-3.5 h-3.5"></i> Send to Email
+                </button>
+              </div>
+            </div>
+
+            <div class="overflow-x-auto rounded-3xl card-surface">
+              <table class="w-full text-left text-xs whitespace-nowrap">
+                <thead class="bg-black/5 dark:bg-slate-800/80 uppercase font-bold border-b border-black/10 dark:border-white/10">
+                  <tr>
+                    <th class="py-3 px-3">Delivery No.</th>
+                    <th class="py-3 px-3">Code</th>
+                    <th class="py-3 px-3">Unit</th>
+                    <th class="py-3 px-3">Destination</th>
+                    <th class="py-3 px-3 text-right">Weight (Kg)</th>
+                    <th class="py-3 px-3 text-right">CFT</th>
+                    <th class="py-3 px-3">Vehicle Type</th>
+                    <th class="py-3 px-3">Transporter</th>
+                  </tr>
+                </thead>
+                <tbody id="reportTableBody" class="divide-y divide-black/5 dark:divide-white/5">
+                  <tr><td colspan="8" class="text-center py-8 opacity-60 font-medium">No report records available.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- MODULE 7: GRAPHIC ANALYSIS -->
+        <section id="analyticsView" class="view-panel hidden space-y-6">
+          <div class="glass-panel p-5 md:p-7 rounded-[2rem] space-y-6 shadow-xl">
+            <div class="flex flex-wrap justify-between items-center gap-4 pb-4 border-b border-black/10 dark:border-white/10">
+              <div>
+                <h2 class="text-sm font-extrabold flex items-center gap-2">
+                  <i data-lucide="pie-chart" class="w-4 h-4 text-sky-500"></i> Graphic Analysis Dashboard
+                </h2>
+                <p class="text-xs opacity-70 mt-0.5">Real-time Vehicle Transit Trendlines & Fleet Performance</p>
+              </div>
+
+              <div class="flex items-center card-surface p-1 rounded-2xl">
+                <button onclick="setAnalyticsPeriod('daily', this)" class="period-btn active-nav-btn px-3 py-1.5 rounded-xl text-xs font-bold transition">Daily</button>
+                <button onclick="setAnalyticsPeriod('weekly', this)" class="period-btn opacity-70 px-3 py-1.5 rounded-xl text-xs font-bold transition hover:opacity-100">Weekly</button>
+                <button onclick="setAnalyticsPeriod('monthly', this)" class="period-btn opacity-70 px-3 py-1.5 rounded-xl text-xs font-bold transition hover:opacity-100">Monthly</button>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div class="card-surface p-5 rounded-3xl space-y-3 shadow-xs">
+                <div class="flex justify-between items-center">
+                  <h3 class="text-xs font-extrabold text-rose-500 uppercase tracking-wider flex items-center gap-2">
+                    <i data-lucide="activity" class="w-4 h-4"></i> Vehicle Transit & Delay Trendline
+                  </h3>
+                </div>
+                <div class="h-64 relative">
+                  <canvas id="transitTrendlineChart"></canvas>
+                </div>
+              </div>
+
+              <div class="card-surface p-5 rounded-3xl space-y-3 shadow-xs">
+                <div class="flex justify-between items-center">
+                  <h3 class="text-xs font-extrabold text-sky-500 uppercase tracking-wider flex items-center gap-2">
+                    <i data-lucide="trending-up" class="w-4 h-4"></i> Dispatch Weight & Volume Trend
+                  </h3>
+                </div>
+                <div class="h-64 relative">
+                  <canvas id="weightCftTrendChart"></canvas>
+                </div>
+              </div>
+
+              <div class="card-surface p-5 rounded-3xl space-y-3 shadow-xs">
+                <div class="flex justify-between items-center">
+                  <h3 class="text-xs font-extrabold text-indigo-500 uppercase tracking-wider flex items-center gap-2">
+                    <i data-lucide="truck" class="w-4 h-4"></i> Vehicle Fleet & Type Distribution
+                  </h3>
+                </div>
+                <div class="h-64 relative">
+                  <canvas id="vehicleTypeChart"></canvas>
+                </div>
+              </div>
+
+              <div class="card-surface p-5 rounded-3xl space-y-3 shadow-xs">
+                <div class="flex justify-between items-center">
+                  <h3 class="text-xs font-extrabold text-emerald-500 uppercase tracking-wider flex items-center gap-2">
+                    <i data-lucide="pie-chart" class="w-4 h-4"></i> Transporter Share & Trip Allocation
+                  </h3>
+                </div>
+                <div class="h-64 relative flex items-center justify-center">
+                  <canvas id="transporterShareChart"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+    </div>
+
+  </div>
+  <!-- MAIN APP END -->
+
+  <!-- EDIT OPS MODAL -->
+  <div id="editOpsModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4">
+    <div class="glass-panel rounded-3xl max-w-sm w-full p-6 shadow-2xl space-y-4 border border-sky-500/30">
+      <h3 class="font-bold text-sm text-sky-500 border-b border-white/10 pb-2">Edit Operation Entry</h3>
+      <input type="hidden" id="editOpId">
+      <div><label class="block text-xs font-bold mb-1">Vehicle No</label><input type="text" id="editOpVeh" class="w-full app-input rounded-xl p-2 text-xs font-bold uppercase"></div>
+      <div><label class="block text-xs font-bold mb-1">Dock No</label><input type="text" id="editOpDock" class="w-full app-input rounded-xl p-2 text-xs font-bold uppercase"></div>
+      <div class="flex gap-2 pt-2">
+        <button onclick="saveEditOps()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 rounded-xl text-xs">Save</button>
+        <button onclick="document.getElementById('editOpsModal').classList.add('hidden')" class="w-full bg-slate-700 hover:bg-slate-600 text-white font-bold py-2 rounded-xl text-xs">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EDIT SECURITY MODAL -->
+  <div id="editSecModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4">
+    <div class="glass-panel rounded-3xl max-w-sm w-full p-6 shadow-2xl space-y-4 border border-sky-500/30">
+      <h3 class="font-bold text-sm text-sky-500 border-b border-white/10 pb-2">Edit Security Log</h3>
+      <input type="hidden" id="editSecId">
+      <div><label class="block text-xs font-bold mb-1">Vehicle No</label><input type="text" id="editSecVeh" class="w-full app-input rounded-xl p-2 text-xs font-bold uppercase"></div>
+      <div><label class="block text-xs font-bold mb-1">Driver Mobile</label><input type="tel" id="editSecMob" pattern="\d{10}" maxlength="10" class="w-full app-input rounded-xl p-2 text-xs font-bold"></div>
+      <div class="flex gap-2 pt-2">
+        <button onclick="saveEditSec()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 rounded-xl text-xs">Save</button>
+        <button onclick="document.getElementById('editSecModal').classList.add('hidden')" class="w-full bg-slate-700 hover:bg-slate-600 text-white font-bold py-2 rounded-xl text-xs">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2-STEP FINISH LOAD MODAL -->
+  <div id="finishLoadModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4">
+    <div class="glass-panel rounded-3xl max-w-sm w-full p-6 shadow-2xl space-y-4 border border-emerald-500/30">
+      <h3 class="font-bold text-sm text-emerald-500 border-b border-white/10 pb-2">Complete Loading Operation</h3>
+      <input type="hidden" id="finishLoadId">
+      <div><label class="block text-xs font-bold mb-1 text-amber-500">Total Cases Loaded *</label><input type="number" id="finishLoadCases" required placeholder="e.g. 150" class="w-full app-input rounded-xl p-2 text-xs font-bold"></div>
+      <div><label class="block text-xs font-bold mb-1 text-sky-500">Seal Number *</label><input type="text" id="finishLoadSeal" required placeholder="e.g. SL-12345" class="w-full app-input rounded-xl p-2 text-xs font-bold uppercase"></div>
+      <div class="flex gap-2 pt-2">
+        <button onclick="submitFinishLoad()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl text-xs shadow-md">Complete Load</button>
+        <button onclick="document.getElementById('finishLoadModal').classList.add('hidden')" class="w-full bg-slate-700 hover:bg-slate-600 text-white font-bold py-2.5 rounded-xl text-xs">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOATING IPHONE BOTTOM APP NAVIGATION BAR WITH HELP & SUPPORT -->
+  <div class="md:hidden fixed bottom-3 left-4 right-4 glass-panel rounded-3xl px-2 py-2.5 flex justify-around items-center z-50 shadow-2xl">
+    <button onclick="switchView('dashboardView', this)" class="flex flex-col items-center gap-1 text-sky-500">
+      <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+      <span class="text-[9px] font-bold">Dash</span>
+    </button>
+    <button onclick="switchView('planView', this)" class="flex flex-col items-center gap-1 opacity-70 hover:opacity-100">
+      <i data-lucide="clipboard-list" class="w-5 h-5 text-sky-400"></i>
+      <span class="text-[9px] font-bold">Plan</span>
+    </button>
+    <button onclick="switchView('loadUnloadView', this)" class="flex flex-col items-center gap-1 opacity-70 hover:opacity-100">
+      <i data-lucide="arrow-left-right" class="w-5 h-5 text-emerald-500"></i>
+      <span class="text-[9px] font-bold">Ops</span>
+    </button>
+    <button onclick="switchView('liveDocksView', this)" class="flex flex-col items-center gap-1 opacity-70 hover:opacity-100">
+      <i data-lucide="layers" class="w-5 h-5 text-indigo-500"></i>
+      <span class="text-[9px] font-bold">Docks</span>
+    </button>
+    <button onclick="switchView('gateSecView', this)" class="flex flex-col items-center gap-1 opacity-70 hover:opacity-100">
+      <i data-lucide="shield-check" class="w-5 h-5 text-amber-500"></i>
+      <span class="text-[9px] font-bold">Gate</span>
+    </button>
+    <button onclick="toggleHelpSupportModal(true)" class="flex flex-col items-center gap-1 opacity-70 hover:opacity-100 text-sky-400">
+      <i data-lucide="help-circle" class="w-5 h-5"></i>
+      <span class="text-[9px] font-bold">Help</span>
+    </button>
+  </div>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    lucide.createIcons();
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC_yD3zSa3k8LBttJGGaEx62RoCnAXFiW4",
+      authDomain: "ich-indore-wms.firebaseapp.com",
+      projectId: "ich-indore-wms",
+      storageBucket: "ich-indore-wms.firebasestorage.app",
+      messagingSenderId: "978028043908",
+      appId: "1:978028043908:web:6e887d1e04a4d1b7dd2cd1",
+      databaseURL: "https://ich-indore-wms-default-rtdb.firebaseio.com"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    let currentTheme = localStorage.getItem("ich_theme_mode") || "dark";
+    function applyTheme(theme) {
+      const htmlEl = document.documentElement;
+      const bodyEl = document.body;
+      const themeText = document.getElementById("themeModeText");
+      const themeBtn = document.getElementById("themeToggleBtn");
+
+      if (theme === "light") {
+        htmlEl.classList.remove("dark");
+        htmlEl.classList.add("light");
+        bodyEl.classList.remove("bg-slate-900", "text-slate-100");
+        bodyEl.style.backgroundColor = "var(--sky-light-bg)";
+        bodyEl.style.color = "var(--text-black)";
+        if (themeText) themeText.innerText = "Dark Mode";
+        if (themeBtn) themeBtn.innerHTML = '<i data-lucide="moon" class="w-3.5 h-3.5 text-indigo-600"></i> <span class="text-[11px]">Dark Mode</span>';
+      } else {
+        htmlEl.classList.remove("light");
+        htmlEl.classList.add("dark");
+        bodyEl.style.backgroundColor = "";
+        bodyEl.style.color = "";
+        bodyEl.classList.add("bg-slate-900", "text-slate-100");
+        if (themeText) themeText.innerText = "Light Mode";
+        if (themeBtn) themeBtn.innerHTML = '<i data-lucide="sun" class="w-3.5 h-3.5 text-amber-500"></i> <span class="text-[11px]">Light Mode</span>';
+      }
+      localStorage.setItem("ich_theme_mode", theme);
+      lucide.createIcons();
+    }
+
+    function toggleThemeMode() {
+      currentTheme = currentTheme === "dark" ? "light" : "dark";
+      applyTheme(currentTheme);
+      setTimeout(renderGraphicAnalytics, 100);
+    }
+    applyTheme(currentTheme);
+
+    const defaultCredentials = [
+      { user: 'admin', pass: 'admin123', role: 'ADMIN', name: 'Admin Officer' },
+      { user: 'supervisor', pass: 'super123', role: 'SUPERVISOR', name: 'Rahul Mangrola' },
+      { user: 'security', pass: 'gate123', role: 'SECURITY', name: 'Gate Security' },
+      { user: 'operator', pass: 'op123', role: 'OPERATOR', name: 'Dock Operator' }
+    ];
+
+    let registeredUsers = JSON.parse(localStorage.getItem("ich_registered_users_list")) || defaultCredentials;
+    let currentLoggedInRole = null;
+    let currentLoggedInUser = null;
+
+    let masterLoadLocations = JSON.parse(localStorage.getItem("ich_master_load_locations")) || [];
+    let masterUnloadLocations = JSON.parse(localStorage.getItem("ich_master_unload_locations")) || [];
+    let masterSupervisors = JSON.parse(localStorage.getItem("ich_master_supervisors")) || ["Rahul Mangrola", "Amit Sharma", "Rajesh Verma", "Sunil Patidar", "Anil Gupta"];
+    let planEntries = [];
+    let loadEntries = [];
+    let securityLogs = [];
+    let trackingRecords = [];
+
+    let currentPeriod = 'daily';
+    let chartTrend = null, chartFleet = null, chartTransporter = null, chartTransitTrend = null;
+
+    const dockConfig = {
+      'AHPL': ['Dock 1', 'Dock 2', 'Dock 3', 'Dock 4'],
+      'AIL': ['Dock 5', 'Dock 6', 'Dock 7', 'Dock 8', 'Dock 9'],
+      'THERMOCOL': ['Dock 1', 'Dock 2', 'Dock 3', 'Dock 4', 'Dock 5', 'Dock 6', 'Dock 7', 'Dock 8', 'Dock 9']
+    };
+
+    function toggleVersionModal(show) {
+      const modal = document.getElementById('versionModal');
+      if (show) modal.classList.remove('hidden');
+      else modal.classList.add('hidden');
+    }
+
+    function toggleRegisterModal(show) {
+      const modal = document.getElementById('registerModal');
+      if (show) modal.classList.remove('hidden');
+      else modal.classList.add('hidden');
+    }
+
+    function toggleHelpSupportModal(show) {
+      const modal = document.getElementById('helpSupportModal');
+      if (show) modal.classList.remove('hidden');
+      else modal.classList.add('hidden');
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const inputUser = document.getElementById('loginUser').value.trim().toLowerCase();
+      const inputPass = document.getElementById('loginPass').value.trim();
+      const inputRole = document.getElementById('loginRole').value;
+      const err = document.getElementById('loginError');
+
+      let matched = registeredUsers.find(u => u.user.toLowerCase() === inputUser && u.pass === inputPass);
+      if (!matched) matched = defaultCredentials.find(u => u.user.toLowerCase() === inputUser && u.pass === inputPass);
+
+      if (matched) {
+        err.classList.add('hidden');
+        const assignedRole = inputUser === 'admin' ? 'ADMIN' : (matched.role || inputRole);
+        const assignedName = matched.name || inputUser;
+
+        currentLoggedInRole = assignedRole;
+        currentLoggedInUser = assignedName;
+        applyRolePermissions(assignedRole, assignedName);
+      } else {
+        err.classList.remove('hidden');
+      }
+    });
+
+    function applyRolePermissions(role, name) {
+      document.getElementById('loginScreen').classList.add('hidden');
+      document.getElementById('mainApp').classList.remove('hidden');
+
+      document.getElementById('userBadgeName').innerText = name || role;
+      document.getElementById('userBadgeRole').innerText = role;
+      document.getElementById('userAvatar').innerText = "RM";
+
+      const navSecBtn = document.getElementById('navSecBtn');
+      if (role === 'SECURITY') {
+        switchView('gateSecView', navSecBtn);
+      } else {
+        switchView('dashboardView', document.querySelectorAll('.sidebar-item')[0]);
+      }
+
+      populateAllLocationDropdowns();
+      populateSupervisorDropdown();
+      updateDockOptions();
+      handleSecurityRouteChange();
+      handleSupervisorOpChange();
+      autoPickCurrentDateTime();
+      
+      initFirebaseRealtimeSync();
+      lucide.createIcons();
+    }
+
+    function logout() {
+      currentLoggedInRole = null;
+      currentLoggedInUser = null;
+      document.getElementById('loginPass').value = '';
+      document.getElementById('loginUser').value = '';
+      document.getElementById('mainApp').classList.add('hidden');
+      document.getElementById('loginScreen').classList.remove('hidden');
+    }
+
+    function updateClock() {
+      const now = new Date();
+      document.getElementById('liveClock').innerText = now.toLocaleTimeString('en-IN', { 
+        hour: '2-digit', minute: '2-digit', second: '2-digit' 
+      });
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    function switchView(viewId, btn) {
+      document.querySelectorAll('.view-panel').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active-nav-btn'));
+
+      const targetView = document.getElementById(viewId);
+      if (targetView) targetView.classList.remove('hidden');
+      if (btn && btn.classList.contains('sidebar-item')) btn.classList.add('active-nav-btn');
+
+      if (viewId === 'dashboardView') renderExecutiveDashboard();
+      if (viewId === 'gateSecView') autoPickCurrentDateTime();
+      if (viewId === 'loadUnloadView') {
+        updateDockOptions();
+        populateSupervisorDropdown();
+        handleSupervisorOpChange();
+        updateLinkedGateVehicleDropdown();
+      }
+      if (viewId === 'trackingView') renderTrackingTable();
+      if (viewId === 'reportsView') renderAllTables();
+      if (viewId === 'analyticsView') setTimeout(renderGraphicAnalytics, 100);
+      lucide.createIcons();
+    }
+
+    function autoPickStartTime() {
+      const now = new Date();
+      document.getElementById('loadStartTime').value = now.toTimeString().substring(0, 5);
+    }
+
+    // DUAL LOCATION MASTER CSV/EXCEL IMPORT (Col A = Loading destinations, Col B = Unloading origins)
+    function handleDualLocImport(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const data = new Uint8Array(e.target.result);
+          const workbook = XLSX.read(data, { type: 'array' });
+          const rows = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], { header: 1 });
+
+          let newLoadLocs = [];
+          let newUnloadLocs = [];
+
+          rows.forEach((row, index) => {
+            if (index === 0 && (String(row[0]).toLowerCase().includes('load') || String(row[1]).toLowerCase().includes('unload'))) return;
+            let loadVal = row[0] ? String(row[0]).toUpperCase().trim() : "";
+            let unloadVal = row[1] ? String(row[1]).toUpperCase().trim() : "";
+            if (loadVal && loadVal.length > 1 && !newLoadLocs.includes(loadVal)) newLoadLocs.push(loadVal);
+            if (unloadVal && unloadVal.length > 1 && !newUnloadLocs.includes(unloadVal)) newUnloadLocs.push(unloadVal);
+          });
+
+          if (newLoadLocs.length === 0 && newUnloadLocs.length === 0) return alert("No valid locations found in file.");
+
+          masterLoadLocations = newLoadLocs;
+          masterUnloadLocations = newUnloadLocs;
+
+          db.ref('masterLoadLocations').set(masterLoadLocations);
+          db.ref('masterUnloadLocations').set(masterUnloadLocations);
+
+          populateAllLocationDropdowns();
+          alert(`Success! Imported ${newLoadLocs.length} Loading & ${newUnloadLocs.length} Unloading Locations.`);
+        } catch (err) {
+          alert("Error parsing CSV. Ensure Col A is Loading & Col B is Unloading.");
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
+    // SUPERVISOR MASTER CSV IMPORT
+    function handleSupervisorMasterImport(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const data = new Uint8Array(e.target.result);
+          const workbook = XLSX.read(data, { type: 'array' });
+          const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+          const rows = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+
+          if (rows.length === 0) return alert("Uploaded supervisor file is empty.");
+
+          let newSups = [];
+          rows.forEach((row) => {
+            if (Array.isArray(row)) {
+              row.forEach(cell => {
+                let val = String(cell).trim();
+                if (val && val.toLowerCase() !== "supervisor" && val.toLowerCase() !== "name" && val.toLowerCase() !== "supervisor name" && val.length > 1 && !newSups.includes(val)) {
+                  newSups.push(val);
+                }
+              });
+            }
+          });
+
+          if (newSups.length === 0) return alert("No valid supervisor names found in file.");
+
+          masterSupervisors = newSups;
+          db.ref('masterSupervisors').set(masterSupervisors);
+          populateSupervisorDropdown();
+          alert(`Success! Supervisor Master imported with ${masterSupervisors.length} supervisors.`);
+        } catch (err) {
+          alert("Error parsing supervisor CSV/Excel file.");
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
+    function populateSupervisorDropdown() {
+      const el = document.getElementById('loadOperator');
+      if (!el) return;
+      const currentSelected = el.value;
+      el.innerHTML = '';
+
+      masterSupervisors.forEach(sup => {
+        const opt = document.createElement('option');
+        opt.value = sup;
+        opt.textContent = sup;
+        el.appendChild(opt);
+      });
+
+      if (currentSelected && masterSupervisors.includes(currentSelected)) {
+        el.value = currentSelected;
+      }
+    }
+
+    // PLAN CSV IMPORT & SAMPLE
+    function downloadPlanSampleCSV() {
+      const csvContent = "deliveryNo,code,unit,destination,weight,cft,vType,transporter\nDEL-101,C-01,AHPL,MUMBAI,1250,450,32SXL,DHTC\nDEL-102,C-02,AIL,DELHI,1800,600,32MXL,OPM\nDEL-103,C-03,AHPL,AHMEDABAD,950,320,24-9T,ICRL";
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.setAttribute("download", "plan_master_sample.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    function handlePlanCsvImport(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const data = new Uint8Array(e.target.result);
+          const workbook = XLSX.read(data, { type: 'array' });
+          const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+          const rows = XLSX.utils.sheet_to_json(firstSheet);
+
+          if (rows.length === 0) return alert("Uploaded plan file is empty.");
+
+          let importedCount = 0;
+          rows.forEach((r, idx) => {
+            const planId = "PLAN-" + Date.now() + "-" + idx;
+            const item = {
+              id: planId,
+              deliveryNo: String(r.deliveryNo || r.DeliveryNo || "DEL-" + Math.floor(Math.random()*10000)),
+              code: String(r.code || r.Code || "C-01"),
+              unit: String(r.unit || r.Unit || "AHPL").toUpperCase(),
+              destination: String(r.destination || r.Destination || "MUMBAI").toUpperCase(),
+              weight: Number(r.weight || r.Weight || 1000),
+              cft: Number(r.cft || r.CFT || 400),
+              vType: String(r.vType || r.VType || "32SXL").toUpperCase(),
+              transporter: String(r.transporter || r.Transporter || "DHTC").toUpperCase()
+            };
+            db.ref('planEntries/' + planId).set(item);
+            importedCount++;
+          });
+
+          alert(`Success! Imported ${importedCount} plan records.`);
+        } catch (err) {
+          alert("Error parsing plan CSV/Excel file.");
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
+    function deletePlanItem(planId) {
+      if (confirm("Are you sure you want to delete this plan item?")) {
+        db.ref('planEntries/' + planId).remove().then(() => {
+          alert("Plan item deleted successfully.");
+        });
+      }
+    }
+
+    // Populate/lock the From & To dropdowns based on current context (Loading vs Unloading)
+    function populateAllLocationDropdowns() {
+      handleSupervisorOpChange();
+      handleSecurityRouteChange();
+    }
+
+    function updateDockOptions() {
+      const selectedUnit = document.getElementById('loadUnit').value;
+      const baySelect = document.getElementById('loadBayNo');
+      const availableDocks = dockConfig[selectedUnit] || dockConfig['AHPL'];
+
+      baySelect.innerHTML = '';
+      availableDocks.forEach(dock => {
+        const opt = document.createElement('option');
+        opt.value = dock;
+        opt.textContent = `${dock} (${selectedUnit})`;
+        baySelect.appendChild(opt);
+      });
+    }
+
+    // Security Gate: Loading -> From locked to INDORE HUB, To = destination list (masterLoadLocations)
+    // Unloading -> To locked to INDORE HUB, From = origin list (masterUnloadLocations)
+    function handleSecurityRouteChange() {
+      const purpose = document.getElementById('secPurpose')?.value;
+      const fromSel = document.getElementById('secFromLocation');
+      const toSel = document.getElementById('secToLocation');
+      if (!fromSel || !toSel) return;
+
+      if (purpose === 'Loading') {
+        fromSel.innerHTML = '<option value="INDORE HUB">INDORE HUB</option>';
+        fromSel.value = "INDORE HUB";
+        fromSel.disabled = true;
+        toSel.disabled = false;
+        toSel.innerHTML = '<option value="">-- Select Destination --</option>';
+        masterLoadLocations.forEach(loc => toSel.innerHTML += `<option value="${loc}">${loc}</option>`);
+      } else {
+        toSel.innerHTML = '<option value="INDORE HUB">INDORE HUB</option>';
+        toSel.value = "INDORE HUB";
+        toSel.disabled = true;
+        fromSel.disabled = false;
+        fromSel.innerHTML = '<option value="">-- Select Origin --</option>';
+        masterUnloadLocations.forEach(loc => fromSel.innerHTML += `<option value="${loc}">${loc}</option>`);
+      }
+    }
+
+    // Loading/Unloading Ops form: same From/To locking logic as Security Gate
+    function handleSupervisorOpChange() {
+      const op = document.getElementById('opType')?.value;
+      const casesField = document.getElementById('casesLoadedField');
+      const podField = document.getElementById('unloadingInspectionField');
+      const fromSel = document.getElementById('loadFromLoc');
+      const toSel = document.getElementById('loadToLoc');
+
+      if (op === 'LOADING') {
+        if (casesField) casesField.classList.remove('hidden');
+        if (podField) podField.classList.add('hidden');
+      } else {
+        if (casesField) casesField.classList.add('hidden');
+        if (podField) podField.classList.remove('hidden');
+      }
+
+      if (!fromSel || !toSel) return;
+      if (op === 'LOADING') {
+        fromSel.innerHTML = '<option value="INDORE HUB">INDORE HUB</option>';
+        fromSel.value = "INDORE HUB";
+        fromSel.disabled = true;
+        toSel.disabled = false;
+        toSel.innerHTML = '<option value="">-- Select Destination --</option>';
+        masterLoadLocations.forEach(loc => toSel.innerHTML += `<option value="${loc}">${loc}</option>`);
+      } else {
+        toSel.innerHTML = '<option value="INDORE HUB">INDORE HUB</option>';
+        toSel.value = "INDORE HUB";
+        toSel.disabled = true;
+        fromSel.disabled = false;
+        fromSel.innerHTML = '<option value="">-- Select Origin --</option>';
+        masterUnloadLocations.forEach(loc => fromSel.innerHTML += `<option value="${loc}">${loc}</option>`);
+      }
+    }
+
+    function updateLinkedGateVehicleDropdown() {
+      const select = document.getElementById('linkedGateSelect');
+      if (!select) return;
+      select.innerHTML = '<option value="">-- Choose Arrived Vehicle (Auto-Fill) --</option>';
+
+      securityLogs.forEach((veh) => {
+        const opt = document.createElement('option');
+        opt.value = veh.id;
+        opt.textContent = `🚗 ${veh.vehicle} | ${veh.transporter || 'Transp'} | ${veh.purpose || 'Loading'} (To: ${veh.toLoc || 'DEST'})`;
+        select.appendChild(opt);
+      });
+    }
+
+    function autoFillFromGateLog(gateId) {
+      const fromSel = document.getElementById('loadFromLoc');
+      const toSel = document.getElementById('loadToLoc');
+      if (!gateId) { handleSupervisorOpChange(); document.getElementById('loadVehicleNo').value = ''; return; }
+
+      const item = securityLogs.find(s => s.id === gateId);
+      if (!item) return;
+
+      document.getElementById('loadVehicleNo').value = item.vehicle;
+      if (item.transporter) document.getElementById('loadTransporter').value = item.transporter;
+
+      if (item.purpose === 'Loading') {
+        document.getElementById('opType').value = 'LOADING';
+        handleSupervisorOpChange();
+        fromSel.innerHTML = `<option value="INDORE HUB">INDORE HUB</option>`;
+        fromSel.value = "INDORE HUB";
+        fromSel.disabled = true;
+        toSel.innerHTML = `<option value="${item.toLoc}">${item.toLoc}</option>`;
+        toSel.value = item.toLoc;
+        toSel.disabled = true;
+      } else {
+        document.getElementById('opType').value = 'UNLOADING';
+        handleSupervisorOpChange();
+        fromSel.innerHTML = `<option value="${item.fromLoc}">${item.fromLoc}</option>`;
+        fromSel.value = item.fromLoc;
+        fromSel.disabled = true;
+        toSel.innerHTML = `<option value="INDORE HUB">INDORE HUB</option>`;
+        toSel.value = "INDORE HUB";
+        toSel.disabled = true;
+      }
+
+      if (document.getElementById('loadStartTime')) document.getElementById('loadStartTime').value = new Date().toTimeString().substring(0, 5);
+    }
+
+    function autoPickCurrentDateTime() {
+      const now = new Date();
+      document.getElementById('secDateTime').value = now.toLocaleDateString('en-GB') + ', ' + now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    }
+
+    // FORM HANDLERS
+    document.getElementById('loadUnloadForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const op = document.getElementById('opType').value;
+      const start = document.getElementById('loadStartTime').value || new Date().toTimeString().substring(0, 5);
+      const isUnloading = op === 'UNLOADING';
+      const casesVal = !isUnloading ? (document.getElementById('loadTotalCases').value || '0') : 'N/A';
+      const podVal = isUnloading ? document.getElementById('unloadingPodStatus').value : 'N/A';
+
+      const newOp = {
+        id: "OP-" + Date.now(),
+        opType: op,
+        unit: document.getElementById('loadUnit').value,
+        bayNo: document.getElementById('loadBayNo').value,
+        vehicleNo: document.getElementById('loadVehicleNo').value.toUpperCase(),
+        fromLoc: document.getElementById('loadFromLoc').value.toUpperCase().trim(),
+        toLoc: document.getElementById('loadToLoc').value.toUpperCase().trim(),
+        transporter: document.getElementById('loadTransporter').value,
+        operator: document.getElementById('loadOperator').value.trim(),
+        startTime: start,
+        endTime: "",
+        duration: "-- In Progress --",
+        status: op === 'LOADING' ? 'LOADING IN-PROGRESS' : 'UNLOADING IN-PROGRESS',
+        totalCases: casesVal,
+        podStatus: podVal
+      };
+
+      db.ref('loadEntries/' + newOp.id).set(newOp);
+      this.reset();
+      updateDockOptions();
+      populateSupervisorDropdown();
+      handleSupervisorOpChange();
+      updateLinkedGateVehicleDropdown();
+      alert(`Success! ${op} operation started on dock.`);
+    });
+
+    // 2-STEP FINISH OPERATION: Loading asks for Cases + Seal via modal; Unloading completes directly
+    function finishOperation(id) {
+      const item = loadEntries.find(l => l.id === id);
+      if (!item) return;
+
+      if (item.opType === 'LOADING') {
+        document.getElementById('finishLoadId').value = id;
+        document.getElementById('finishLoadCases').value = '';
+        document.getElementById('finishLoadSeal').value = '';
+        document.getElementById('finishLoadModal').classList.remove('hidden');
+      } else {
+        item.endTime = new Date().toTimeString().substring(0, 5);
+        item.status = "UNLOADED";
+        db.ref('loadEntries/' + item.id).set(item);
+      }
+    }
+
+    function submitFinishLoad() {
+      const id = document.getElementById('finishLoadId').value;
+      const cases = document.getElementById('finishLoadCases').value;
+      const seal = document.getElementById('finishLoadSeal').value;
+
+      if (!cases || !seal) return alert("Required!");
+      const item = loadEntries.find(l => l.id === id);
+      if (item) {
+        item.totalCases = cases;
+        item.sealNo = seal;
+        item.endTime = new Date().toTimeString().substring(0, 5);
+        item.status = "LOADED";
+        db.ref('loadEntries/' + item.id).set(item);
+      }
+      document.getElementById('finishLoadModal').classList.add('hidden');
+    }
+
+    // EDIT OPERATION ENTRY (Vehicle No / Dock No)
+    function editOp(id) {
+      const item = loadEntries.find(l => l.id === id);
+      if (!item) return;
+      document.getElementById('editOpId').value = id;
+      document.getElementById('editOpVeh').value = item.vehicleNo;
+      document.getElementById('editOpDock').value = item.bayNo;
+      document.getElementById('editOpsModal').classList.remove('hidden');
+    }
+
+    function saveEditOps() {
+      const id = document.getElementById('editOpId').value;
+      const item = loadEntries.find(l => l.id === id);
+      if (item) {
+        item.vehicleNo = document.getElementById('editOpVeh').value.toUpperCase();
+        item.bayNo = document.getElementById('editOpDock').value.toUpperCase();
+        db.ref('loadEntries/' + item.id).set(item);
+      }
+      document.getElementById('editOpsModal').classList.add('hidden');
+    }
+
+    // EDIT SECURITY LOG (Vehicle No / Driver Mobile)
+    function editSec(id) {
+      const item = securityLogs.find(l => l.id === id);
+      if (!item) return;
+      document.getElementById('editSecId').value = id;
+      document.getElementById('editSecVeh').value = item.vehicle;
+      document.getElementById('editSecMob').value = item.mobile;
+      document.getElementById('editSecModal').classList.remove('hidden');
+    }
+
+    function saveEditSec() {
+      const id = document.getElementById('editSecId').value;
+      const item = securityLogs.find(l => l.id === id);
+      if (item) {
+        item.vehicle = document.getElementById('editSecVeh').value.toUpperCase();
+        item.mobile = document.getElementById('editSecMob').value;
+        db.ref('securityLogs/' + item.id).set(item);
+      }
+      document.getElementById('editSecModal').classList.add('hidden');
+    }
+
+    document.getElementById('securityGateForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const purpose = document.getElementById('secPurpose').value;
+      const targetLoc = document.getElementById('secToLocation').value.toUpperCase().trim();
+      const originLoc = document.getElementById('secFromLocation').value.toUpperCase().trim();
+
+      let origin = "INDORE HUB";
+      let dest = "INDORE HUB";
+
+      if (purpose === 'Loading') {
+        if (!targetLoc) return alert("Please select a valid destination.");
+        origin = "INDORE HUB";
+        dest = targetLoc;
+      } else if (purpose === 'Unloading') {
+        if (!originLoc) return alert("Please select a valid origin.");
+        origin = originLoc;
+        dest = "INDORE HUB";
+      }
+
+      const gateId = "GATE-" + Date.now();
+      const newSec = {
+        id: gateId,
+        purpose: purpose,
+        vehicle: document.getElementById('secVehicleNo').value.toUpperCase().trim(),
+        vType: document.getElementById('secVehicleType').value,
+        mobile: document.getElementById('secDriverMobile').value.trim() || '-',
+        transporter: document.getElementById('secTransporter').value,
+        fromLoc: origin,
+        toLoc: dest,
+        dateTime: document.getElementById('secDateTime').value.trim() || new Date().toLocaleString('en-US'),
+        remarks: document.getElementById('secRemarks').value.trim() || '-'
+      };
+
+      db.ref('securityLogs/' + gateId).set(newSec);
+      this.reset();
+      handleSecurityRouteChange();
+      autoPickCurrentDateTime();
+      alert("Security Gate Entry Saved Successfully!");
+    });
+
+    function initFirebaseRealtimeSync() {
+      db.ref('loadEntries').on('value', (snapshot) => {
+        const data = snapshot.val();
+        loadEntries = data ? Object.values(data).reverse() : [];
+        renderLoadUnloadTable();
+        renderLiveDockCards();
+        renderExecutiveDashboard();
+      });
+
+      db.ref('securityLogs').on('value', (snapshot) => {
+        const data = snapshot.val();
+        securityLogs = data ? Object.values(data).reverse() : [];
+        renderSecurityTable();
+        updateLinkedGateVehicleDropdown();
+        renderExecutiveDashboard();
+      });
+
+      db.ref('planEntries').on('value', (snapshot) => {
+        const data = snapshot.val();
+        planEntries = data ? Object.values(data).reverse() : [];
+        renderAllTables();
+        renderExecutiveDashboard();
+      });
+
+      db.ref('masterLoadLocations').on('value', (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          masterLoadLocations = data;
+          localStorage.setItem("ich_master_load_locations", JSON.stringify(masterLoadLocations));
+          populateAllLocationDropdowns();
+        }
+      });
+
+      db.ref('masterUnloadLocations').on('value', (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          masterUnloadLocations = data;
+          localStorage.setItem("ich_master_unload_locations", JSON.stringify(masterUnloadLocations));
+          populateAllLocationDropdowns();
+        }
+      });
+
+      db.ref('masterSupervisors').on('value', (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          masterSupervisors = data;
+          localStorage.setItem("ich_master_supervisors", JSON.stringify(masterSupervisors));
+          populateSupervisorDropdown();
+        }
+      });
+    }
+
+    function renderExecutiveDashboard() {
+      let activeLoad = 0, activeUnload = 0, completedToday = 0;
+      loadEntries.forEach(l => {
+        if (l.status === 'LOADING IN-PROGRESS') activeLoad++;
+        else if (l.status === 'UNLOADING IN-PROGRESS') activeUnload++;
+        else if (l.status === 'LOADED' || l.status === 'UNLOADED') completedToday++;
+      });
+
+      if (document.getElementById('dashPlanCount')) document.getElementById('dashPlanCount').innerText = planEntries.length;
+      if (document.getElementById('dashActiveLoading')) document.getElementById('dashActiveLoading').innerText = activeLoad;
+      if (document.getElementById('dashActiveUnloading')) document.getElementById('dashActiveUnloading').innerText = activeUnload;
+      if (document.getElementById('dashCompletedToday')) document.getElementById('dashCompletedToday').innerText = completedToday;
+      if (document.getElementById('dashGateCount')) document.getElementById('dashGateCount').innerText = securityLogs.length;
+
+      const streamTbody = document.getElementById('dashActivityStream');
+      if (streamTbody) {
+        if (loadEntries.length === 0) {
+          streamTbody.innerHTML = `<tr><td colspan="4" class="text-center py-6 opacity-60">No active operations.</td></tr>`;
+        } else {
+          streamTbody.innerHTML = '';
+          loadEntries.slice(0, 5).forEach(op => {
+            streamTbody.innerHTML += `
+              <tr class="border-b border-black/5 dark:border-white/5">
+                <td class="py-2 px-3 font-bold font-mono">${op.vehicleNo}</td>
+                <td class="py-2 px-3 font-semibold">${op.opType}</td>
+                <td class="py-2 px-3 text-sky-500 font-bold">${op.bayNo}</td>
+                <td class="py-2 px-3 font-bold">${op.status}</td>
+              </tr>
+            `;
+          });
+        }
+      }
+
+      const gateStreamTbody = document.getElementById('dashGateStream');
+      if (gateStreamTbody) {
+        if (securityLogs.length === 0) {
+          gateStreamTbody.innerHTML = `<tr><td colspan="4" class="text-center py-6 opacity-60">No gate arrivals recorded.</td></tr>`;
+        } else {
+          gateStreamTbody.innerHTML = '';
+          securityLogs.slice(0, 5).forEach(g => {
+            gateStreamTbody.innerHTML += `
+              <tr class="border-b border-black/5 dark:border-white/5">
+                <td class="py-2 px-3 font-bold text-sky-500">${g.purpose}</td>
+                <td class="py-2 px-3 font-bold font-mono">${g.vehicle}</td>
+                <td class="py-2 px-3">${g.fromLoc || '-'} ➔ ${g.toLoc || '-'}</td>
+                <td class="py-2 px-3 font-mono opacity-80">${g.dateTime}</td>
+              </tr>
+            `;
+          });
+        }
+      }
+    }
+
+    function renderLoadUnloadTable() {
+      const tbody = document.getElementById('loadUnloadTableBody');
+      if (!tbody) return;
+
+      let activeLoad = 0, activeUnload = 0;
+      loadEntries.forEach(l => {
+        if (l.status === 'LOADING IN-PROGRESS') activeLoad++;
+        else if (l.status === 'UNLOADING IN-PROGRESS') activeUnload++;
+      });
+
+      if (document.getElementById('kpiActiveLoading')) document.getElementById('kpiActiveLoading').innerText = `${activeLoad} Loading In-Progress`;
+      if (document.getElementById('kpiActiveUnloading')) document.getElementById('kpiActiveUnloading').innerText = `${activeUnload} Unloading In-Progress`;
+
+      if (loadEntries.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="10" class="text-center py-10 opacity-60 font-medium">No operations recorded yet.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = '';
+      loadEntries.forEach((item) => {
+        const isProgress = item.status.includes('IN-PROGRESS');
+        let statusBadge = "";
+
+        if (item.status === 'LOADED') {
+          statusBadge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30">✔ LOADED</span>`;
+        } else if (item.status === 'UNLOADED') {
+          statusBadge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-500/20 text-blue-700 dark:text-blue-300 border border-blue-500/30">✔ UNLOADED</span>`;
+        } else if (item.status === 'LOADING IN-PROGRESS') {
+          statusBadge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-500/30 animate-pulse">⏳ LOADING...</span>`;
+        } else {
+          statusBadge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-sky-500/20 text-sky-700 dark:text-sky-300 border border-sky-500/30 animate-pulse">⏳ UNLOADING...</span>`;
+        }
+
+        let inspBadge = '<span class="opacity-50">-</span>';
+        if (item.podStatus && item.podStatus !== 'N/A') {
+          inspBadge = `<span class="text-emerald-600 dark:text-emerald-400 font-bold text-[10px]">✔ ${item.podStatus}</span>`;
+        }
+
+        const casesDisplay = item.totalCases && item.totalCases !== 'N/A' ? `<span class="font-mono font-bold text-sky-400">${item.totalCases} Cases</span>` : '<span class="opacity-40">-</span>';
+
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-black/5 dark:hover:bg-white/5 transition';
+        tr.innerHTML = `
+          <td class="py-3 px-3">${statusBadge}</td>
+          <td class="py-3 px-3 font-bold font-mono">${item.vehicleNo}</td>
+          <td class="py-3 px-3 font-bold text-sky-600 dark:text-sky-300">${item.bayNo}</td>
+          <td class="py-3 px-3">${casesDisplay}</td>
+          <td class="py-3 px-3">${inspBadge}</td>
+          <td class="py-3 px-3 font-semibold">${item.operator}</td>
+          <td class="py-3 px-3 font-mono">${item.startTime || '-'}</td>
+          <td class="py-3 px-3 font-mono ${isProgress ? 'text-amber-600 dark:text-amber-400 italic' : ''}">${item.endTime || '-- In Progress --'}</td>
+          <td class="py-3 px-3 font-mono font-bold text-emerald-600 dark:text-emerald-400">${item.duration}</td>
+          <td class="py-3 px-3 text-center space-x-1.5">
+            ${isProgress ? `
+              <button onclick="finishOperation('${item.id}')" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-[11px] font-bold transition shadow-sm">
+                ✔ Mark Completed
+              </button>
+            ` : `
+              <span class="text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold">Done</span>
+            `}
+            <button onclick="editOp('${item.id}')" class="text-sky-500 hover:text-sky-600 p-1"><i data-lucide="pencil" class="w-4 h-4"></i></button>
+            <button onclick="db.ref('loadEntries/${item.id}').remove()" class="text-rose-500 hover:text-rose-600 p-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+      lucide.createIcons();
+    }
+
+    function renderLiveDockCards() {
+      const ahplGrid = document.getElementById('ahplDockGrid');
+      const ailGrid = document.getElementById('ailDockGrid');
+      if (!ahplGrid || !ailGrid) return;
+      ahplGrid.innerHTML = ''; ailGrid.innerHTML = '';
+
+      dockConfig['AHPL'].forEach(dockName => {
+        const active = loadEntries.find(d => d.bayNo === dockName && d.status.includes('IN-PROGRESS'));
+        ahplGrid.innerHTML += createDockCard(dockName, active);
+      });
+
+      dockConfig['AIL'].forEach(dockName => {
+        const active = loadEntries.find(d => d.bayNo === dockName && d.status.includes('IN-PROGRESS'));
+        ailGrid.innerHTML += createDockCard(dockName, active);
+      });
+      lucide.createIcons();
+    }
+
+    function createDockCard(name, record) {
+      if (record) {
+        const isLoad = record.opType === 'LOADING';
+        return `
+          <div class="p-4 rounded-3xl card-surface border ${isLoad ? 'border-amber-500/40' : 'border-sky-500/40'} space-y-1 text-xs shadow-md">
+            <div class="flex justify-between items-center font-bold">
+              <span class="font-black text-sky-600 dark:text-sky-400">${name}</span>
+              <span class="w-2.5 h-2.5 rounded-full ${isLoad ? 'bg-amber-500 animate-pulse' : 'bg-sky-500 animate-pulse'}"></span>
+            </div>
+            <p class="font-extrabold text-sm pt-1">${record.vehicleNo}</p>
+            <p class="text-[11px] font-bold ${isLoad ? 'text-amber-600 dark:text-amber-300' : 'text-sky-600 dark:text-sky-300'}">${record.status}</p>
+            <p class="text-[11px] opacity-70">${record.operator} • Started: ${record.startTime}</p>
+          </div>
+        `;
+      }
+      return `
+        <div class="p-4 rounded-3xl card-surface text-xs opacity-60 space-y-1">
+          <div class="flex justify-between items-center font-bold">
+            <span>${name}</span>
+            <span class="w-2 h-2 rounded-full bg-slate-400"></span>
+          </div>
+          <p class="text-center py-3 text-[11px] font-semibold">Empty / Available</p>
+        </div>
+      `;
+    }
+
+    function renderAllTables() {
+      const summaryTbody = document.getElementById('summaryTableBody');
+      const planTbody = document.getElementById('planTableBody');
+      const reportTbody = document.getElementById('reportTableBody');
+      if (!summaryTbody || !planTbody) return;
+
+      if (planEntries.length === 0) {
+        summaryTbody.innerHTML = `<tr><td colspan="7" class="text-center py-6 opacity-60">No plan summary available.</td></tr>`;
+        planTbody.innerHTML = `<tr><td colspan="9" class="text-center py-6 opacity-60">No detailed plan data loaded.</td></tr>`;
+        if (reportTbody) reportTbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 opacity-60 font-medium">No report records available.</td></tr>`;
+        if (document.getElementById('summaryGroupCount')) document.getElementById('summaryGroupCount').innerText = "0 Vehicles";
+        if (document.getElementById('detailedRowCount')) document.getElementById('detailedRowCount').innerText = "0 Items";
+        return;
+      }
+
+      if (document.getElementById('summaryGroupCount')) document.getElementById('summaryGroupCount').innerText = `${planEntries.length} Items`;
+      if (document.getElementById('detailedRowCount')) document.getElementById('detailedRowCount').innerText = `${planEntries.length} Items`;
+
+      summaryTbody.innerHTML = '';
+      planTbody.innerHTML = '';
+      if (reportTbody) reportTbody.innerHTML = '';
+
+      planEntries.forEach(item => {
+        summaryTbody.innerHTML += `
+          <tr class="border-b border-black/5 dark:border-white/5">
+            <td class="py-3 px-4 font-bold">${item.destination}</td>
+            <td class="py-3 px-4">${item.transporter || 'DHTC'}</td>
+            <td class="py-3 px-4">${item.vType || '32SXL'}</td>
+            <td class="py-3 px-4 text-center font-mono">1</td>
+            <td class="py-3 px-4 text-right font-mono">${item.weight} Kg</td>
+            <td class="py-3 px-4 text-right font-mono">${item.cft || 0}</td>
+            <td class="py-3 px-4 text-center"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-sky-500/20 text-sky-400">Pending</span></td>
+          </tr>
+        `;
+
+        planTbody.innerHTML += `
+          <tr class="border-b border-black/5 dark:border-white/5">
+            <td class="py-3 px-3.5 font-bold font-mono">${item.deliveryNo}</td>
+            <td class="py-3 px-3.5">${item.code}</td>
+            <td class="py-3 px-3.5 font-bold text-sky-400">${item.unit}</td>
+            <td class="py-3 px-3.5 font-bold">${item.destination}</td>
+            <td class="py-3 px-3.5 text-right font-mono">${item.weight}</td>
+            <td class="py-3 px-3.5 text-right font-mono">${item.cft || 0}</td>
+            <td class="py-3 px-3.5">${item.vType}</td>
+            <td class="py-3 px-3.5">${item.transporter}</td>
+            <td class="py-3 px-3.5 text-center">
+              <button onclick="deletePlanItem('${item.id}')" class="px-2.5 py-1 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-[10px] font-bold transition shadow-sm flex items-center gap-1 mx-auto">
+                <i data-lucide="trash-2" class="w-3 h-3"></i> Delete
+              </button>
+            </td>
+          </tr>
+        `;
+
+        if (reportTbody) {
+          reportTbody.innerHTML += `
+            <tr class="border-b border-black/5 dark:border-white/5">
+              <td class="py-3 px-3 font-bold font-mono">${item.deliveryNo}</td>
+              <td class="py-3 px-3">${item.code}</td>
+              <td class="py-3 px-3 font-bold text-sky-400">${item.unit}</td>
+              <td class="py-3 px-3 font-bold">${item.destination}</td>
+              <td class="py-3 px-3 text-right font-mono">${item.weight}</td>
+              <td class="py-3 px-3 text-right font-mono">${item.cft || 0}</td>
+              <td class="py-3 px-3">${item.vType}</td>
+              <td class="py-3 px-3">${item.transporter}</td>
+            </tr>
+          `;
+        }
+      });
+      lucide.createIcons();
+    }
+
+    function renderSecurityTable() {
+      const tbody = document.getElementById('securityTableBody');
+      if (!tbody) return;
+      if (document.getElementById('gateRowCount')) document.getElementById('gateRowCount').innerText = `${securityLogs.length} Records`;
+      if (securityLogs.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center py-6 opacity-60">No gate logs.</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = '';
+      securityLogs.forEach(item => {
+        tbody.innerHTML += `
+          <tr class="border-b border-black/5 dark:border-white/5">
+            <td class="py-3 px-3 font-bold text-sky-500">${item.purpose}</td>
+            <td class="py-3 px-3 font-bold font-mono">${item.vehicle}</td>
+            <td class="py-3 px-3">${item.transporter}</td>
+            <td class="py-3 px-3 font-mono">${item.mobile}</td>
+            <td class="py-3 px-3">${item.fromLoc} ➔ ${item.toLoc}</td>
+            <td class="py-3 px-3 font-mono opacity-80">${item.dateTime}</td>
+            <td class="py-3 px-3">${item.remarks}</td>
+            <td class="py-3 px-3 text-center">
+              <button onclick="editSec('${item.id}')" class="text-sky-500 hover:text-sky-600 p-1"><i data-lucide="pencil" class="w-4 h-4"></i></button>
+              <button onclick="db.ref('securityLogs/${item.id}').remove()" class="text-rose-500 hover:text-rose-600 p-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+            </td>
+          </tr>
+        `;
+      });
+      lucide.createIcons();
+    }
+
+    async function scanPlanImage(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      document.getElementById('ocrSpinner').classList.remove('hidden');
+      try {
+        let result = await Tesseract.recognize(file, 'eng');
+        document.getElementById('ocrSpinner').classList.add('hidden');
+        alert("OCR Scan completed successfully!");
+      } catch (err) {
+        document.getElementById('ocrSpinner').classList.add('hidden');
+        alert("Error scanning image.");
+      }
+    }
+  </script>
+</body>
+</html>
